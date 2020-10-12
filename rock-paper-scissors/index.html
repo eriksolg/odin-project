@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Rock, Paper, Scissors</title>
+</head>
+
+<body>
+    <script>
+        const gestures = ["rock", "paper", "scissors"];
+        const COMPUTER_WIN = 0;
+        const PLAYER_WIN = 1;
+        const TIE = 2;
+
+        function computerPlay() {
+            return gestures[Math.floor(Math.random() * gestures.length)];
+        }
+
+        function playRound(playerSelection, computerSelection) {
+            playerSelection = playerSelection.toLowerCase();
+            computerSelection = computerSelection.toLowerCase();
+            if (playerSelection == "paper" && computerSelection == "rock" ||
+                playerSelection == "rock" && computerSelection == "scissors" ||
+                playerSelection == "scissors" && computerSelection == "paper") {
+                return PLAYER_WIN;
+            } else if (playerSelection == computerSelection) {
+                return TIE;
+            } else {
+                return COMPUTER_WIN;
+            }
+        }
+
+        function game() {
+            let round = 1;
+            let playerScore = 0;
+            let computerscore = 0;
+
+            while (round <= 5) {
+                console.log(`Rock, Paper, Scissors. Round ${round}`);
+                playerSelection = prompt("Please enter your choice: rock, paper or scissors.");
+                while (gestures.indexOf(playerSelection.toLowerCase()) == -1) {
+                    playerSelection = prompt("Incorrect! Please enter your choice: rock, paper or scissors.");
+                }
+
+                computerSelection = computerPlay();
+                result = playRound(playerSelection, computerSelection);
+                switch (result) {
+                    case COMPUTER_WIN:
+                        console.log(`You Lose! ${playerSelection} is being beated by ${computerSelection}`);
+                        computerScore++;
+                        break;
+                    case TIE:
+                        console.log(`It's a tie! You both chose ${playerSelection}`);
+                        computerScore++;
+                        playerScore++;
+                        break;
+                    case PLAYER_WIN:
+                        console.log(`You Win! ${playerSelection} beats ${computerSelection}`);
+                        playerScore++;
+                }
+                round++;
+            }
+            if (playerScore > computerScore) {
+                console.log(`Congratulations. You won! Your score: ${playerScore} Computer score: ${computerScore}`);
+            } else if (playerScore < computerScore) {
+                console.log(`You lost! Your score: ${playerScore} Computer score: ${computerScore}`);
+            } else if (playerScore == computerScore) {
+                console.log(`It's a tie! Your score: ${playerScore} Computer score: ${computerScore}`);
+            }
+        }
+    </script>
+</body>
