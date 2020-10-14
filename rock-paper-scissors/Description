@@ -1,0 +1,16 @@
+In UI, we have following elements:
+1) An element for displaying score of you and of computer
+2) Three buttons for player's gestures
+3) Button, to reset to a new game, once the game has finished.
+
+When pushing any of the gestures, It invokes a new round and results affect the score.
+When it is a TIE, then score will not be modified.
+Once any of the players has reached score of 5, the game has ended with
+congratulating the winner or informing about losing.
+Then gesture buttons become greyed out and new button appears to start a
+new game.
+
+
+1. Create UI elements
+2. Add logic for playing and reseting the game.
+3. Add event listeners for the buttons.
