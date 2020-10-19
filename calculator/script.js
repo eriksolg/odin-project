@@ -1,8 +1,7 @@
-const ADD = 0;
-const SUBTRACT = 1;
-const MULTIPLY = 2;
-const DIVIDE = 4;
 const calculatorText = document.querySelector('#calculator-text');
+const operationButtons = document.querySelectorAll('.operation');
+const equals = document.querySelector('#equals');
+const clear = document.querySelector('#clear');
 const maxCalculationSize = 14;
 
 function add(a, b) {
@@ -23,44 +22,46 @@ function divide(a, b) {
 
 function operate(operator, a, b) {
     switch (operator) {
-        case ADD:
-            add(a, b);
-            break;
-        case SUBTRACT:
-            subtract(a, b);
-            break;
-        case MULTIPLY:
-            multiply(a, b);
-            break;
-        case DIVIDE:
-            divide(a, b);
-            break;
+        case '+':
+            return add(a, b);
+        case '-':
+            return subtract(a, b);
+        case '*':
+            return multiply(a, b);
+        case '/':
+            return divide(a, b);
     }
 }
 
 function evaluateAcceptableInput(input) {
-    let currentCalcHasOperator = currentCalculation.reduce(((hasOperator, value) => hasOperator || isOperator(value)), false);
+    if (currentCalcHasOperator() && isOperator(input)) {
+        return false;
+    }
 
-    if (isOperator(input)) {
-        if (
-            currentCalculation.length == 0 ||
-            isOperator(currentCalculation[currentCalculation.length - 1]) ||
-            maxCalculationSize - currentCalculation.length <= 1 ||
-            currentCalcHasOperator
-        ) {
-            return false;
-        }
-    } else {
-        if (maxCalculationSize - currentCalculation.length == 2) {
-            return false;
-        }
+    if (currentCalculation.length == 0 && isOperator(input)) {
+        return false;
+    }
+
+    if (maxCalculationSize - currentCalculation.length == 0) {
+        return false;
+    }
+
+    if (!currentCalcHasOperator() && (maxCalculationSize - currentCalculation.length == 2) && !isOperator(input)) {
+        return false;
     }
 
     return true;
 }
 
 function isOperator(input) {
-    return typeof(input) == 'string';
+    return input == '+' ||
+        input == '-' ||
+        input == '*' ||
+        input == '/';
+}
+
+function currentCalcHasOperator() {
+    return currentCalculation.reduce(((hasOperator, value) => hasOperator || isOperator(value)), false);
 }
 
 function updateCurrentCalculation(input) {
@@ -68,16 +69,24 @@ function updateCurrentCalculation(input) {
         currentCalculation.push(input);
         updateCalculatorText();
     }
-
 }
 
 function clearCurrentCalculation() {
     currentCalculation = [];
-    updateCalculatorText();
+    calculatorText.textContent = 0;
 }
 
 function parseCurrentCalculation() {
-
+    if (!currentCalcHasOperator()) {
+        return;
+    }
+    let operatorIndex = currentCalculation.findIndex(element => isOperator(element));
+    let operator = currentCalculation[operatorIndex];
+    let operand1 = +currentCalculation.slice(0, operatorIndex).join('');
+    let operand2 = +currentCalculation.slice(operatorIndex + 1).join('');
+    let result = operate(operator, operand1, operand2);
+    calculatorText.textContent = result;
+    currentCalculation = [];
 }
 
 function updateCalculatorText() {
@@ -133,8 +142,12 @@ function operationButtonPressed(event) {
 }
 
 let currentCalculation = [];
-let operationButtons = document.querySelectorAll('.operation');
 
 for (let i = 0; i < operationButtons.length; i++) {
     operationButtons[i].addEventListener('click', operationButtonPressed);
 }
+
+equals.addEventListener('click', parseCurrentCalculation);
+clear.addEventListener('click', clearCurrentCalculation);
+
+clearCurrentCalculation();
