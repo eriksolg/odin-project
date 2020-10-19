@@ -1,0 +1,15 @@
+When nothing has been entered, then only number can be entered
+When number has been entered, then another number or oprator can be entered.
+    If only 1 screen places are available, then only number can be entered
+    If no screen places are available, then nothing more can be entered.
+When operator has been entered, then only number can be entered
+When there is already one operator entered, then no more operators can be entered (Stage 1)
+
+VARIABLE: current calculation (array)
+VARIABLE: max screen count
+FUNCTION: check, if operator or number or none can be entered to current calculation status
+FUNCTION: update current calculation status
+FUNCTION: print current calculation status to screen
+FUNCTION: clear current calculation status
+FUNCTION: operate()
+FUNCTION: parse current calculation status and call operate () with appropriate parameters
