@@ -41,26 +41,19 @@ function operate(operator, a, b) {
 function evaluateAcceptableInput(input) {
     let currentCalcHasOperator = currentCalculation.reduce(((hasOperator, value) => hasOperator || isOperator(value)), false);
 
-    if ((currentCalculation.length == 0) && isOperator(input)) {
-        return false;
-    }
-    if ((isOperator(currentCalculation[currentCalculation.length - 1])) && isOperator(input)) {
-        return false;
-    }
-    if ((maxCalculationSize - currentCalculation.length == 1) && isOperator(input)) {
-        return false;
-    }
-    if ((maxCalculationSize - currentCalculation.length == 2) && !isOperator(input)) {
-        return false;
-    }
-    if (maxCalculationSize - currentCalculation.length == 0) {
-        return false;
-    }
-    if (currentCalcHasOperator && isOperator(input)) {
-        return false;
-    }
-    if ((currentCalculation.length == 0) && input == 0) {
-        return false;
+    if (isOperator(input)) {
+        if (
+            currentCalculation.length == 0 ||
+            isOperator(currentCalculation[currentCalculation.length - 1]) ||
+            maxCalculationSize - currentCalculation.length <= 1 ||
+            currentCalcHasOperator
+        ) {
+            return false;
+        }
+    } else {
+        if (maxCalculationSize - currentCalculation.length == 2) {
+            return false;
+        }
     }
 
     return true;
