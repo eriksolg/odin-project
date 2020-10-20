@@ -85,7 +85,11 @@ function parseCurrentCalculation() {
     let operand1 = +currentCalculation.slice(0, operatorIndex).join('');
     let operand2 = +currentCalculation.slice(operatorIndex + 1).join('');
     let result = operate(operator, operand1, operand2);
-    calculatorText.textContent = result;
+    if (result.toString().length > maxCalculationSize) {
+        calculatorText.textContent = 1;
+    } else {
+        calculatorText.textContent = result;
+    }
     currentCalculation = [];
 }
 
