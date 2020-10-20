@@ -33,7 +33,9 @@
     user-select: none;
 }
 
-.calculator-button:hover {
+.calculator-button:hover,
+.active,
+.active:active {
     border: 1px solid red;
     color: red;
 }
