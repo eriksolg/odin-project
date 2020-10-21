@@ -2,12 +2,9 @@ const ADD = 1;
 const SUBTRACT = 2;
 const MULTIPLY = 3;
 const DIVIDE = 4;
-const maxCalculationSize = 14;
-
-const calculatorText = document.querySelector('#calculator-text');
-
-
-const numbers = [
+const MAXCALCULATIONSIZE = 14;
+const CALCULATORTEXT = document.querySelector('#calculator-text');
+const NUMBERS = [
     document.querySelector('#number-0'),
     document.querySelector('#number-1'),
     document.querySelector('#number-2'),
@@ -19,19 +16,18 @@ const numbers = [
     document.querySelector('#number-8'),
     document.querySelector('#number-9')
 ]
-
-const operators = new Map([
+const OPERATORS = new Map([
     [ADD, document.querySelector('#operator-add')],
     [SUBTRACT, document.querySelector('#operator-subtract')],
     [MULTIPLY, document.querySelector('#operator-multiply')],
     [DIVIDE, document.querySelector('#operator-divide')]
 ]);
 
-for (let [operator, element] of operators) {
+for (let [operator, element] of OPERATORS) {
     element.addEventListener('click', () => setCurrentOperator(operator));
 }
-for (let i = 0; i < numbers.length; i++) {
-    numbers[i].addEventListener('click', () => handleNumberInput(i));
+for (let i = 0; i < NUMBERS.length; i++) {
+    NUMBERS[i].addEventListener('click', () => handleNumberInput(i));
 }
 document.querySelector('#action-equals').addEventListener('click', () => handleFinalResult());
 document.querySelector('#action-clear').addEventListener('click', () => resetState(true));
@@ -41,46 +37,35 @@ let lastResult;
 let currentNumber;
 let currentOperator;
 
+
 function resetState(resetScreen) {
     currentNumber = '';
     lastResult = 0;
     lastOperator = ADD;
     resetCurrentOperator();
-    resetScreen ? calculatorText.textContent = 0 : null;
-}
-
-function add(a, b) {
-    return a + b;
-}
-
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return a / b;
+    resetScreen ? CALCULATORTEXT.textContent = 0 : null;
 }
 
 function operate(operator, a, b) {
     switch (operator) {
         case ADD:
-            return add(a, b);
+            return a + b;
         case SUBTRACT:
-            return subtract(a, b);
+            return a - b;
         case MULTIPLY:
-            return multiply(a, b);
+            return a * b;
         case DIVIDE:
-            return divide(a, b);
+            return a / b;
     }
+}
+
+function setCalculatorText(input) {
+    CALCULATORTEXT.textContent = input;
 }
 
 function resetCurrentOperator() {
     if (currentOperator) {
-        operators.get(currentOperator).classList.remove('active');
+        OPERATORS.get(currentOperator).classList.remove('active');
     }
     currentOperator = null;
 }
@@ -93,12 +78,8 @@ function setCurrentOperator(operator) {
     if (currentOperator) {
         resetCurrentOperator();
     }
-    operators.get(operator).classList.add('active');
+    OPERATORS.get(operator).classList.add('active');
     currentOperator = operator;
-}
-
-function updateCalculatorText() {
-    calculatorText.textContent = currentNumber;
 }
 
 function handleNumberInput(number) {
@@ -109,10 +90,10 @@ function handleNumberInput(number) {
         resetCurrentOperator();
         currentNumber = '';
         currentNumber += number;
-        updateCalculatorText();
-    } else if (maxCalculationSize - currentNumber.length) {
+        setCalculatorText(currentNumber);
+    } else if (MAXCALCULATIONSIZE - currentNumber.length) {
         currentNumber += number;
-        updateCalculatorText();
+        setCalculatorText(currentNumber);
     }
 }
 
@@ -121,7 +102,7 @@ function handleFinalResult() {
         return;
     }
     result = operate(lastOperator, +lastResult, +currentNumber);
-    calculatorText.textContent = result
+    setCalculatorText(result);
     resetState(false);
 }
 
