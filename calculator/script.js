@@ -30,7 +30,7 @@ for (let i = 0; i < NUMBERS.length; i++) {
     NUMBERS[i].addEventListener('click', () => handleNumberInput(i));
 }
 document.querySelector('#action-equals').addEventListener('click', () => handleFinalResult());
-document.querySelector('#action-clear').addEventListener('click', () => resetState(true));
+document.querySelector('#action-clear').addEventListener('click', () => resetState());
 
 let lastOperator;
 let lastResult;
@@ -38,12 +38,12 @@ let currentNumber;
 let currentOperator;
 
 
-function resetState(resetScreen) {
+function resetState() {
     currentNumber = '';
     lastResult = 0;
     lastOperator = ADD;
     resetCurrentOperator();
-    resetScreen ? CALCULATORTEXT.textContent = 0 : null;
+    CALCULATORTEXT.textContent = 0;
 }
 
 function operate(operator, a, b) {
@@ -102,8 +102,11 @@ function handleFinalResult() {
         return;
     }
     result = operate(lastOperator, +lastResult, +currentNumber);
+    resetState();
+    if (('' + result).length > MAXCALCULATIONSIZE) {
+        result = result.toExponential(1);
+    }
     setCalculatorText(result);
-    resetState(false);
 }
 
-resetState(true);
+resetState();

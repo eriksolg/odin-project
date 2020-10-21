@@ -6,6 +6,10 @@ If screen is full, then cannot enter another number
 
 
 
+When we have current operator set, and we want to toglle other operator, then we reset current operator and toggle another operator
+When we have no operator set, we only want to toggle the other operator
+
+
 FUNCTION: put operator active/unactive
 FUNCTION: calculate lastresult (operate)
 FUNCTION: update currently entered number 
