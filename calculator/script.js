@@ -31,6 +31,8 @@ for (let i = 0; i < NUMBERS.length; i++) {
 }
 document.querySelector('#action-equals').addEventListener('click', () => handleFinalResult());
 document.querySelector('#action-clear').addEventListener('click', () => resetState());
+document.querySelector('#action-backspace').addEventListener('click', () => performBackspace());
+document.querySelector('#number-dot').addEventListener('click', () => handleNumberInput('.'));
 
 let lastOperator;
 let lastResult;
@@ -40,10 +42,9 @@ let currentOperator;
 
 function resetState() {
     currentNumber = '';
-    lastResult = 0;
-    lastOperator = ADD;
+    lastResult = null;
+    lastOperator = null;
     resetCurrentOperator();
-    CALCULATORTEXT.textContent = 0;
 }
 
 function operate(operator, a, b) {
@@ -57,6 +58,11 @@ function operate(operator, a, b) {
         case DIVIDE:
             return a / b;
     }
+}
+
+function performBackspace() {
+    currentNumber = currentNumber.slice(0, -1);
+    setCalculatorText(currentNumber);
 }
 
 function setCalculatorText(input) {
@@ -83,25 +89,42 @@ function setCurrentOperator(operator) {
 }
 
 function handleNumberInput(number) {
-    if (currentOperator) {
+    if (currentNumber == '0' && number != '.') {
+        return;
+    }
+    if (currentNumber == '' && number == '.') {
+        return;
+    }
+    if (currentNumber.includes('.') && number == '.') {
+        return;
+    }
+    if (currentOperator && number != '.') {
+
+        if (!lastResult) {
+            lastResult = 0;
+            lastOperator = ADD;
+        }
         newResult = operate(lastOperator, +lastResult, +currentNumber);
         lastResult = newResult;
         lastOperator = currentOperator;
         resetCurrentOperator();
-        currentNumber = '';
-        currentNumber += number;
+        currentNumber = '' + number;
         setCalculatorText(currentNumber);
     } else if (MAXCALCULATIONSIZE - currentNumber.length) {
+        if ((MAXCALCULATIONSIZE - currentNumber.length) == 1 && number == '.') {
+            return;
+        }
         currentNumber += number;
         setCalculatorText(currentNumber);
     }
 }
 
 function handleFinalResult() {
-    if (currentOperator) {
+    if (currentOperator || !lastOperator) {
         return;
     }
     result = operate(lastOperator, +lastResult, +currentNumber);
+
     resetState();
     if (('' + result).length > MAXCALCULATIONSIZE) {
         result = result.toExponential(1);
