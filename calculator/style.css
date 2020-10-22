@@ -1,8 +1,13 @@
 #calculator-body {
     margin: auto;
+    margin-top: 100px;
     width: 450px;
     padding: 20px;
-    background-color: rgb(216, 234, 236);
+    background-color: rgb(224, 239, 241);
+    border-radius: 20px;
+    -webkit-box-shadow: 14px 16px 19px 3px rgba(102, 140, 161, 1);
+    -moz-box-shadow: 14px 16px 19px 3px rgba(102, 140, 161, 1);
+    box-shadow: 14px 16px 19px 3px rgba(102, 140, 161, 1);
 }
 
 #calculator-buttons {
@@ -14,10 +19,10 @@
 }
 
 .calculator-button {
-    background-color: beige;
+    background-color: rgb(238, 238, 229);
     width: 20px;
     height: 20px;
-    border: 1px solid black;
+    border: 1px solid rgb(187, 176, 176);
     text-align: center;
     padding: 30px;
     -webkit-touch-callout: none;
@@ -31,13 +36,21 @@
     -ms-user-select: none;
     /* Internet Explorer/Edge */
     user-select: none;
+    border-radius: 10px;
+}
+
+#action-backspace {
+    background-image: url("https://cdn1.iconfinder.com/data/icons/social-object-set-4/74/2-512.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .calculator-button:hover,
 .active,
 .active:active {
-    border: 1px solid red;
-    color: red;
+    border: 1px solid rgb(126, 121, 121);
+    color: rgb(117, 110, 110);
 }
 
 .calculator-button:active {
