@@ -39,13 +39,6 @@
     border-radius: 10px;
 }
 
-#action-backspace {
-    background-image: url("https://cdn1.iconfinder.com/data/icons/social-object-set-4/74/2-512.png");
-    background-size: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
 .calculator-button:hover,
 .active,
 .active:active {
@@ -63,11 +56,6 @@
     text-align: center;
 }
 
-.two-col {
-    grid-column: span 2;
-    width: 120px;
-}
-
 #calculator-screen {
     background-color: rgb(219, 213, 213);
     width: 400px;
@@ -83,4 +71,16 @@
     margin-right: 20px;
     margin-left: auto;
     padding: 10px;
+}
+
+#action-backspace {
+    background-image: url("https://cdn1.iconfinder.com/data/icons/social-object-set-4/74/2-512.png");
+    background-size: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.two-col {
+    grid-column: span 2;
+    width: 120px;
 }
