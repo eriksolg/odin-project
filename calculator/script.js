@@ -102,6 +102,7 @@ function resetState() {
     currentNumber = '';
     lastResult = null;
     lastOperator = null;
+    setCalculatorText(currentNumber);
     resetCurrentOperator();
 }
 
@@ -137,7 +138,7 @@ function resetCurrentOperator() {
 function setCurrentOperator(operator) {
     if (currentOperator == operator) {
         resetCurrentOperator();
-        return
+        return;
     }
     if (currentOperator) {
         resetCurrentOperator();
@@ -147,15 +148,17 @@ function setCurrentOperator(operator) {
 }
 
 function handleNumberInput(number) {
-    if (currentNumber == '0' && number != '.') {
-        return;
-    }
+
     if (currentNumber == '' && number == '.') {
         return;
     }
     if (currentNumber.includes('.') && number == '.') {
         return;
     }
+    if (currentOperator && currentNumber.charAt(currentNumber.length - 1) == '.') {
+        return;
+    }
+
     if (currentOperator && number != '.') {
 
         if (!lastResult) {
@@ -172,7 +175,11 @@ function handleNumberInput(number) {
         if ((MAXCALCULATIONSIZE - currentNumber.length) == 1 && number == '.') {
             return;
         }
-        currentNumber += number;
+        if (currentNumber == '0' && number != '.') {
+            currentNumber = '' + number;
+        } else {
+            currentNumber += number;
+        }
         setCalculatorText(currentNumber);
     }
 }
