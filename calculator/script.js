@@ -34,6 +34,64 @@ document.querySelector('#action-clear').addEventListener('click', () => resetSta
 document.querySelector('#action-backspace').addEventListener('click', () => performBackspace());
 document.querySelector('#number-dot').addEventListener('click', () => handleNumberInput('.'));
 
+document.addEventListener("keydown", event => {
+    switch (event.keyCode) {
+        case 48:
+            handleNumberInput(0)
+            break;
+        case 49:
+            handleNumberInput(1)
+            break;
+        case 50:
+            handleNumberInput(2)
+            break;
+        case 51:
+            handleNumberInput(3)
+            break;
+        case 52:
+            handleNumberInput(4)
+            break;
+        case 53:
+            handleNumberInput(5)
+            break;
+        case 54:
+            handleNumberInput(6)
+            break;
+        case 55:
+            handleNumberInput(7)
+            break;
+        case 56:
+            handleNumberInput(8)
+            break;
+        case 57:
+            handleNumberInput(9)
+            break;
+        case 190:
+            handleNumberInput('.');
+            break;
+        case 187:
+            setCurrentOperator(ADD);
+            break;
+        case 189:
+            setCurrentOperator(SUBTRACT);
+            break;
+        case 191:
+            setCurrentOperator(MULTIPLY);
+            break;
+        case 55:
+            setCurrentOperator(DIVIDE);
+            break;
+        case 8:
+            performBackspace();
+            break;
+        case 13:
+            handleFinalResult();
+            break;
+
+
+    }
+});
+
 let lastOperator;
 let lastResult;
 let currentNumber;
