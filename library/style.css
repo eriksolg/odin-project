@@ -1,0 +1,46 @@
+#library {
+    background-color: rgb(187, 187, 216);
+    border-radius: 4px;
+    width: 400px;
+    margin: auto;
+    padding: 10px;
+}
+
+.book {
+    background-color: rgb(221, 210, 147);
+    margin: auto;
+}
+
+.book-data {
+    width: 100%;
+}
+
+.book-number {
+    text-align: center;
+}
+
+.book-titl .book-buttons {
+    width: 200px;
+    margin: auto;
+    padding: 10px;
+}
+
+.book-buttons>button {
+    width: 180px;
+    border: 0px;
+    padding: 5px;
+    margin: 4px;
+    border: 1px solid transparent;
+}
+
+.book-buttons>button:hover {
+    border: 1px solid rgb(199, 136, 136);
+}
+
+.have-read {
+    background-color: rgb(158, 221, 158);
+}
+
+.delete-book {
+    background-color: rgb(238, 163, 163)
+}
