@@ -1,25 +1,49 @@
 #library {
-    background-color: rgb(187, 187, 216);
+    background-color: rgb(228, 228, 248);
     border-radius: 4px;
     width: 400px;
     margin: auto;
-    padding: 10px;
+    padding: 20px;
+}
+
+#library-title {
+    text-align: center;
 }
 
 .book {
-    background-color: rgb(221, 210, 147);
+    background-color: rgb(235, 218, 123);
     margin: auto;
+    margin-bottom: 40px;
+    padding: 20px;
+    width: 300px;
+    border-radius: 20px;
+    -webkit-box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
+}
+
+.book-form-container {
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    margin-bottom: 40px;
+    padding: 20px;
+    width: 300px;
+    border-radius: 20px;
+    -webkit-box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px -9px rgba(0, 0, 0, 0.75);
 }
 
 .book-data {
-    width: 100%;
+    width: 250px;
+    margin: auto;
 }
 
 .book-number {
     text-align: center;
 }
 
-.book-titl .book-buttons {
+.book-buttons {
     width: 200px;
     margin: auto;
     padding: 10px;
@@ -30,11 +54,15 @@
     border: 0px;
     padding: 5px;
     margin: 4px;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
 }
 
 .book-buttons>button:hover {
-    border: 1px solid rgb(199, 136, 136);
+    border: 2px solid rgb(199, 136, 136);
+}
+
+.book-buttons>button:active {
+    border: 2px solid rgb(221, 73, 73);
 }
 
 .have-read {
@@ -43,4 +71,14 @@
 
 .delete-book {
     background-color: rgb(238, 163, 163)
+}
+
+.book-input {
+    width: 150px;
+    display: inline-block;
+}
+
+.book-input-label {
+    width: 50px;
+    display: inline-block;
 }

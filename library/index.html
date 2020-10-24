@@ -7,20 +7,39 @@
 
 <body>
     <div id="library">
-        <div class="book">
-            <div class="book-data">
-                <h3 class="book-number">Book nr 1</h3>
-                <p class="book-title">Title</p>
-                <p class="book-author">Author</p>
-                <p class="book-title">Pages</p>
-            </div>
-            <div class="book-buttons">
-                <button class="have-read">Read</button>
-                <button class="delete-book">Delete</button>
-            </div>
+        <h1 id=library-title>Book Library</h1>
+        <div id="existing-books">
+            <template id="book-template">
+
+           <div class="book">
+                <div class="book-data">
+                    <h3 class="book-number"></h3>
+                    <p class="book-title"></p>
+                    <p class="book-author"></p>
+                    <p class="book-pages"></p>
+                </div>
+                <div class="book-buttons">
+                    <button class="have-read">Read</button>
+                    <button class="delete-book">Delete</button>
+                </div>
+                </div>
+            </template>
+        </div>
+        <div class="book-form-container">
+            <form id="book-form" action="#" class="book-data">
+                <h3 class="book-number">ENTER A BOOK</h3>
+                <p class="book-input-label">Title:</p>
+                <input id="book-title-input" class="book-input" type="text" required="true"></input>
+                <p class="book-input-label">Author:</p>
+                <input id="book-author-input" class="book-input" type="text" required="true"></input>
+                <p class="book-input-label">Pages:</p>
+                <input id="book-pages-input" class="book-input" type="number" required="true"></input>
+                <div class="book-buttons">
+                    <button type="submit" class="add-book">Add book</button>
+                </div>
+            </form>
+
         </div>
 
-    </div>
-
-    <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="script.js"></script>
 </body>
