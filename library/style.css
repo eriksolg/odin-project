@@ -82,3 +82,8 @@
     width: 50px;
     display: inline-block;
 }
+
+.book-read-input {
+    display: inline-block;
+    width: 10px;
+}
