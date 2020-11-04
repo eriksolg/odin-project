@@ -1,53 +1,22 @@
-let gameController = (function() {
-
-    /**
-     * Disable gameBoard HTML. Display an outcome on the screen.
-     */
-    function finishGame(outcome) {
-
-    }
-
-    function resetGame() {
-        gameBoard.cleanBoard();
-        playerController.resetPlayers();
-    }
-
-    function newTurn() {
-        let currentOutcome = determineCurrentOutcome();
-        if (currentOutcome) {
-            finishGame(outcome);
-        }
-        playerController.switchPlayer();
-    }
-
-    function start() {
-        resetGame();
-        playerController.createPlayers();
-        newTurn();
-    }
-
-    /**
-     * Check, if the square is already marked. If not, then mark the square according to current player's symbol.
-     * Then call a newTurn().
-     */
-    function handleSquareMarked(event) {
-        gameBoard.markSquare(coordinate)
-        newTurn();
-    }
-
-    resetGame();
-
-})();
-
 let playerController = (function() {
+    let PLAYER1INPUT;
+    let PLAYER2INPUT;
+
     let players;
     let currentPlayer;
 
-    /**
-     * Resets HTML of player inputs
-     */
-    function resetPlayerBoxes() {
+    function queryDomElements() {
+        PLAYER1INPUT = document.querySelector('input[name="player1-name"]');
+        PLAYER2INPUT = document.querySelector('input[name="player2-name"]');
+    }
 
+    function init() {
+        queryDomElements();
+    }
+
+    function resetPlayerBoxes() {
+        PLAYER1INPUT.value = '';
+        PLAYER2INPUT.value = '';
     }
 
     /**
@@ -78,20 +47,53 @@ let playerController = (function() {
     function resetPlayers() {
         players = [];
         currentPlayer = null;
+        resetPlayerBoxes();
     }
+
+    init();
 
     return {
         switchPlayer,
+        resetPlayers,
+        createPlayers,
         currentPlayer
     }
-})
+
+})();
 
 let gameBoard = (function() {
-    let boardContent;
+    let BOARDELEMENTS;
     const UNASSIGNED = 0;
     const X = 1;
-    const Y = 2;
+    const O = 2;
     const TIE = 3;
+
+    let boardContent;
+
+    function queryDomElements() {
+        BOARDELEMENTS = [
+            document.querySelector('[data-coordinate="0"]'),
+            document.querySelector('[data-coordinate="1"]'),
+            document.querySelector('[data-coordinate="2"]'),
+            document.querySelector('[data-coordinate="3"]'),
+            document.querySelector('[data-coordinate="4"]'),
+            document.querySelector('[data-coordinate="5"]'),
+            document.querySelector('[data-coordinate="6"]'),
+            document.querySelector('[data-coordinate="7"]'),
+            document.querySelector('[data-coordinate="8"]'),
+        ]
+    }
+
+    function addListeners() {
+        for (let i = 0; i < BOARDELEMENTS.length; i++) {
+            BOARDELEMENTS[i].addEventListener('click', () => gameController.handleSquareMarked(i));
+        }
+    }
+
+    function init() {
+        queryDomElements();
+        addListeners();
+    }
 
     function cleanBoard() {
         boardContent = [
@@ -102,11 +104,20 @@ let gameBoard = (function() {
         drawBoard();
     }
 
-    /** 
-     * Will take the current boardContent and make changes in HTML
-     */
     function drawBoard() {
-
+        for (let i = 0; i < boardContent.length; i++) {
+            switch (boardContent[i]) {
+                case UNASSIGNED:
+                    BOARDELEMENTS[i].textContent = '';
+                    break;
+                case X:
+                    BOARDELEMENTS[i].textContent = 'X';
+                    break;
+                case O:
+                    BOARDELEMENTS[i].textContent = 'O';
+                    break;
+            }
+        }
     }
 
     /** 
@@ -124,12 +135,77 @@ let gameBoard = (function() {
 
     }
 
+    init();
+
     return {
         markSquare,
+        determineCurrentOutcome,
         cleanBoard
     }
 
-});
+
+})();
+
+let gameController = (function() {
+    let newGameButton;
+
+    function queryDomElements() {
+        newGameButton = document.querySelector('#new-game');
+    }
+
+    function addListeners() {
+        newGameButton.addEventListener('click', start);
+    }
+
+    function init() {
+        queryDomElements();
+        addListeners();
+        resetGame();
+    }
+
+    /**
+     * Disable gameBoard HTML. Display an outcome on the screen.
+     */
+    function finishGame(outcome) {
+
+    }
+
+    function resetGame() {
+        gameBoard.cleanBoard();
+        playerController.resetPlayers();
+    }
+
+    function newTurn() {
+        let currentOutcome = gameBoard.determineCurrentOutcome();
+        if (currentOutcome) {
+            finishGame(outcome);
+        }
+        playerController.switchPlayer();
+    }
+
+    function start() {
+        resetGame();
+        playerController.createPlayers();
+        newTurn();
+    }
+
+    /**
+     * Check, if the square is already marked. If not, then mark the square according to current player's symbol.
+     * Then call a newTurn().
+     */
+    function handleSquareMarked(coordinate) {
+        gameBoard.markSquare(coordinate)
+        newTurn();
+    }
+
+    init();
+
+    return {
+        handleSquareMarked
+    }
+
+
+})();
 
 
 let playerFactory = (name, symbol) => {
