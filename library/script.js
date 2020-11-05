@@ -56,10 +56,6 @@ let library = (function() {
         populateLibrary();
     };
 
-    function getBookTemplate() {
-        return document.importNode(template.content, true);
-    };
-
     function addBookHTML(book, index) {
         let newBookHTML = bookTemplate.content.cloneNode(true);
 
