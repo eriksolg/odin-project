@@ -1,6 +1,6 @@
 Projects and exercises done in scope of https://www.theodinproject.com
 
-Google homepage:
+###Google homepage:
 https://www.theodinproject.com/courses/web-development-101/lessons/html-css
 
 Outcomes: Basic HTML and CSS
