@@ -5,75 +5,61 @@ let playerController = (function() {
     let player2Label;
     let player1Header;
     let player2Header;
-    let playerBox;
-
     let players;
     let currentPlayer;
 
     function queryDomElements() {
         player1Input = document.querySelector('input[name="player1-name"]');
         player2Input = document.querySelector('input[name="player2-name"]');
-        playerBox = document.querySelector('#player-box');
         player1Label = document.querySelector('#player1-label');
         player2Label = document.querySelector('#player2-label');
         player1Header = document.querySelector('#player1-header');
         player2Header = document.querySelector('#player2-header');
     }
 
+    function addListeners() {
+        [player1Input, player2Input].forEach(function(element) {
+            element.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    gameController.newGameButton.click();
+                }
+            });
+        });
+    }
+
     function init() {
         queryDomElements();
+        addListeners();
     }
 
     function resetPlayerInputs() {
-        player1Input.style.display = 'inline-block';
-        player2Input.style.display = 'inline-block';
-        player1Label.style.display = 'inline';
-        player2Label.style.display = 'inline';
-        player1Header.style.display = 'none';
-        player2Header.style.display = 'none';
-        player1Input.value = '';
-        player2Input.value = '';
+        [player1Input, player2Input].forEach(function(element) {
+            element.style.display = 'inline-block';
+            element.value = '';
+        });
+        [player1Label, player2Label].forEach((element) => element.style.display = 'inline');
+        [player1Header, player2Header].forEach((element) => element.style.display = 'none');
     }
 
     function makePlayerBoxesGameStart() {
         player1Header.textContent = players[0].name;
         player2Header.textContent = players[1].name;
 
-        player1Input.style.display = 'none';
-        player2Input.style.display = 'none';
-        player1Label.style.display = 'none';
-        player2Label.style.display = 'none';
-        player1Header.style.display = 'inline-block';
-        player2Header.style.display = 'inline-block';
+        [player1Input, player2Input, player1Label, player2Label].forEach((element) => element.style.display = 'none');
+        [player1Header, player2Header].forEach((element) => element.style.display = 'inline-block');
+        player1Header.classList.add('current-player-header');
     }
 
     function playerHeadersHighlightCurrent() {
-        switch (currentPlayer) {
-            case 0:
-                player1Header.classList.add('current-player-header');
-                player2Header.classList.remove('current-player-header');
-                break;
-            case 1:
-                player1Header.classList.remove('current-player-header');
-                player2Header.classList.add('current-player-header');
-                break;
-        }
+        [player1Header, player2Header].forEach((element) => element.classList.toggle('current-player-header'));
     }
 
-    function getCurrentPlayerSymbol() {
-        return players[currentPlayer].symbol;
+    function getCurrentPlayer() {
+        return players[currentPlayer];
     }
 
     function switchPlayer() {
-        switch (currentPlayer) {
-            case null:
-            case 1:
-                currentPlayer = 0;
-                break;
-            case 0:
-                currentPlayer = 1;
-                break;
-        }
+        currentPlayer = 1 - currentPlayer
         playerHeadersHighlightCurrent();
     }
 
@@ -94,6 +80,8 @@ let playerController = (function() {
 
         makePlayerBoxesGameStart();
 
+        currentPlayer = 0;
+
         return true;
     }
 
@@ -107,18 +95,19 @@ let playerController = (function() {
 
     return {
         switchPlayer,
+        playerHeadersHighlightCurrent,
         resetPlayers,
-        getCurrentPlayerSymbol,
+        getCurrentPlayer,
         createPlayers
     }
 })();
 
 let gameBoard = (function() {
-    let boardElements;
     const UNASSIGNED = 0;
     const X = 1;
     const O = 2;
     const TIE = 3;
+    let boardElements;
 
     let boardContent;
 
@@ -138,13 +127,21 @@ let gameBoard = (function() {
 
     function addListeners() {
         for (let i = 0; i < boardElements.length; i++) {
-            boardElements[i].addEventListener('click', () => gameController.handleSquareMarked(i));
+            boardElements[i].addEventListener('click', function() {
+                if (checkIfSquareMarked(i)) {
+                    return;
+                }
+                if (gameController.checkIfGameFinished()) {
+                    return
+                }
+                markSquare(i);
+                gameController.newTurn();
+            });
         }
     }
 
     function init() {
         queryDomElements();
-        addListeners();
     }
 
     function cleanBoard() {
@@ -173,7 +170,7 @@ let gameBoard = (function() {
     }
 
     function markSquare(coordinate) {
-        boardContent[coordinate] = playerController.getCurrentPlayerSymbol();
+        boardContent[coordinate] = playerController.getCurrentPlayer().symbol;
         drawBoard();
     }
 
@@ -233,9 +230,8 @@ let gameBoard = (function() {
     init();
 
     return {
-        markSquare,
-        checkIfSquareMarked,
         determineCurrentOutcome,
+        addListeners,
         X,
         O,
         cleanBoard
@@ -245,10 +241,13 @@ let gameBoard = (function() {
 let gameController = (function() {
     let newGameButton;
     let resetGameButton;
+    let gameOverText;
+    let gameFinished;
 
     function queryDomElements() {
         newGameButton = document.querySelector('#new-game');
         resetGameButton = document.querySelector('#reset-game');
+        gameOverText = document.querySelector('#game-over');
     }
 
     function addListeners() {
@@ -263,23 +262,29 @@ let gameController = (function() {
     }
 
     function finishGame(outcome) {
+        gameFinished = true;
+        setGameOverText(outcome);
+    }
+
+    function setGameOverText(outcome) {
         switch (outcome) {
-            case gameBoard.X:
-                alert('player1wins');
-                break;
-            case gameBoard.O:
-                alert('player2wins');
-                break;
             case gameBoard.TIE:
-                alert('tie');
+                gameOverText.innerHTML = 'It is a tie!';
                 break;
+            default:
+                gameOverText.innerHTML = `${playerController.getCurrentPlayer().name} won!`;
         }
+    }
+
+    function clearGameOverText() {
+        gameOverText.innerHTML = ' ';
     }
 
     function resetGame() {
         gameBoard.cleanBoard();
         playerController.resetPlayers();
         replaceResetGameButton();
+        clearGameOverText();
     }
 
     function replaceNewGameButton() {
@@ -296,31 +301,32 @@ let gameController = (function() {
         let currentOutcome = gameBoard.determineCurrentOutcome();
         if (currentOutcome) {
             finishGame(currentOutcome);
+            return;
         }
         playerController.switchPlayer();
     }
 
     function start() {
+        gameFinished = false;
+        addListeners();
+        gameBoard.addListeners();
         if (!playerController.createPlayers()) {
             return;
         }
 
         replaceNewGameButton();
-        newTurn();
     }
 
-    function handleSquareMarked(coordinate) {
-        if (gameBoard.checkIfSquareMarked(coordinate)) {
-            return;
-        }
-        gameBoard.markSquare(coordinate)
-        newTurn();
+    function checkIfGameFinished() {
+        return gameFinished;
     }
 
     init();
 
     return {
-        handleSquareMarked
+        checkIfGameFinished,
+        newTurn,
+        newGameButton
     }
 })();
 
