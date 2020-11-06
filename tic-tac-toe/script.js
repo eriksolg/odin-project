@@ -1,8 +1,11 @@
 let playerController = (function() {
     let player1Input;
     let player2Input;
-    let player1Box;
-    let player2Box;
+    let player1Label;
+    let player2Label;
+    let player1Header;
+    let player2Header;
+    let playerBox;
 
     let players;
     let currentPlayer;
@@ -10,45 +13,49 @@ let playerController = (function() {
     function queryDomElements() {
         player1Input = document.querySelector('input[name="player1-name"]');
         player2Input = document.querySelector('input[name="player2-name"]');
-        player1Box = document.querySelector('#player1-box');
-        player2Box = document.querySelector('#player2-box');
+        playerBox = document.querySelector('#player-box');
+        player1Label = document.querySelector('#player1-label');
+        player2Label = document.querySelector('#player2-label');
+        player1Header = document.querySelector('#player1-header');
+        player2Header = document.querySelector('#player2-header');
     }
 
     function init() {
         queryDomElements();
     }
 
-    function resetPlayerBoxes() {
+    function resetPlayerInputs() {
+        player1Input.style.display = 'inline-block';
+        player2Input.style.display = 'inline-block';
+        player1Label.style.display = 'inline';
+        player2Label.style.display = 'inline';
+        player1Header.style.display = 'none';
+        player2Header.style.display = 'none';
         player1Input.value = '';
         player2Input.value = '';
     }
 
     function makePlayerBoxesGameStart() {
-        let player1Header = document.createElement('h2');
-        let player2Header = document.createElement('h2');
-
-        player1Header.classList.add('player-header');
-        player2Header.classList.add('player-header');
-
         player1Header.textContent = players[0].name;
         player2Header.textContent = players[1].name;
 
         player1Input.style.display = 'none';
         player2Input.style.display = 'none';
-
-        player1Box.appendChild(player1Header);
-        player2Box.appendChild(player2Header);
+        player1Label.style.display = 'none';
+        player2Label.style.display = 'none';
+        player1Header.style.display = 'inline-block';
+        player2Header.style.display = 'inline-block';
     }
 
-    function playerBoxesHighlightCurrent() {
+    function playerHeadersHighlightCurrent() {
         switch (currentPlayer) {
             case 0:
-                player1Box.classList.add('current-player-box');
-                player2Box.classList.remove('current-player-box');
+                player1Header.classList.add('current-player-header');
+                player2Header.classList.remove('current-player-header');
                 break;
             case 1:
-                player1Box.classList.remove('current-player-box');
-                player2Box.classList.add('current-player-box');
+                player1Header.classList.remove('current-player-header');
+                player2Header.classList.add('current-player-header');
                 break;
         }
     }
@@ -67,7 +74,7 @@ let playerController = (function() {
                 currentPlayer = 1;
                 break;
         }
-        playerBoxesHighlightCurrent();
+        playerHeadersHighlightCurrent();
     }
 
     function createPlayers() {
@@ -93,7 +100,7 @@ let playerController = (function() {
     function resetPlayers() {
         players = [];
         currentPlayer = null;
-        resetPlayerBoxes();
+        resetPlayerInputs();
     }
 
     init();
@@ -237,13 +244,16 @@ let gameBoard = (function() {
 
 let gameController = (function() {
     let newGameButton;
+    let resetGameButton;
 
     function queryDomElements() {
         newGameButton = document.querySelector('#new-game');
+        resetGameButton = document.querySelector('#reset-game');
     }
 
     function addListeners() {
         newGameButton.addEventListener('click', start);
+        resetGameButton.addEventListener('click', resetGame);
     }
 
     function init() {
@@ -269,6 +279,17 @@ let gameController = (function() {
     function resetGame() {
         gameBoard.cleanBoard();
         playerController.resetPlayers();
+        replaceResetGameButton();
+    }
+
+    function replaceNewGameButton() {
+        newGameButton.style.display = 'none';
+        resetGameButton.style.display = 'block';
+    }
+
+    function replaceResetGameButton() {
+        newGameButton.style.display = 'block';
+        resetGameButton.style.display = 'none';
     }
 
     function newTurn() {
@@ -283,6 +304,8 @@ let gameController = (function() {
         if (!playerController.createPlayers()) {
             return;
         }
+
+        replaceNewGameButton();
         newTurn();
     }
 
