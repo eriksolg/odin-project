@@ -30,3 +30,8 @@ Outcomes: OOP, factories
 https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript
 
 Outcomes: Revealing modular pattern. Scopes, closures. 
+
+### Restaurant page
+https://www.theodinproject.com/courses/javascript/lessons/restaurant-page
+
+Outcomes: Using webpack, modules, creating dynamic web page.
