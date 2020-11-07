@@ -11,16 +11,16 @@ let playerController = (function() {
     function queryDomElements() {
         player1Input = document.querySelector('input[name="player1-name"]');
         player2Input = document.querySelector('input[name="player2-name"]');
-        player1Label = document.querySelector('#player1-label');
-        player2Label = document.querySelector('#player2-label');
-        player1Header = document.querySelector('#player1-header');
-        player2Header = document.querySelector('#player2-header');
+        player1Label = document.querySelector("#player1-label");
+        player2Label = document.querySelector("#player2-label");
+        player1Header = document.querySelector("#player1-header");
+        player2Header = document.querySelector("#player2-header");
     }
 
     function addListeners() {
         [player1Input, player2Input].forEach(function(element) {
-            element.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
+            element.addEventListener("keyup", function(event) {
+                if (event.key === "Enter") {
                     gameController.newGameButton.click();
                 }
             });
@@ -34,24 +34,34 @@ let playerController = (function() {
 
     function resetPlayerInputs() {
         [player1Input, player2Input].forEach(function(element) {
-            element.style.display = 'inline-block';
-            element.value = '';
+            element.style.display = "inline-block";
+            element.value = "";
         });
-        [player1Label, player2Label].forEach((element) => element.style.display = 'inline');
-        [player1Header, player2Header].forEach((element) => element.style.display = 'none');
+        [player1Label, player2Label].forEach(
+            (element) => (element.style.display = "inline")
+        );
+        [player1Header, player2Header].forEach(
+            (element) => (element.style.display = "none")
+        );
     }
 
     function makePlayerBoxesGameStart() {
         player1Header.textContent = players[0].name;
         player2Header.textContent = players[1].name;
 
-        [player1Input, player2Input, player1Label, player2Label].forEach((element) => element.style.display = 'none');
-        [player1Header, player2Header].forEach((element) => element.style.display = 'inline-block');
-        player1Header.classList.add('current-player-header');
+        [player1Input, player2Input, player1Label, player2Label].forEach(
+            (element) => (element.style.display = "none")
+        );
+        [player1Header, player2Header].forEach(
+            (element) => (element.style.display = "inline-block")
+        );
+        player1Header.classList.add("current-player-header");
     }
 
     function playerHeadersHighlightCurrent() {
-        [player1Header, player2Header].forEach((element) => element.classList.toggle('current-player-header'));
+        [player1Header, player2Header].forEach((element) =>
+            element.classList.toggle("current-player-header")
+        );
     }
 
     function getCurrentPlayer() {
@@ -59,7 +69,7 @@ let playerController = (function() {
     }
 
     function switchPlayer() {
-        currentPlayer = 1 - currentPlayer
+        currentPlayer = 1 - currentPlayer;
         playerHeadersHighlightCurrent();
     }
 
@@ -67,8 +77,7 @@ let playerController = (function() {
         let player1InputValue = player1Input.value;
         let player2InputValue = player2Input.value;
 
-        if (player1InputValue == '' ||
-            player2InputValue == '') {
+        if (player1InputValue == "" || player2InputValue == "") {
             return false;
         }
 
@@ -98,8 +107,8 @@ let playerController = (function() {
         playerHeadersHighlightCurrent,
         resetPlayers,
         getCurrentPlayer,
-        createPlayers
-    }
+        createPlayers,
+    };
 })();
 
 let gameBoard = (function() {
@@ -122,17 +131,17 @@ let gameBoard = (function() {
             document.querySelector('[data-coordinate="6"]'),
             document.querySelector('[data-coordinate="7"]'),
             document.querySelector('[data-coordinate="8"]'),
-        ]
+        ];
     }
 
     function addListeners() {
         for (let i = 0; i < boardElements.length; i++) {
-            boardElements[i].addEventListener('click', function() {
+            boardElements[i].addEventListener("click", function() {
                 if (checkIfSquareMarked(i)) {
                     return;
                 }
                 if (gameController.checkIfGameFinished()) {
-                    return
+                    return;
                 }
                 markSquare(i);
                 gameController.newTurn();
@@ -146,10 +155,16 @@ let gameBoard = (function() {
 
     function cleanBoard() {
         boardContent = [
-            UNASSIGNED, UNASSIGNED, UNASSIGNED,
-            UNASSIGNED, UNASSIGNED, UNASSIGNED,
-            UNASSIGNED, UNASSIGNED, UNASSIGNED
-        ]
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+            UNASSIGNED,
+        ];
         drawBoard();
     }
 
@@ -157,13 +172,13 @@ let gameBoard = (function() {
         for (let i = 0; i < boardContent.length; i++) {
             switch (boardContent[i]) {
                 case UNASSIGNED:
-                    boardElements[i].textContent = '';
+                    boardElements[i].textContent = "";
                     break;
                 case X:
-                    boardElements[i].textContent = 'X';
+                    boardElements[i].textContent = "X";
                     break;
                 case O:
-                    boardElements[i].textContent = 'O';
+                    boardElements[i].textContent = "O";
                     break;
             }
         }
@@ -180,43 +195,35 @@ let gameBoard = (function() {
 
     function determineCurrentOutcome() {
         switch (true) {
-            case
-            boardContent[0] == boardContent[1] &&
+            case boardContent[0] == boardContent[1] &&
             boardContent[0] == boardContent[2] &&
             boardContent[0] != UNASSIGNED:
                 return boardContent[0];
-            case
-            boardContent[0] == boardContent[3] &&
+            case boardContent[0] == boardContent[3] &&
             boardContent[0] == boardContent[6] &&
             boardContent[0] != UNASSIGNED:
                 return boardContent[0];
-            case
-            boardContent[0] == boardContent[4] &&
+            case boardContent[0] == boardContent[4] &&
             boardContent[0] == boardContent[8] &&
             boardContent[0] != UNASSIGNED:
                 return boardContent[0];
-            case
-            boardContent[1] == boardContent[4] &&
+            case boardContent[1] == boardContent[4] &&
             boardContent[1] == boardContent[7] &&
             boardContent[1] != UNASSIGNED:
                 return boardContent[1];
-            case
-            boardContent[2] == boardContent[5] &&
+            case boardContent[2] == boardContent[5] &&
             boardContent[2] == boardContent[8] &&
             boardContent[2] != UNASSIGNED:
                 return boardContent[2];
-            case
-            boardContent[2] == boardContent[4] &&
+            case boardContent[2] == boardContent[4] &&
             boardContent[2] == boardContent[6] &&
             boardContent[2] != UNASSIGNED:
                 return boardContent[2];
-            case
-            boardContent[3] == boardContent[4] &&
+            case boardContent[3] == boardContent[4] &&
             boardContent[3] == boardContent[5] &&
             boardContent[3] != UNASSIGNED:
                 return boardContent[3];
-            case
-            boardContent[6] == boardContent[7] &&
+            case boardContent[6] == boardContent[7] &&
             boardContent[6] == boardContent[8] &&
             boardContent[6] != UNASSIGNED:
                 return boardContent[6];
@@ -234,8 +241,8 @@ let gameBoard = (function() {
         addListeners,
         X,
         O,
-        cleanBoard
-    }
+        cleanBoard,
+    };
 })();
 
 let gameController = (function() {
@@ -245,14 +252,14 @@ let gameController = (function() {
     let gameFinished;
 
     function queryDomElements() {
-        newGameButton = document.querySelector('#new-game');
-        resetGameButton = document.querySelector('#reset-game');
-        gameOverText = document.querySelector('#game-over');
+        newGameButton = document.querySelector("#new-game");
+        resetGameButton = document.querySelector("#reset-game");
+        gameOverText = document.querySelector("#game-over");
     }
 
     function addListeners() {
-        newGameButton.addEventListener('click', start);
-        resetGameButton.addEventListener('click', resetGame);
+        newGameButton.addEventListener("click", start);
+        resetGameButton.addEventListener("click", resetGame);
     }
 
     function init() {
@@ -269,15 +276,16 @@ let gameController = (function() {
     function setGameOverText(outcome) {
         switch (outcome) {
             case gameBoard.TIE:
-                gameOverText.innerHTML = 'It is a tie!';
+                gameOverText.innerHTML = "It is a tie!";
                 break;
             default:
-                gameOverText.innerHTML = `${playerController.getCurrentPlayer().name} won!`;
+                gameOverText.innerHTML = `
+                ${playerController.getCurrentPlayer().name} won!`;
         }
     }
 
     function clearGameOverText() {
-        gameOverText.innerHTML = ' ';
+        gameOverText.innerHTML = " ";
     }
 
     function resetGame() {
@@ -288,13 +296,13 @@ let gameController = (function() {
     }
 
     function replaceNewGameButton() {
-        newGameButton.style.display = 'none';
-        resetGameButton.style.display = 'block';
+        newGameButton.style.display = "none";
+        resetGameButton.style.display = "block";
     }
 
     function replaceResetGameButton() {
-        newGameButton.style.display = 'block';
-        resetGameButton.style.display = 'none';
+        newGameButton.style.display = "block";
+        resetGameButton.style.display = "none";
     }
 
     function newTurn() {
@@ -326,11 +334,10 @@ let gameController = (function() {
     return {
         checkIfGameFinished,
         newTurn,
-        newGameButton
-    }
+        newGameButton,
+    };
 })();
-
 
 let playerFactory = (name, symbol) => {
     return { name, symbol };
-}
+};
