@@ -140,6 +140,8 @@ const populate = (function() {
         menuEntry7.textContent = 'Pitsa - - - 5€';
         menuEntry8.textContent = 'Pitsa - - - 5€';
 
+        [menuEntry1, menuEntry2, menuEntry3, menuEntry4, menuEntry5, menuEntry6, menuEntry7, menuEntry8].forEach((element) => element.classList.add('menu-entry'))
+
         menu.appendChild(menuHeader);
         menu.appendChild(menuEntry1);
         menu.appendChild(menuEntry2);
