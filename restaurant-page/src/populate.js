@@ -1,11 +1,6 @@
-import populateEsileht from './esilehtTab'
-import populateRestoranist from './restoranistTab'
-import populateMenuu from './menuuTab'
-import populateKontakt from './kontaktTab'
-
-
 const populate = (function() {
     let content;
+    let mainContent;
 
 
     function queryDomElements() {
@@ -75,50 +70,42 @@ const populate = (function() {
         content.appendChild(header);
     }
 
+
+
     function createMainContent() {
-        let mainContent = create('div');
+        mainContent = create('div');
         let menuBar = create('div');
-        let infoBox = create('div');
         let esilehtButton = create('button');
         let restoranistButton = create('button');
         let menuuButton = create('button');
         let kontaktButton = create('button');
 
-        let infoHeader = create('h1');
-        let infoText = create('div');
-        let infoSpan1 = create('span');
-        let infoSpan2 = create('span');
-
         mainContent.id = 'main-content';
         menuBar.id = 'menu-bar';
-        infoBox.id = 'info-box';
-        infoText.id = 'info-text';
-
 
         [esilehtButton, restoranistButton, menuuButton, kontaktButton].forEach((element) => element.classList.add('menu-bar-button'));
+
+        esilehtButton.id = 'esileht-button';
+        restoranistButton.id = 'restoranist-button';
+        menuuButton.id = 'menuu-button';
+        kontaktButton.id = 'kontakt-button';
 
         esilehtButton.textContent = 'Esileht';
         restoranistButton.textContent = 'Restoranist';
         menuuButton.textContent = 'Menüü';
         kontaktButton.textContent = 'Kontakt';
-        infoHeader.textContent = 'Tere tulemast lendavasse taldrikusse!';
-        infoSpan1.textContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc placerat, quam sit amet pharetra sagittis, arcu massa scelerisque purus, eget tempor purus lacus a dolor. Phasellus nec turpis in odio tincidunt vestibulum. Nunc et finibus elit. Pellentesque suscipit lectus quis risus rutrum, sit amet imperdiet tortor curs us.';
-        infoSpan2.textContent = 'Quisque nibh enim, lobortis sed imperdiet eu, sodales a leo. Sed aliquet hendrerit sapien, at eleifend metus pretium a. Phasellus erat elit, mattis sit amet nisl id, finibus volutpat metus. Sed non iaculis nisi. Nunc sit amet tristique nisl. Curabitur sit amet lobortis ante. S uspendisse egestas at lectus vitae dapibus. Aliquam id quam nunc. Vivamus laoreet libero nisi, feugiat vestibulum ipsum blandit sed. Nunc sodales velit a sapien pharetra lobortis. Maecenas molestie nisi sit amet turpis luctus, at trist ique enim posuere. Aenean tincidunt luctus facilisis. Mauris porttitor tortor at nisl blandit, in elementum ex ornare.';
 
         menuBar.appendChild(esilehtButton);
         menuBar.appendChild(restoranistButton);
         menuBar.appendChild(menuuButton);
         menuBar.appendChild(kontaktButton);
-        infoText.appendChild(infoSpan1);
-        infoText.appendChild(create('br'));
-        infoText.appendChild(create('br'));
-        infoText.appendChild(infoSpan2);
-        infoBox.appendChild(infoHeader);
-        infoBox.appendChild(infoText);
+
         mainContent.appendChild(menuBar);
-        mainContent.appendChild(infoBox);
         content.appendChild(mainContent);
     }
+
+
+
 
     function createSideBar() {
         let sideBar = create('div');
@@ -146,7 +133,7 @@ const populate = (function() {
         menuEntry7.textContent = 'Pitsa - - - 5€';
         menuEntry8.textContent = 'Pitsa - - - 5€';
 
-        [menuEntry1, menuEntry2, menuEntry3, menuEntry4, menuEntry5, menuEntry6, menuEntry7, menuEntry8].forEach((element) => element.classList.add('menu-entry'))
+        [menuEntry1, menuEntry2, menuEntry3, menuEntry4, menuEntry5, menuEntry6, menuEntry7, menuEntry8].forEach((element) => element.classList.add('menu-entry'));
 
         menu.appendChild(menuHeader);
         menu.appendChild(menuEntry1);
