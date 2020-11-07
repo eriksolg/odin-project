@@ -1,3 +1,3 @@
-import populate from './populate'
+import populateContent from './populate'
 
-populate();
+populateContent();

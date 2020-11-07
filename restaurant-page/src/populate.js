@@ -1,3 +1,9 @@
+import populateEsileht from './esilehtTab'
+import populateRestoranist from './restoranistTab'
+import populateMenuu from './menuuTab'
+import populateKontakt from './kontaktTab'
+
+
 const populate = (function() {
     let content;
 
