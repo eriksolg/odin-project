@@ -34,4 +34,9 @@ Outcomes: Revealing modular pattern. Scopes, closures.
 ### Restaurant page
 https://www.theodinproject.com/courses/javascript/lessons/restaurant-page
 
-Outcomes: Using webpack, modules, creating dynamic web page.
+Outcomes: Using webpack, modules, creating dynamic web page with separate ES6 modules.
+
+### To-Do list
+https://www.theodinproject.com/courses/javascript/lessons/todo-list
+
+Outcomes: All of the prior

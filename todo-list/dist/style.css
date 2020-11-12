@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+header {
+    height: 50px;
+    width: 100%;
+    background-color: red;
+}
+
+footer {
+    background-color: black;
+    flex-basis: 100px;
+}
+
+#sidebar {
+    float: left;
+    width: 300px;
+    background-color: blue;
+}
+
+#time-select {
+    height: 200px;
+    background-color: pink;
+}
+
+#time-select>button {
+    width: 80%;
+}
+
+#project-select {
+    background-color: purple;
+    min-height: 400px;
+}
+
+#main-section {
+    display: flex;
+}
+
+#todo-list {
+    float: right;
+    background-color: beige;
+    flex-grow: 1;
+}
