@@ -17,6 +17,14 @@ const controllerModule = (function() {
         }
     }
 
+    function validateNewProjectForm(form) {
+        if ((form.title.value == '') ||
+            (form.title.value.length > 20)) {
+            form.title.focus();
+            event.preventDefault();
+        }
+    }
+
     function newTodoSubmit() {
         validateNewTodoForm(this);
         currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value);
@@ -29,17 +37,19 @@ const controllerModule = (function() {
         }
     }
 
-
-
-
-
-    function newTodoSubmitted() {
-
+    function newProjectSubmit() {
+        validateNewProjectForm(this);
+        if (!currentDataModule.storeNewProject(this.title.value)) {
+            this.title.setCustomValidity('Project with this name already exists!');
+            event.preventDefault();
+        }
     }
 
     function init() {
+        currentDataModule.getFromStorage();
         currentDomModule.queryDomElements();
         currentDomModule.getNewTodoButton().addEventListener('click', newTodoForm);
+        currentDomModule.getNewProjectForm().addEventListener('submit', newProjectSubmit);
     }
 
     return {

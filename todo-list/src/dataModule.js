@@ -1,4 +1,7 @@
+import Basil from 'basil.js'
+
 const dataModule = (function() {
+    const basil = new Basil({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
     let todosInProject;
@@ -7,10 +10,30 @@ const dataModule = (function() {
         return { name }
     }
 
+    function saveToStorage() {
+        basil.set('todos', todos);
+        basil.set('projects', projects);
+    }
+
+    function getFromStorage() {
+        todos = basil.get('todos') || [];
+        projects = basil.get('projects') || [];
+    }
+
     function storeNewTodo(title, description, due, priority) {
         let newTodo = todoFactory(title, description, due, priority);
-        console.log(newTodo);
+        todos.push(newTodo);
+        saveToStorage();
+    }
 
+    function storeNewProject(title) {
+        if (projects.some(element => element.name == title)) {
+            return false;
+        }
+        let newProject = projectFactory(title);
+        projects.push(newProject);
+        saveToStorage();
+        return true;
     }
 
     const todoFactory = function(title, description, dueDate, priority) {
@@ -26,32 +49,10 @@ const dataModule = (function() {
         return { title, description, dueDate, priority, setCompleted, getInfo }
     }
 
-    function newTodo() {
-        assignTodoToProject();
-    }
-
-    function removeTodo() {
-
-    }
-
-    function newProject() {
-
-    }
-
-    function assignTodoToProject() {
-
-    }
-
-    function getTodos() {
-
-    }
-
-    function getProjects() {
-
-    }
-
     return {
-        storeNewTodo
+        getFromStorage,
+        storeNewTodo,
+        storeNewProject
     }
 
 });

@@ -80,22 +80,38 @@ body {
     font-size: 18px;
 }
 
-#time-select>button:hover {
+#create-project-button {
+    display: inline-block;
+    width: 14%;
+    margin: 0px;
+    padding: 10px;
+    border-radius: 0px;
+    background-color: rgb(248, 19, 19);
+    border: 1px solid red;
+    color: rgb(252, 252, 252);
+    font-size: 12px;
+}
+
+#time-select>button:hover,
+#create-project-button:hover {
     border-color: white;
 }
 
-#time-select>button:active {
+#time-select>button:active,
+#create-project-button:active {
     border-color: red;
 }
 
 #project-select {
     background-color: rgb(243, 239, 235);
     height: 100%;
+    justify-items: center;
 }
 
 #project-select>h3 {
     text-align: center;
     font-size: 25px;
+    margin-bottom: 10px;
 }
 
 #main-section {
@@ -109,12 +125,18 @@ body {
     float: right;
     background-color: rgb(255, 255, 255);
     flex-grow: 1;
+    min-height: 546px;
 }
 
 #new-todo-form {
     margin: auto;
     background-color: red;
     padding: 20px;
+}
+
+#new-project-form {
+    margin: auto;
+    width: 250px;
 }
 
 #new-todo-form>label {
@@ -132,4 +154,11 @@ body {
     font-size: 30px;
     margin-bottom: 20px;
     display: block;
+}
+
+#create-project-input {
+    width: 200px;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: middle;
 }

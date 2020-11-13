@@ -20,15 +20,17 @@
                 <button id="today">Today</button>
                 <button id="next-7-days">Next 7 Days</button>
                 <button id="all-todos">All Todos</button>
-
             </div>
             <div id="project-select">
                 <h3>Projects</h3>
+                <form id="new-project-form">
+                    <input id="create-project-input" name="title" required="true" maxlength="20">
+                    <input id="create-project-button" type="submit" value="+">
+                </form>
                 <div id="project-list"></div>
             </div>
         </div>
         <div id="todo-list">
-
         </div>
     </div>
     <div id="footer">

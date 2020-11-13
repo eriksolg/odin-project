@@ -1,18 +1,27 @@
 const domModule = (function() {
     let newToDoButton;
+    let newProjectForm;
     let todoList;
     let mainSection;
     let newTodoFormContainer;
 
     function queryDomElements() {
-        newToDoButton = document.querySelector('#new-todo');
-        todoList = document.querySelector('#todo-list');
-        mainSection = document.querySelector('#main-section');
+        newToDoButton = document.getElementById('new-todo');
+        newProjectForm = document.getElementById('new-project-form')
+        todoList = document.getElementById('todo-list');
+        mainSection = document.getElementById('main-section');
     }
 
     function getNewTodoButton() {
         if (newToDoButton != null) {
             return newToDoButton;
+        }
+        return false;
+    }
+
+    function getNewProjectForm() {
+        if (newProjectForm != null) {
+            return newProjectForm;
         }
         return false;
     }
@@ -95,6 +104,7 @@ const domModule = (function() {
     return {
         queryDomElements,
         getNewTodoButton,
+        getNewProjectForm,
         displayNewTodoForm
     }
 });
