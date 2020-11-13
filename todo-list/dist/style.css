@@ -126,7 +126,8 @@ body {
 }
 
 #new-todo-form>input,
-#new-todo-form>select {
+#new-todo-form>select,
+#new-todo-form>textarea {
     width: 400px;
     font-size: 30px;
     margin-bottom: 20px;

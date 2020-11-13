@@ -23,7 +23,7 @@ const domModule = (function() {
         let todoTitleLabel = document.createElement('label');
         let todoTitleInput = document.createElement('input');
         let todoDescriptionLabel = document.createElement('label');
-        let todoDescriptionInput = document.createElement('input');
+        let todoDescriptionInput = document.createElement('textarea');
         let todoDueLabel = document.createElement('label');
         let todoDueInput = document.createElement('input');
         let todoPriorityLabel = document.createElement('label');
@@ -35,14 +35,21 @@ const domModule = (function() {
 
         newTodoFormContainer.id = 'new-todo-form-container';
         newTodoForm.id = 'new-todo-form';
-        todoTitleInput.id = 'todo-title-input'
-        todoDescriptionInput.id = 'todo-description-input'
-        todoDueInput.id = 'todo-due-input'
-        todoPriorityInput.id = 'todo-priority-input'
+        todoTitleInput.name = 'title';
+        todoDescriptionInput.name = 'description';
+        todoDueInput.name = 'due';
+        todoPriorityInput.name = 'priority';
+
+        todoTitleInput.required = true;
+        todoDescriptionInput.required = true;
+        todoDueInput.required = true;
+        todoDescriptionInput.required = true;
 
         newTodoSubmit.type = 'submit';
         todoDueInput.type = 'datetime-local';
 
+        todoTitleInput.maxLength = 20;
+        todoDescriptionInput.maxLength = 400;
 
         todoTitleLabel.textContent = 'Title';
         todoDescriptionLabel.textContent = 'Description';
@@ -72,11 +79,12 @@ const domModule = (function() {
         newTodoForm.appendChild(todoPriorityInput);
         newTodoForm.appendChild(newTodoSubmit);
 
-
         newTodoFormContainer.appendChild(newTodoForm);
 
         todoList.style.display = 'none';
         mainSection.appendChild(newTodoFormContainer);
+
+        return newTodoForm;
 
     }
 
