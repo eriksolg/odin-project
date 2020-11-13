@@ -1,46 +1,134 @@
+html,
+body {
+    height: 100%;
+    margin: 0px;
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     display: flex;
     height: 100%;
     flex-direction: column;
 }
 
-header {
-    height: 50px;
+#top-bar {
+    line-height: 40px;
     width: 100%;
-    background-color: red;
+    background-color: rgb(27, 16, 16);
 }
 
-footer {
+#new-todo {
+    float: right;
+    margin-right: 20%;
+    color: rgb(5, 3, 3);
+    font-size: 30px;
+    font-weight: 700;
+    vertical-align: middle;
+    line-height: 70px;
+    padding: 5px 15px 5px 15px;
+    background-color: rgb(216, 213, 67);
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+}
+
+#new-todo:hover {
+    background-color: rgba(216, 214, 67, 0.788);
+}
+
+#new-todo:active {
+    background-color: rgba(216, 214, 67, 0.589);
+}
+
+#logo {
+    color: white;
+    font-family: 'Architects Daughter', cursive;
+    font-size: 30px;
+    margin-left: 2%;
+    padding: 20px;
+    float: left;
+}
+
+#footer {
     background-color: black;
-    flex-basis: 100px;
+    min-height: 100px;
+    width: 100%;
 }
 
 #sidebar {
     float: left;
     width: 300px;
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
 }
 
 #time-select {
     height: 200px;
-    background-color: pink;
+    background-color: rgb(243, 239, 235);
+    text-align: center;
 }
 
 #time-select>button {
     width: 80%;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 0px;
+    background-color: rgb(248, 19, 19);
+    box-shadow: none;
+    border: 1px solid red;
+    color: rgb(252, 252, 252);
+    font-size: 18px;
+}
+
+#time-select>button:hover {
+    border-color: white;
+}
+
+#time-select>button:active {
+    border-color: red;
 }
 
 #project-select {
-    background-color: purple;
-    min-height: 400px;
+    background-color: rgb(243, 239, 235);
+    height: 100%;
+}
+
+#project-select>h3 {
+    text-align: center;
+    font-size: 25px;
 }
 
 #main-section {
     display: flex;
+    flex-grow: 1;
 }
 
-#todo-list {
+#todo-list,
+#new-todo-form-container {
+    display: flex;
     float: right;
-    background-color: beige;
+    background-color: rgb(255, 255, 255);
     flex-grow: 1;
+}
+
+#new-todo-form {
+    margin: auto;
+    background-color: red;
+    padding: 20px;
+}
+
+#new-todo-form>label {
+    display: block;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: white;
+}
+
+#new-todo-form>input,
+#new-todo-form>select {
+    width: 400px;
+    font-size: 30px;
+    margin-bottom: 20px;
+    display: block;
 }
