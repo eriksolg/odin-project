@@ -3,6 +3,7 @@ import domModule from './domModule'
 
 const controllerModule = (function() {
     const currentDomModule = domModule();
+    const currentDataModule = dataModule();
 
     function validateNewTodoForm(form) {
         if ((form.description.value == '') ||
@@ -18,11 +19,14 @@ const controllerModule = (function() {
 
     function newTodoSubmit() {
         validateNewTodoForm(this);
+        currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value);
     }
 
     function newTodoForm() {
         let todoForm = currentDomModule.displayNewTodoForm();
-        todoForm.addEventListener('submit', newTodoSubmit);
+        if (todoForm) {
+            todoForm.addEventListener('submit', newTodoSubmit);
+        }
     }
 
 

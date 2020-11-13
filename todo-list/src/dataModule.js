@@ -6,12 +6,14 @@ const dataModule = (function() {
     const projectFactory = function(name) {
         return { name }
     }
-    const todoFactory = function() {
-        let title;
-        let description;
-        let dueDate;
-        let priority;
-        let isCompleted;
+
+    function storeNewTodo(title, description, due, priority) {
+        let newTodo = todoFactory(title, description, due, priority);
+        console.log(newTodo);
+
+    }
+
+    const todoFactory = function(title, description, dueDate, priority) {
 
         const setCompleted = function() {
 
@@ -21,7 +23,7 @@ const dataModule = (function() {
 
         }
 
-        return { title, description, dueDate, priority, isCompleted, setCompleted, getInfo }
+        return { title, description, dueDate, priority, setCompleted, getInfo }
     }
 
     function newTodo() {
@@ -46,6 +48,10 @@ const dataModule = (function() {
 
     function getProjects() {
 
+    }
+
+    return {
+        storeNewTodo
     }
 
 });

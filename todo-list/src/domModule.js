@@ -18,6 +18,10 @@ const domModule = (function() {
     }
 
     function displayNewTodoForm() {
+        if (document.getElementById('new-todo-form')) {
+            return false;
+        }
+
         let newTodoFormContainer = document.createElement('div');
         let newTodoForm = document.createElement('form');
         let todoTitleLabel = document.createElement('label');
@@ -42,7 +46,7 @@ const domModule = (function() {
 
         todoTitleInput.required = true;
         todoDescriptionInput.required = true;
-        todoDueInput.required = true;
+        //todoDueInput.required = true;
         todoDescriptionInput.required = true;
 
         newTodoSubmit.type = 'submit';
