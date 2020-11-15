@@ -108,6 +108,7 @@ body {
 #create-project-button:hover,
 .project-select-button:hover {
     border-color: white;
+    cursor: pointer;
 }
 
 #time-select>button:active,
@@ -132,7 +133,6 @@ body {
     flex-grow: 1;
 }
 
-#todo-list,
 #new-todo-form-container {
     display: flex;
     float: right;
@@ -167,6 +167,58 @@ body {
     font-size: 30px;
     margin-bottom: 20px;
     display: block;
+}
+
+.todo-card {
+    border-radius: 20px 0 0 20px;
+    border: 2px solid white;
+    background-color: beige;
+    width: 650px;
+    margin: 20px auto 20px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-card:hover {
+    background-color: rgb(236, 236, 158);
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+.todo-title {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    width: 220px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: block;
+}
+
+.todo-due {
+    padding: 10px;
+    display: block;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.todo-project {
+    background-color: red;
+    padding: 10px;
+    width: 220px;
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    margin-left: 10px;
+    display: block;
+}
+
+#todo-list {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
 }
 
 #create-project-input {

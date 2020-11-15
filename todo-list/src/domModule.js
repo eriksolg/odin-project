@@ -44,7 +44,34 @@ const domModule = (function() {
         });
     }
 
-    function displayNewTodoForm() {
+    function refreshTodos(todos) {
+        todoList.innerHTML = '';
+        todos.forEach(todo => {
+            let todoCard = document.createElement('div');
+            let todoTitle = document.createElement('div');
+            let todoDue = document.createElement('div');
+            let todoProject = document.createElement('div');
+
+            todoCard.classList.add('todo-card');
+            todoTitle.classList.add('todo-title');
+            todoDue.classList.add('todo-due');
+            todoProject.classList.add('todo-project');
+
+
+            todoTitle.textContent = todo.title;
+            todoDue.textContent = todo.dueDate;
+            todoProject.textContent = todo.project;
+
+            todoCard.setAttribute('data-todo-name', todo.title);
+
+            todoCard.appendChild(todoTitle);
+            todoCard.appendChild(todoDue);
+            todoCard.appendChild(todoProject);
+            todoList.appendChild(todoCard);
+        });
+    }
+
+    function displayNewTodoForm(projects) {
         if (document.getElementById('new-todo-form')) {
             return false;
         }
@@ -62,6 +89,8 @@ const domModule = (function() {
         let todoPriorityLow = document.createElement('option');
         let todoPriorityMedium = document.createElement('option');
         let todoPriorityHigh = document.createElement('option');
+        let todoProjectLabel = document.createElement('label');
+        let todoProjectInput = document.createElement('select');
         let newTodoSubmit = document.createElement('input');
 
         newTodoFormContainer.id = 'new-todo-form-container';
@@ -70,6 +99,7 @@ const domModule = (function() {
         todoDescriptionInput.name = 'description';
         todoDueInput.name = 'due';
         todoPriorityInput.name = 'priority';
+        todoProjectInput.name = 'project';
 
         todoTitleInput.required = true;
         todoDescriptionInput.required = true;
@@ -77,7 +107,7 @@ const domModule = (function() {
         todoDescriptionInput.required = true;
 
         newTodoSubmit.type = 'submit';
-        todoDueInput.type = 'datetime-local';
+        todoDueInput.type = 'date';
 
         todoTitleInput.maxLength = 20;
         todoDescriptionInput.maxLength = 400;
@@ -86,15 +116,17 @@ const domModule = (function() {
         todoDescriptionLabel.textContent = 'Description';
         todoDueLabel.textContent = 'Due';
         todoPriorityLabel.textContent = 'Priority';
+        todoProjectLabel.textContent = 'Project';
 
         todoPriorityLow.textContent = 'Low';
         todoPriorityMedium.textContent = 'Medium';
         todoPriorityHigh.textContent = 'High';
 
-        todoTitleLabel.htmlFor = 'todo-title-input';
-        todoDescriptionLabel.htmlFor = 'todo-description-input';
-        todoDueLabel.htmlFor = 'todo-due-input';
-        todoPriorityLabel.htmlFor = 'todo-priority-input';
+        projects.forEach(project => {
+            let projectElement = document.createElement('option');
+            projectElement.textContent = project.name;
+            todoProjectInput.appendChild(projectElement);
+        });
 
         todoPriorityInput.appendChild(todoPriorityLow);
         todoPriorityInput.appendChild(todoPriorityMedium);
@@ -108,6 +140,8 @@ const domModule = (function() {
         newTodoForm.appendChild(todoDueInput);
         newTodoForm.appendChild(todoPriorityLabel);
         newTodoForm.appendChild(todoPriorityInput);
+        newTodoForm.appendChild(todoProjectLabel);
+        newTodoForm.appendChild(todoProjectInput);
         newTodoForm.appendChild(newTodoSubmit);
 
         newTodoFormContainer.appendChild(newTodoForm);
@@ -124,6 +158,7 @@ const domModule = (function() {
         getNewTodoButton,
         getNewProjectForm,
         refreshProjects,
+        refreshTodos,
         displayNewTodoForm,
         showProjectFormError
     }

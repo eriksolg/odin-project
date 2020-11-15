@@ -1,5 +1,6 @@
 import dataModule from './dataModule'
 import domModule from './domModule'
+import moment from 'moment'
 
 const controllerModule = (function() {
     const currentDomModule = domModule();
@@ -9,6 +10,12 @@ const controllerModule = (function() {
         let projects = currentDataModule.getProjects();
         currentDomModule.refreshProjects(projects);
     }
+
+    function invokeRefreshTodos() {
+        let todos = currentDataModule.getTodos();
+        currentDomModule.refreshTodos(todos);
+    }
+
 
     function checkIfProjectExists(title) {
         let projects = currentDataModule.getProjects();
@@ -37,11 +44,13 @@ const controllerModule = (function() {
 
     function newTodoSubmit() {
         validateNewTodoForm(this);
-        currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value);
+
+        currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value, this.project.value);
     }
 
     function newTodoForm() {
-        let todoForm = currentDomModule.displayNewTodoForm();
+        let projects = currentDataModule.getProjects();
+        let todoForm = currentDomModule.displayNewTodoForm(projects);
         if (todoForm) {
             todoForm.addEventListener('submit', newTodoSubmit);
         }
@@ -65,6 +74,7 @@ const controllerModule = (function() {
         currentDataModule.getFromStorage();
         currentDomModule.queryDomElements();
         invokeRefreshProjects();
+        invokeRefreshTodos();
         currentDomModule.getNewTodoButton().addEventListener('click', newTodoForm);
         currentDomModule.getNewProjectForm().addEventListener('submit', newProjectSubmit);
     }
