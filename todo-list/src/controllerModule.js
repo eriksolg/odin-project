@@ -5,6 +5,16 @@ const controllerModule = (function() {
     const currentDomModule = domModule();
     const currentDataModule = dataModule();
 
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects);
+    }
+
+    function checkIfProjectExists(title) {
+        let projects = currentDataModule.getProjects();
+        return projects.some(element => element.name == title);
+    }
+
     function validateNewTodoForm(form) {
         if ((form.description.value == '') ||
             (form.description.value.length > 400)) {
@@ -40,18 +50,21 @@ const controllerModule = (function() {
     function newProjectSubmit() {
         validateNewProjectForm(this);
 
-        if (currentDataModule.checkIfProjectExists(this.title.value)) {
+        if (checkIfProjectExists(this.title.value)) {
             currentDomModule.showProjectFormError('This project already exists!');
             event.preventDefault();
         } else {
             currentDomModule.showProjectFormError('');
             currentDataModule.storeNewProject(this.title.value)
         }
+
+        invokeRefreshProjects();
     }
 
     function init() {
         currentDataModule.getFromStorage();
         currentDomModule.queryDomElements();
+        invokeRefreshProjects();
         currentDomModule.getNewTodoButton().addEventListener('click', newTodoForm);
         currentDomModule.getNewProjectForm().addEventListener('submit', newProjectSubmit);
     }

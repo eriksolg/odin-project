@@ -1,6 +1,7 @@
 const domModule = (function() {
     let newToDoButton;
     let newProjectForm;
+    let projectList;
     let todoList;
     let mainSection;
     let projectFormError;
@@ -9,6 +10,7 @@ const domModule = (function() {
         newToDoButton = document.getElementById('new-todo');
         newProjectForm = document.getElementById('new-project-form');
         projectFormError = document.getElementById('project-form-error');
+        projectList = document.getElementById('project-list');
         todoList = document.getElementById('todo-list');
         mainSection = document.getElementById('main-section');
     }
@@ -29,6 +31,17 @@ const domModule = (function() {
 
     function showProjectFormError(text) {
         projectFormError.textContent = text;
+    }
+
+    function refreshProjects(projects) {
+        projectList.innerHTML = '';
+        projects.forEach(project => {
+            let projectSelectButton = document.createElement('button');
+            projectSelectButton.classList.add('project-select-button');
+            projectSelectButton.setAttribute('data-project-name', project.name);
+            projectSelectButton.textContent = project.name;
+            projectList.appendChild(projectSelectButton);
+        });
     }
 
     function displayNewTodoForm() {
@@ -110,6 +123,7 @@ const domModule = (function() {
         queryDomElements,
         getNewTodoButton,
         getNewProjectForm,
+        refreshProjects,
         displayNewTodoForm,
         showProjectFormError
     }

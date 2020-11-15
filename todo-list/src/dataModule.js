@@ -16,6 +16,7 @@ const dataModule = (function() {
     }
 
     function getFromStorage() {
+        //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [];
     }
@@ -26,10 +27,10 @@ const dataModule = (function() {
         saveToStorage();
     }
 
-    function checkIfProjectExists(title) {
-        return projects.some(element => element.name == title);
-
+    function getProjects() {
+        return projects;
     }
+
 
     function storeNewProject(title) {
 
@@ -54,7 +55,7 @@ const dataModule = (function() {
 
     return {
         getFromStorage,
-        checkIfProjectExists,
+        getProjects,
         storeNewTodo,
         storeNewProject
     }

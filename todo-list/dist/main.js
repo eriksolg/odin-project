@@ -491,6 +491,7 @@ const dataModule = (function() {
     }
 
     function getFromStorage() {
+        //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [];
     }
@@ -501,10 +502,10 @@ const dataModule = (function() {
         saveToStorage();
     }
 
-    function checkIfProjectExists(title) {
-        return projects.some(element => element.name == title);
-
+    function getProjects() {
+        return projects;
     }
+
 
     function storeNewProject(title) {
 
@@ -529,7 +530,7 @@ const dataModule = (function() {
 
     return {
         getFromStorage,
-        checkIfProjectExists,
+        getProjects,
         storeNewTodo,
         storeNewProject
     }
@@ -541,6 +542,7 @@ const dataModule = (function() {
 const domModule = (function() {
     let newToDoButton;
     let newProjectForm;
+    let projectList;
     let todoList;
     let mainSection;
     let projectFormError;
@@ -549,6 +551,7 @@ const domModule = (function() {
         newToDoButton = document.getElementById('new-todo');
         newProjectForm = document.getElementById('new-project-form');
         projectFormError = document.getElementById('project-form-error');
+        projectList = document.getElementById('project-list');
         todoList = document.getElementById('todo-list');
         mainSection = document.getElementById('main-section');
     }
@@ -569,6 +572,17 @@ const domModule = (function() {
 
     function showProjectFormError(text) {
         projectFormError.textContent = text;
+    }
+
+    function refreshProjects(projects) {
+        projectList.innerHTML = '';
+        projects.forEach(project => {
+            let projectSelectButton = document.createElement('button');
+            projectSelectButton.classList.add('project-select-button');
+            projectSelectButton.setAttribute('data-project-name', project.name);
+            projectSelectButton.textContent = project.name;
+            projectList.appendChild(projectSelectButton);
+        });
     }
 
     function displayNewTodoForm() {
@@ -650,6 +664,7 @@ const domModule = (function() {
         queryDomElements,
         getNewTodoButton,
         getNewProjectForm,
+        refreshProjects,
         displayNewTodoForm,
         showProjectFormError
     }
@@ -663,6 +678,16 @@ const domModule = (function() {
 const controllerModule = (function() {
     const currentDomModule = src_domModule();
     const currentDataModule = src_dataModule();
+
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects);
+    }
+
+    function checkIfProjectExists(title) {
+        let projects = currentDataModule.getProjects();
+        return projects.some(element => element.name == title);
+    }
 
     function validateNewTodoForm(form) {
         if ((form.description.value == '') ||
@@ -699,18 +724,21 @@ const controllerModule = (function() {
     function newProjectSubmit() {
         validateNewProjectForm(this);
 
-        if (currentDataModule.checkIfProjectExists(this.title.value)) {
+        if (checkIfProjectExists(this.title.value)) {
             currentDomModule.showProjectFormError('This project already exists!');
             event.preventDefault();
         } else {
             currentDomModule.showProjectFormError('');
             currentDataModule.storeNewProject(this.title.value)
         }
+
+        invokeRefreshProjects();
     }
 
     function init() {
         currentDataModule.getFromStorage();
         currentDomModule.queryDomElements();
+        invokeRefreshProjects();
         currentDomModule.getNewTodoButton().addEventListener('click', newTodoForm);
         currentDomModule.getNewProjectForm().addEventListener('submit', newProjectSubmit);
     }
@@ -733,4 +761,3 @@ const todoList = (function() {
 
 /******/ })()
 ;
-//# sourceMappingURL=main.js.map
