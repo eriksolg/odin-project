@@ -3,11 +3,12 @@ const domModule = (function() {
     let newProjectForm;
     let todoList;
     let mainSection;
-    let newTodoFormContainer;
+    let projectFormError;
 
     function queryDomElements() {
         newToDoButton = document.getElementById('new-todo');
-        newProjectForm = document.getElementById('new-project-form')
+        newProjectForm = document.getElementById('new-project-form');
+        projectFormError = document.getElementById('project-form-error');
         todoList = document.getElementById('todo-list');
         mainSection = document.getElementById('main-section');
     }
@@ -24,6 +25,10 @@ const domModule = (function() {
             return newProjectForm;
         }
         return false;
+    }
+
+    function showProjectFormError(text) {
+        projectFormError.textContent = text;
     }
 
     function displayNewTodoForm() {
@@ -105,7 +110,8 @@ const domModule = (function() {
         queryDomElements,
         getNewTodoButton,
         getNewProjectForm,
-        displayNewTodoForm
+        displayNewTodoForm,
+        showProjectFormError
     }
 });
 

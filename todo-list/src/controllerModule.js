@@ -39,9 +39,13 @@ const controllerModule = (function() {
 
     function newProjectSubmit() {
         validateNewProjectForm(this);
-        if (!currentDataModule.storeNewProject(this.title.value)) {
-            this.title.setCustomValidity('Project with this name already exists!');
+
+        if (currentDataModule.checkIfProjectExists(this.title.value)) {
+            currentDomModule.showProjectFormError('This project already exists!');
             event.preventDefault();
+        } else {
+            currentDomModule.showProjectFormError('');
+            currentDataModule.storeNewProject(this.title.value)
         }
     }
 

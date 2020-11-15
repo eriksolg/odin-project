@@ -26,10 +26,13 @@ const dataModule = (function() {
         saveToStorage();
     }
 
+    function checkIfProjectExists(title) {
+        return projects.some(element => element.name == title);
+
+    }
+
     function storeNewProject(title) {
-        if (projects.some(element => element.name == title)) {
-            return false;
-        }
+
         let newProject = projectFactory(title);
         projects.push(newProject);
         saveToStorage();
@@ -51,6 +54,7 @@ const dataModule = (function() {
 
     return {
         getFromStorage,
+        checkIfProjectExists,
         storeNewTodo,
         storeNewProject
     }
