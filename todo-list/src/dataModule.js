@@ -43,15 +43,43 @@ const dataModule = (function() {
         return true;
     }
 
+    function markTodoDone(title, project) {
+        todos.forEach(todo => {
+            if (todo.title == title && todo.project == project) {
+                console.log(todo);
+                todo.isCompleted = true;
+            }
+        });
+        saveToStorage();
+    }
+
+    function deleteTodo(title, project) {
+        todos = todos.filter(element => !(element.title == title && element.project == project));
+        saveToStorage();
+    }
+
     const todoFactory = function(title, description, dueDate, priority, project) {
 
-        return { title, description, dueDate, priority, project }
+        return {
+            title,
+            description,
+            dueDate,
+            priority,
+            project,
+            isCompleted: false,
+            setCompleted() {
+                this.isCompleted = true;
+            }
+        }
     }
+
 
     return {
         getFromStorage,
         getProjects,
         getTodos,
+        markTodoDone,
+        deleteTodo,
         storeNewTodo,
         storeNewProject
     }

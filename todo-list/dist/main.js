@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 632:
+/***/ 6632:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
@@ -21505,7 +21505,7 @@ webpackContext.id = 6700;
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/basil.js/build/basil.js
-var build_basil = __webpack_require__(632);
+var build_basil = __webpack_require__(6632);
 var basil_default = /*#__PURE__*/__webpack_require__.n(build_basil);
 // CONCATENATED MODULE: ./src/dataModule.js
 ;
@@ -21553,15 +21553,43 @@ const dataModule = (function() {
         return true;
     }
 
+    function markTodoDone(title, project) {
+        todos.forEach(todo => {
+            if (todo.title == title && todo.project == project) {
+                console.log(todo);
+                todo.isCompleted = true;
+            }
+        });
+        saveToStorage();
+    }
+
+    function deleteTodo(title, project) {
+        todos = todos.filter(element => !(element.title == title && element.project == project));
+        saveToStorage();
+    }
+
     const todoFactory = function(title, description, dueDate, priority, project) {
 
-        return { title, description, dueDate, priority, project }
+        return {
+            title,
+            description,
+            dueDate,
+            priority,
+            project,
+            isCompleted: false,
+            setCompleted() {
+                this.isCompleted = true;
+            }
+        }
     }
+
 
     return {
         getFromStorage,
         getProjects,
         getTodos,
+        markTodoDone,
+        deleteTodo,
         storeNewTodo,
         storeNewProject
     }
@@ -21616,29 +21644,72 @@ const domModule = (function() {
         });
     }
 
-    function refreshTodos(todos) {
+    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback) {
         todoList.innerHTML = '';
         todos.forEach(todo => {
             let todoCard = document.createElement('div');
+            let todoCardHeader = document.createElement('div');
             let todoTitle = document.createElement('div');
             let todoDue = document.createElement('div');
             let todoProject = document.createElement('div');
+            let todoDetails = document.createElement('div');
+            let todoDescriptionLabel = document.createElement('div');
+            let todoDescription = document.createElement('div');
+            let todoButtonContainer = document.createElement('div');
+            let todoDoneButton = document.createElement('button');
+            let todoEditButton = document.createElement('button');
+            let todoDeleteButton = document.createElement('button');
 
             todoCard.classList.add('todo-card');
+            todoCardHeader.classList.add('todo-card-header');
+            if (todo.isCompleted) {
+                todoCardHeader.classList.add(`todo-done`);
+            } else {
+                todoCardHeader.classList.add(`priority-${todo.priority.toLowerCase()}`);
+            }
+            //todoCardHeader.classList.add(todo.isCompleted ? `priority-${todo.priority.toLowerCase()}` : 'todo-done');
             todoTitle.classList.add('todo-title');
             todoDue.classList.add('todo-due');
             todoProject.classList.add('todo-project');
-
+            todoDetails.classList.add('todo-details-hidden');
+            todoDescriptionLabel.classList.add('todo-description-label');
+            todoDescription.classList.add('todo-description');
+            todoButtonContainer.classList.add('todo-button-container');
+            todoDoneButton.classList.add('todo-done-button');
+            todoEditButton.classList.add('todo-edit-button');
+            todoDeleteButton.classList.add('todo-delete-button');
 
             todoTitle.textContent = todo.title;
-            todoDue.textContent = todo.dueDate;
+            todoDue.textContent = `Due: ${todo.dueDate}`;
             todoProject.textContent = todo.project;
+            todoDescriptionLabel.textContent = 'Description:'
+            todoDescription.textContent = todo.description;
+            todoDoneButton.textContent = 'DONE';
+            todoEditButton.textContent = 'EDIT';
+            todoDeleteButton.textContent = 'DELETE';
+
+            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
+            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
+            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.title, todo.project));
 
             todoCard.setAttribute('data-todo-name', todo.title);
 
-            todoCard.appendChild(todoTitle);
-            todoCard.appendChild(todoDue);
-            todoCard.appendChild(todoProject);
+            todoCardHeader.addEventListener('click', () => {
+                todoDetails.classList.toggle('todo-details');
+                todoDetails.classList.toggle('todo-details-hidden');
+            });
+
+            todoCardHeader.appendChild(todoTitle);
+            todoCardHeader.appendChild(todoDue);
+            todoCardHeader.appendChild(todoProject);
+            todoButtonContainer.appendChild(todoDoneButton);
+            todoButtonContainer.appendChild(todoEditButton);
+            todoButtonContainer.appendChild(todoDeleteButton);
+            todoDetails.appendChild(todoDescriptionLabel);
+            todoDetails.appendChild(todoDescription);
+            todoDetails.appendChild(todoButtonContainer);
+            todoCard.appendChild(todoCardHeader);
+            todoCard.appendChild(todoDetails);
             todoList.appendChild(todoCard);
         });
     }
@@ -21748,6 +21819,20 @@ const controllerModule = (function() {
     const currentDomModule = src_domModule();
     const currentDataModule = src_dataModule();
 
+    function todoDone(todoName, todoProject) {
+        currentDataModule.markTodoDone(todoName, todoProject)
+        invokeRefreshTodos();
+    }
+
+    function todoEdit(todoName, todoProject) {
+        invokeRefreshTodos();
+    }
+
+    function todoDelete(todoName, todoProject) {
+        currentDataModule.deleteTodo(todoName, todoProject)
+        invokeRefreshTodos();
+    }
+
     function invokeRefreshProjects() {
         let projects = currentDataModule.getProjects();
         currentDomModule.refreshProjects(projects);
@@ -21755,7 +21840,7 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos() {
         let todos = currentDataModule.getTodos();
-        currentDomModule.refreshTodos(todos);
+        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
     }
 
 

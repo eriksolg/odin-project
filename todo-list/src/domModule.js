@@ -44,29 +44,72 @@ const domModule = (function() {
         });
     }
 
-    function refreshTodos(todos) {
+    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback) {
         todoList.innerHTML = '';
         todos.forEach(todo => {
             let todoCard = document.createElement('div');
+            let todoCardHeader = document.createElement('div');
             let todoTitle = document.createElement('div');
             let todoDue = document.createElement('div');
             let todoProject = document.createElement('div');
+            let todoDetails = document.createElement('div');
+            let todoDescriptionLabel = document.createElement('div');
+            let todoDescription = document.createElement('div');
+            let todoButtonContainer = document.createElement('div');
+            let todoDoneButton = document.createElement('button');
+            let todoEditButton = document.createElement('button');
+            let todoDeleteButton = document.createElement('button');
 
             todoCard.classList.add('todo-card');
+            todoCardHeader.classList.add('todo-card-header');
+            if (todo.isCompleted) {
+                todoCardHeader.classList.add(`todo-done`);
+            } else {
+                todoCardHeader.classList.add(`priority-${todo.priority.toLowerCase()}`);
+            }
+            //todoCardHeader.classList.add(todo.isCompleted ? `priority-${todo.priority.toLowerCase()}` : 'todo-done');
             todoTitle.classList.add('todo-title');
             todoDue.classList.add('todo-due');
             todoProject.classList.add('todo-project');
-
+            todoDetails.classList.add('todo-details-hidden');
+            todoDescriptionLabel.classList.add('todo-description-label');
+            todoDescription.classList.add('todo-description');
+            todoButtonContainer.classList.add('todo-button-container');
+            todoDoneButton.classList.add('todo-done-button');
+            todoEditButton.classList.add('todo-edit-button');
+            todoDeleteButton.classList.add('todo-delete-button');
 
             todoTitle.textContent = todo.title;
-            todoDue.textContent = todo.dueDate;
+            todoDue.textContent = `Due: ${todo.dueDate}`;
             todoProject.textContent = todo.project;
+            todoDescriptionLabel.textContent = 'Description:'
+            todoDescription.textContent = todo.description;
+            todoDoneButton.textContent = 'DONE';
+            todoEditButton.textContent = 'EDIT';
+            todoDeleteButton.textContent = 'DELETE';
+
+            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
+            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
+            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.title, todo.project));
 
             todoCard.setAttribute('data-todo-name', todo.title);
 
-            todoCard.appendChild(todoTitle);
-            todoCard.appendChild(todoDue);
-            todoCard.appendChild(todoProject);
+            todoCardHeader.addEventListener('click', () => {
+                todoDetails.classList.toggle('todo-details');
+                todoDetails.classList.toggle('todo-details-hidden');
+            });
+
+            todoCardHeader.appendChild(todoTitle);
+            todoCardHeader.appendChild(todoDue);
+            todoCardHeader.appendChild(todoProject);
+            todoButtonContainer.appendChild(todoDoneButton);
+            todoButtonContainer.appendChild(todoEditButton);
+            todoButtonContainer.appendChild(todoDeleteButton);
+            todoDetails.appendChild(todoDescriptionLabel);
+            todoDetails.appendChild(todoDescription);
+            todoDetails.appendChild(todoButtonContainer);
+            todoCard.appendChild(todoCardHeader);
+            todoCard.appendChild(todoDetails);
             todoList.appendChild(todoCard);
         });
     }

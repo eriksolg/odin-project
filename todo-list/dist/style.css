@@ -154,7 +154,7 @@ body {
 
 #new-todo-form>label {
     display: block;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
     margin-bottom: 10px;
     color: white;
@@ -164,43 +164,63 @@ body {
 #new-todo-form>select,
 #new-todo-form>textarea {
     width: 400px;
-    font-size: 30px;
+    font-size: 18px;
     margin-bottom: 20px;
     display: block;
 }
 
 .todo-card {
-    border-radius: 20px 0 0 20px;
     border: 2px solid white;
-    background-color: beige;
     width: 650px;
     margin: 20px auto 20px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-card-header {
+    background-color: beige;
     display: flex;
     justify-content: space-between;
 }
 
-.todo-card:hover {
-    background-color: rgb(236, 236, 158);
+.todo-card-header:hover {
     cursor: pointer;
+}
+
+.priority-low {
+    background-color: rgb(212, 212, 207);
+}
+
+.priority-medium {
+    background-color: rgb(238, 240, 121);
+}
+
+.priority-high {
+    background-color: rgb(235, 149, 149);
+}
+
+.todo-done {
+    background-color: rgb(103, 219, 103);
+}
+
+.todo-card:hover {
     border: 2px solid black;
 }
 
 .todo-title {
-    padding: 10px;
+    padding-left: 10px;
     font-size: 18px;
     font-weight: 800;
     width: 220px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    display: block;
+    display: flex;
+    align-items: center;
 }
 
 .todo-due {
-    padding: 10px;
-    display: block;
+    display: flex;
+    align-items: center;
     font-size: 18px;
     font-weight: 800;
-    margin-bottom: 10px;
 }
 
 .todo-project {
@@ -211,7 +231,65 @@ body {
     font-size: 18px;
     font-weight: 800;
     margin-left: 10px;
-    display: block;
+    align-items: center;
+}
+
+.todo-details {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    background-color: beige;
+    padding: 30px;
+}
+
+.todo-details-hidden {
+    display: none;
+}
+
+.todo-description-label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.todo-button-container {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-button-container>button {
+    width: 150px;
+    padding: 10px;
+    border-radius: 0px;
+    border: 1px solid black;
+    color: rgb(0, 0, 0);
+    font-size: 14 px;
+}
+
+.todo-done-button {
+    background-color: rgb(103, 219, 103);
+}
+
+.todo-edit-button {
+    background-color: rgb(221, 213, 197);
+}
+
+.todo-delete-button {
+    background-color: rgb(223, 160, 160);
+}
+
+.todo-done-button:hover,
+.todo-edit-button:hover,
+.todo-delete-button:hover {
+    border-color: white;
+    cursor: pointer;
+}
+
+.todo-done-button:active,
+.todo-edit-button:active,
+.todo-delete-button:active {
+    border-color: red;
 }
 
 #todo-list {

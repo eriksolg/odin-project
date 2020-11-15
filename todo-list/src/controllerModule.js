@@ -6,6 +6,20 @@ const controllerModule = (function() {
     const currentDomModule = domModule();
     const currentDataModule = dataModule();
 
+    function todoDone(todoName, todoProject) {
+        currentDataModule.markTodoDone(todoName, todoProject)
+        invokeRefreshTodos();
+    }
+
+    function todoEdit(todoName, todoProject) {
+        invokeRefreshTodos();
+    }
+
+    function todoDelete(todoName, todoProject) {
+        currentDataModule.deleteTodo(todoName, todoProject)
+        invokeRefreshTodos();
+    }
+
     function invokeRefreshProjects() {
         let projects = currentDataModule.getProjects();
         currentDomModule.refreshProjects(projects);
@@ -13,7 +27,7 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos() {
         let todos = currentDataModule.getTodos();
-        currentDomModule.refreshTodos(todos);
+        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
     }
 
 
