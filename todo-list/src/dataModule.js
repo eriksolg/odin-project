@@ -4,7 +4,6 @@ const dataModule = (function() {
     const basil = new Basil({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
-    let todosInProject;
 
     const projectFactory = function(name) {
         return { name }
@@ -16,9 +15,9 @@ const dataModule = (function() {
     }
 
     function getFromStorage() {
-        //basil.reset();
+        basil.reset();
         todos = basil.get('todos') || [];
-        projects = basil.get('projects') || [];
+        projects = basil.get('projects') || [projectFactory('Default')];
     }
 
     function storeNewTodo(title, description, due, priority, project) {
