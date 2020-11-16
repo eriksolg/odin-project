@@ -6,8 +6,8 @@ const controllerModule = (function() {
     const currentDomModule = domModule();
     const currentDataModule = dataModule();
 
-    function todoDone(todoName, todoProject) {
-        currentDataModule.markTodoDone(todoName, todoProject)
+    function todoDone(id) {
+        currentDataModule.markTodoDone(id)
         invokeRefreshTodos();
     }
 

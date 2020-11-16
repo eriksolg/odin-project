@@ -21553,9 +21553,9 @@ const dataModule = (function() {
         return true;
     }
 
-    function markTodoDone(title, project) {
+    function markTodoDone(id) {
         todos.forEach(todo => {
-            if (todo.title == title && todo.project == project) {
+            if (todo.id == id) {
                 console.log(todo);
                 todo.isCompleted = true;
             }
@@ -21689,7 +21689,7 @@ const domModule = (function() {
             todoEditButton.textContent = 'EDIT';
             todoDeleteButton.textContent = 'DELETE';
 
-            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
+            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.id));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
@@ -21820,8 +21820,8 @@ const controllerModule = (function() {
     const currentDomModule = src_domModule();
     const currentDataModule = src_dataModule();
 
-    function todoDone(todoName, todoProject) {
-        currentDataModule.markTodoDone(todoName, todoProject)
+    function todoDone(id) {
+        currentDataModule.markTodoDone(id)
         invokeRefreshTodos();
     }
 

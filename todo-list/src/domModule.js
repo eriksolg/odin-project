@@ -88,7 +88,7 @@ const domModule = (function() {
             todoEditButton.textContent = 'EDIT';
             todoDeleteButton.textContent = 'DELETE';
 
-            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
+            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.id));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 

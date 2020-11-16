@@ -43,9 +43,9 @@ const dataModule = (function() {
         return true;
     }
 
-    function markTodoDone(title, project) {
+    function markTodoDone(id) {
         todos.forEach(todo => {
-            if (todo.title == title && todo.project == project) {
+            if (todo.id == id) {
                 console.log(todo);
                 todo.isCompleted = true;
             }
