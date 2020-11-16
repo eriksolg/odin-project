@@ -21563,14 +21563,15 @@ const dataModule = (function() {
         saveToStorage();
     }
 
-    function deleteTodo(title, project) {
-        todos = todos.filter(element => !(element.title == title && element.project == project));
+    function deleteTodo(id) {
+        todos = todos.filter(element => !(element.id == id));
         saveToStorage();
     }
 
     const todoFactory = function(title, description, dueDate, priority, project) {
 
         return {
+            id: todos.length,
             title,
             description,
             dueDate,
@@ -21690,9 +21691,9 @@ const domModule = (function() {
 
             todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
-            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.title, todo.project));
+            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
-            todoCard.setAttribute('data-todo-name', todo.title);
+            todoCard.setAttribute('data-todo-id', todo.id);
 
             todoCardHeader.addEventListener('click', () => {
                 todoDetails.classList.toggle('todo-details');
@@ -21828,8 +21829,8 @@ const controllerModule = (function() {
         invokeRefreshTodos();
     }
 
-    function todoDelete(todoName, todoProject) {
-        currentDataModule.deleteTodo(todoName, todoProject)
+    function todoDelete(id) {
+        currentDataModule.deleteTodo(id)
         invokeRefreshTodos();
     }
 

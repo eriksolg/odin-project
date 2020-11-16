@@ -90,9 +90,9 @@ const domModule = (function() {
 
             todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.title, todo.project));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
-            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.title, todo.project));
+            todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
-            todoCard.setAttribute('data-todo-name', todo.title);
+            todoCard.setAttribute('data-todo-id', todo.id);
 
             todoCardHeader.addEventListener('click', () => {
                 todoDetails.classList.toggle('todo-details');

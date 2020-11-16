@@ -15,8 +15,8 @@ const controllerModule = (function() {
         invokeRefreshTodos();
     }
 
-    function todoDelete(todoName, todoProject) {
-        currentDataModule.deleteTodo(todoName, todoProject)
+    function todoDelete(id) {
+        currentDataModule.deleteTodo(id)
         invokeRefreshTodos();
     }
 

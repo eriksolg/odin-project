@@ -53,14 +53,15 @@ const dataModule = (function() {
         saveToStorage();
     }
 
-    function deleteTodo(title, project) {
-        todos = todos.filter(element => !(element.title == title && element.project == project));
+    function deleteTodo(id) {
+        todos = todos.filter(element => !(element.id == id));
         saveToStorage();
     }
 
     const todoFactory = function(title, description, dueDate, priority, project) {
 
         return {
+            id: todos.length,
             title,
             description,
             dueDate,
