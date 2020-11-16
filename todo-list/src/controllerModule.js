@@ -20,13 +20,22 @@ const controllerModule = (function() {
         invokeRefreshTodos();
     }
 
-    function invokeRefreshProjects() {
-        let projects = currentDataModule.getProjects();
-        currentDomModule.refreshProjects(projects);
+    function selectProject() {
+        let project = event.target.parentElement.getAttribute('data-project-name');
+        invokeRefreshTodos(project);
     }
 
-    function invokeRefreshTodos() {
-        let todos = currentDataModule.getTodos();
+    function deleteProject() {
+
+    }
+
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
+    }
+
+    function invokeRefreshTodos(project) {
+        let todos = currentDataModule.getTodos(project);
         currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
     }
 

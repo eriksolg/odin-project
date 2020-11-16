@@ -4,6 +4,7 @@ const dataModule = (function() {
     const basil = new Basil({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
+    let activeProject;
 
     const projectFactory = function(name) {
         return { name }
@@ -15,7 +16,7 @@ const dataModule = (function() {
     }
 
     function getFromStorage() {
-        basil.reset();
+        //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [projectFactory('Default')];
     }
@@ -30,7 +31,10 @@ const dataModule = (function() {
         return projects;
     }
 
-    function getTodos() {
+    function getTodos(project) {
+        if (project) {
+            return todos.filter(todo => todo.project == project);
+        }
         return todos;
     }
 

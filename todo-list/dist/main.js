@@ -21514,6 +21514,7 @@ const dataModule = (function() {
     const basil = new (basil_default())({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
+    let activeProject;
 
     const projectFactory = function(name) {
         return { name }
@@ -21525,7 +21526,7 @@ const dataModule = (function() {
     }
 
     function getFromStorage() {
-        basil.reset();
+        //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [projectFactory('Default')];
     }
@@ -21540,7 +21541,10 @@ const dataModule = (function() {
         return projects;
     }
 
-    function getTodos() {
+    function getTodos(project) {
+        if (project) {
+            return todos.filter(todo => todo.project == project);
+        }
         return todos;
     }
 
@@ -21633,14 +21637,24 @@ const domModule = (function() {
         projectFormError.textContent = text;
     }
 
-    function refreshProjects(projects) {
+    function refreshProjects(projects, projectSelectCallback, projectDeleteCallback) {
         projectList.innerHTML = '';
         projects.forEach(project => {
+            let projectSelectEntry = document.createElement('div');
             let projectSelectButton = document.createElement('button');
+            let projectDeleteButton = document.createElement('button');
+            projectSelectEntry.classList.add('project-select-entry');
             projectSelectButton.classList.add('project-select-button');
-            projectSelectButton.setAttribute('data-project-name', project.name);
+            projectDeleteButton.classList.add('delete-project-button');
+            projectSelectEntry.setAttribute('data-project-name', project.name);
             projectSelectButton.textContent = project.name;
-            projectList.appendChild(projectSelectButton);
+            projectDeleteButton.textContent = '-';
+
+            projectSelectButton.addEventListener('click', projectSelectCallback);
+            projectDeleteButton.addEventListener('click', projectDeleteCallback);
+            projectSelectEntry.appendChild(projectSelectButton);
+            projectSelectEntry.appendChild(projectDeleteButton);
+            projectList.appendChild(projectSelectEntry);
         });
     }
 
@@ -21833,13 +21847,22 @@ const controllerModule = (function() {
         invokeRefreshTodos();
     }
 
-    function invokeRefreshProjects() {
-        let projects = currentDataModule.getProjects();
-        currentDomModule.refreshProjects(projects);
+    function selectProject() {
+        let project = event.target.parentElement.getAttribute('data-project-name');
+        invokeRefreshTodos(project);
     }
 
-    function invokeRefreshTodos() {
-        let todos = currentDataModule.getTodos();
+    function deleteProject() {
+
+    }
+
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
+    }
+
+    function invokeRefreshTodos(project) {
+        let todos = currentDataModule.getTodos(project);
         currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
     }
 

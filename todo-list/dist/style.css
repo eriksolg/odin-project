@@ -92,6 +92,23 @@ body {
     font-size: 12px;
 }
 
+.delete-project-button {
+    display: block;
+    margin: 10px auto auto auto;
+    width: 30px;
+    padding: 10px;
+    border-radius: 0px;
+    background-color: rgb(248, 19, 19);
+    border: 1px solid black;
+    color: rgb(252, 252, 252);
+    font-size: 12px;
+}
+
+.project-select-entry {
+    display: flex;
+    flex-direction: row;
+}
+
 .project-select-button {
     display: block;
     margin: 10px auto auto auto;
@@ -106,6 +123,7 @@ body {
 
 #time-select>button:hover,
 #create-project-button:hover,
+.delete-project-button:hover,
 .project-select-button:hover {
     border-color: white;
     cursor: pointer;
@@ -113,6 +131,7 @@ body {
 
 #time-select>button:active,
 #create-project-button:active,
+.delete-project-button:active,
 .project-select-button:active {
     border-color: red;
 }
@@ -237,7 +256,7 @@ body {
 .todo-details {
     display: flex;
     flex-direction: column;
-    height: 200px;
+    height: 22, 0px;
     background-color: beige;
     padding: 30px;
 }
@@ -249,7 +268,11 @@ body {
 .todo-description-label {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+}
+
+.todo-description {
+    overflow-wrap: break-word;
 }
 
 .todo-button-container {

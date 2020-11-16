@@ -33,14 +33,24 @@ const domModule = (function() {
         projectFormError.textContent = text;
     }
 
-    function refreshProjects(projects) {
+    function refreshProjects(projects, projectSelectCallback, projectDeleteCallback) {
         projectList.innerHTML = '';
         projects.forEach(project => {
+            let projectSelectEntry = document.createElement('div');
             let projectSelectButton = document.createElement('button');
+            let projectDeleteButton = document.createElement('button');
+            projectSelectEntry.classList.add('project-select-entry');
             projectSelectButton.classList.add('project-select-button');
-            projectSelectButton.setAttribute('data-project-name', project.name);
+            projectDeleteButton.classList.add('delete-project-button');
+            projectSelectEntry.setAttribute('data-project-name', project.name);
             projectSelectButton.textContent = project.name;
-            projectList.appendChild(projectSelectButton);
+            projectDeleteButton.textContent = '-';
+
+            projectSelectButton.addEventListener('click', projectSelectCallback);
+            projectDeleteButton.addEventListener('click', projectDeleteCallback);
+            projectSelectEntry.appendChild(projectSelectButton);
+            projectSelectEntry.appendChild(projectDeleteButton);
+            projectList.appendChild(projectSelectEntry);
         });
     }
 
