@@ -297,6 +297,10 @@ body {
     background-color: rgb(103, 219, 103);
 }
 
+.todo-notdone-button {
+    background-color: rgb(89, 201, 191);
+}
+
 .todo-edit-button {
     background-color: rgb(221, 213, 197);
 }
@@ -306,6 +310,7 @@ body {
 }
 
 .todo-done-button:hover,
+.todo-notdone-button:hover,
 .todo-edit-button:hover,
 .todo-delete-button:hover {
     border-color: white;
@@ -313,6 +318,7 @@ body {
 }
 
 .todo-done-button:active,
+.todo-notdone-button:active,
 .todo-edit-button:active,
 .todo-delete-button:active {
     border-color: red;

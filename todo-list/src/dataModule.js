@@ -4,6 +4,7 @@ const dataModule = (function() {
     const basil = new Basil({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
+    let todoID;
 
     const projectFactory = function(name) {
         return { name }
@@ -12,12 +13,14 @@ const dataModule = (function() {
     function saveToStorage() {
         basil.set('todos', todos);
         basil.set('projects', projects);
+        basil.set('todoID', todoID);
     }
 
     function getFromStorage() {
         //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [projectFactory('Default')];
+        todoID = basil.get('todoID') || 0;
     }
 
     function storeNewTodo(title, description, due, priority, project) {
@@ -31,6 +34,7 @@ const dataModule = (function() {
     }
 
     function getTodos(project) {
+        console.log(todos);
         if (project) {
             return todos.filter(todo => todo.project == project);
         }
@@ -48,8 +52,16 @@ const dataModule = (function() {
     function markTodoDone(id) {
         todos.forEach(todo => {
             if (todo.id == id) {
-                console.log(todo);
                 todo.isCompleted = true;
+            }
+        });
+        saveToStorage();
+    }
+
+    function markTodoNotDone(id) {
+        todos.forEach(todo => {
+            if (todo.id == id) {
+                todo.isCompleted = false;
             }
         });
         saveToStorage();
@@ -62,7 +74,6 @@ const dataModule = (function() {
 
     function deleteProject(project) {
         projects = projects.filter(element => !(element.name == project));
-        console.log(projects);
         todos = todos.filter(todo => !(todo.project == project));
         saveToStorage();
     }
@@ -70,7 +81,7 @@ const dataModule = (function() {
     const todoFactory = function(title, description, dueDate, priority, project) {
 
         return {
-            id: todos.length,
+            id: todoID++,
             title,
             description,
             dueDate,
@@ -89,6 +100,7 @@ const dataModule = (function() {
         getProjects,
         getTodos,
         markTodoDone,
+        markTodoNotDone,
         deleteTodo,
         deleteProject,
         storeNewTodo,

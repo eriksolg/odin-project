@@ -63,9 +63,19 @@ const domModule = (function() {
         });
     }
 
-    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback) {
+    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback, todoNotDoneCallback) {
         todoList.innerHTML = '';
-        todos.forEach(todo => {
+        todoList.style.display = 'block';
+        if (todoList.nextSibling != null) {
+            todoList.nextSibling.remove();
+        }
+        todos.sort((a, b) => {
+            if (a.dueDate < b.dueDate) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }).forEach(todo => {
             let todoCard = document.createElement('div');
             let todoCardHeader = document.createElement('div');
             let todoTitle = document.createElement('div');
@@ -86,7 +96,6 @@ const domModule = (function() {
             } else {
                 todoCardHeader.classList.add(`priority-${todo.priority.toLowerCase()}`);
             }
-            //todoCardHeader.classList.add(todo.isCompleted ? `priority-${todo.priority.toLowerCase()}` : 'todo-done');
             todoTitle.classList.add('todo-title');
             todoDue.classList.add('todo-due');
             todoProject.classList.add('todo-project');
@@ -94,7 +103,7 @@ const domModule = (function() {
             todoDescriptionLabel.classList.add('todo-description-label');
             todoDescription.classList.add('todo-description');
             todoButtonContainer.classList.add('todo-button-container');
-            todoDoneButton.classList.add('todo-done-button');
+            todoDoneButton.classList.add(todo.isCompleted ? 'todo-notdone-button' : 'todo-done-button');
             todoEditButton.classList.add('todo-edit-button');
             todoDeleteButton.classList.add('todo-delete-button');
 
@@ -103,11 +112,11 @@ const domModule = (function() {
             todoProject.textContent = todo.project;
             todoDescriptionLabel.textContent = 'Description:'
             todoDescription.textContent = todo.description;
-            todoDoneButton.textContent = 'DONE';
+            todoDoneButton.textContent = todo.isCompleted ? 'NOT DONE' : 'DONE';
             todoEditButton.textContent = 'EDIT';
             todoDeleteButton.textContent = 'DELETE';
 
-            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.id));
+            todoDoneButton.addEventListener('click', todo.isCompleted ? todoNotDoneCallback.bind(this, todo.id) : todoDoneCallback.bind(this, todo.id));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
@@ -170,6 +179,7 @@ const domModule = (function() {
 
         newTodoSubmit.type = 'submit';
         todoDueInput.type = 'date';
+        todoDueInput.valueAsDate = new Date();
 
         todoTitleInput.maxLength = 20;
         todoDescriptionInput.maxLength = 400;

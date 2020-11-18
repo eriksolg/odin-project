@@ -10,6 +10,11 @@ const controllerModule = (function() {
         invokeRefreshTodos(this);
     }
 
+    function todoNotDone(id) {
+        currentDataModule.markTodoNotDone(id)
+        invokeRefreshTodos(this);
+    }
+
     function todoEdit(todoName, todoProject) {
         invokeRefreshTodos(this);
     }
@@ -29,7 +34,6 @@ const controllerModule = (function() {
         currentDataModule.deleteProject(project);
         invokeRefreshProjects();
         invokeRefreshTodos(this);
-
     }
 
     function invokeRefreshProjects() {
@@ -39,8 +43,9 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos(context, project) {
         let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
+        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete, todoNotDone);
     }
+
 
 
     function checkIfProjectExists(title) {

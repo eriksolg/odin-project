@@ -479,6 +479,7 @@ const dataModule = (function() {
     const basil = new (basil_default())({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
+    let todoID;
 
     const projectFactory = function(name) {
         return { name }
@@ -487,12 +488,14 @@ const dataModule = (function() {
     function saveToStorage() {
         basil.set('todos', todos);
         basil.set('projects', projects);
+        basil.set('todoID', todoID);
     }
 
     function getFromStorage() {
         //basil.reset();
         todos = basil.get('todos') || [];
         projects = basil.get('projects') || [projectFactory('Default')];
+        todoID = basil.get('todoID') || 0;
     }
 
     function storeNewTodo(title, description, due, priority, project) {
@@ -506,6 +509,7 @@ const dataModule = (function() {
     }
 
     function getTodos(project) {
+        console.log(todos);
         if (project) {
             return todos.filter(todo => todo.project == project);
         }
@@ -523,8 +527,16 @@ const dataModule = (function() {
     function markTodoDone(id) {
         todos.forEach(todo => {
             if (todo.id == id) {
-                console.log(todo);
                 todo.isCompleted = true;
+            }
+        });
+        saveToStorage();
+    }
+
+    function markTodoNotDone(id) {
+        todos.forEach(todo => {
+            if (todo.id == id) {
+                todo.isCompleted = false;
             }
         });
         saveToStorage();
@@ -537,7 +549,6 @@ const dataModule = (function() {
 
     function deleteProject(project) {
         projects = projects.filter(element => !(element.name == project));
-        console.log(projects);
         todos = todos.filter(todo => !(todo.project == project));
         saveToStorage();
     }
@@ -545,7 +556,7 @@ const dataModule = (function() {
     const todoFactory = function(title, description, dueDate, priority, project) {
 
         return {
-            id: todos.length,
+            id: todoID++,
             title,
             description,
             dueDate,
@@ -564,6 +575,7 @@ const dataModule = (function() {
         getProjects,
         getTodos,
         markTodoDone,
+        markTodoNotDone,
         deleteTodo,
         deleteProject,
         storeNewTodo,
@@ -639,9 +651,19 @@ const domModule = (function() {
         });
     }
 
-    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback) {
+    function refreshTodos(todos, todoDoneCallback, todoEditCallback, todoDeleteCallback, todoNotDoneCallback) {
         todoList.innerHTML = '';
-        todos.forEach(todo => {
+        todoList.style.display = 'block';
+        if (todoList.nextSibling != null) {
+            todoList.nextSibling.remove();
+        }
+        todos.sort((a, b) => {
+            if (a.dueDate < b.dueDate) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }).forEach(todo => {
             let todoCard = document.createElement('div');
             let todoCardHeader = document.createElement('div');
             let todoTitle = document.createElement('div');
@@ -662,7 +684,6 @@ const domModule = (function() {
             } else {
                 todoCardHeader.classList.add(`priority-${todo.priority.toLowerCase()}`);
             }
-            //todoCardHeader.classList.add(todo.isCompleted ? `priority-${todo.priority.toLowerCase()}` : 'todo-done');
             todoTitle.classList.add('todo-title');
             todoDue.classList.add('todo-due');
             todoProject.classList.add('todo-project');
@@ -670,7 +691,7 @@ const domModule = (function() {
             todoDescriptionLabel.classList.add('todo-description-label');
             todoDescription.classList.add('todo-description');
             todoButtonContainer.classList.add('todo-button-container');
-            todoDoneButton.classList.add('todo-done-button');
+            todoDoneButton.classList.add(todo.isCompleted ? 'todo-notdone-button' : 'todo-done-button');
             todoEditButton.classList.add('todo-edit-button');
             todoDeleteButton.classList.add('todo-delete-button');
 
@@ -679,11 +700,11 @@ const domModule = (function() {
             todoProject.textContent = todo.project;
             todoDescriptionLabel.textContent = 'Description:'
             todoDescription.textContent = todo.description;
-            todoDoneButton.textContent = 'DONE';
+            todoDoneButton.textContent = todo.isCompleted ? 'NOT DONE' : 'DONE';
             todoEditButton.textContent = 'EDIT';
             todoDeleteButton.textContent = 'DELETE';
 
-            todoDoneButton.addEventListener('click', todoDoneCallback.bind(this, todo.id));
+            todoDoneButton.addEventListener('click', todo.isCompleted ? todoNotDoneCallback.bind(this, todo.id) : todoDoneCallback.bind(this, todo.id));
             todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
@@ -746,6 +767,7 @@ const domModule = (function() {
 
         newTodoSubmit.type = 'submit';
         todoDueInput.type = 'date';
+        todoDueInput.valueAsDate = new Date();
 
         todoTitleInput.maxLength = 20;
         todoDescriptionInput.maxLength = 400;
@@ -817,6 +839,11 @@ const controllerModule = (function() {
         invokeRefreshTodos(this);
     }
 
+    function todoNotDone(id) {
+        currentDataModule.markTodoNotDone(id)
+        invokeRefreshTodos(this);
+    }
+
     function todoEdit(todoName, todoProject) {
         invokeRefreshTodos(this);
     }
@@ -836,7 +863,6 @@ const controllerModule = (function() {
         currentDataModule.deleteProject(project);
         invokeRefreshProjects();
         invokeRefreshTodos(this);
-
     }
 
     function invokeRefreshProjects() {
@@ -846,8 +872,9 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos(context, project) {
         let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
+        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete, todoNotDone);
     }
+
 
 
     function checkIfProjectExists(title) {
