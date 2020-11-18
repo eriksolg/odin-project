@@ -29,12 +29,24 @@ const dataModule = (function() {
         saveToStorage();
     }
 
+    function editExistingTodo(id, title, description, due, priority, project) {
+        todos.forEach(todo => {
+            if (todo.id == id) {
+                todo.title = title;
+                todo.description = description;
+                todo.dueDate = due;
+                todo.priority = priority;
+                todo.project = project;
+            }
+        })
+        saveToStorage();
+    }
+
     function getProjects() {
         return projects;
     }
 
     function getTodos(project) {
-        console.log(todos);
         if (project) {
             return todos.filter(todo => todo.project == project);
         }
@@ -104,7 +116,8 @@ const dataModule = (function() {
         deleteTodo,
         deleteProject,
         storeNewTodo,
-        storeNewProject
+        storeNewProject,
+        editExistingTodo
     }
 
 });

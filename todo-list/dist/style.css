@@ -155,7 +155,8 @@ body {
     flex-grow: 1;
 }
 
-#new-todo-form-container {
+#new-todo-form-container,
+#todo-edit-form-container {
     display: flex;
     float: right;
     background-color: rgb(255, 255, 255);
@@ -163,7 +164,8 @@ body {
     min-height: 546px;
 }
 
-#new-todo-form {
+#new-todo-form,
+#todo-edit-form {
     margin: auto;
     background-color: red;
     padding: 20px;
@@ -174,7 +176,8 @@ body {
     width: 250px;
 }
 
-#new-todo-form>label {
+#new-todo-form>label,
+#todo-edit-form>label {
     display: block;
     font-size: 25px;
     font-weight: 500;
@@ -184,7 +187,10 @@ body {
 
 #new-todo-form>input,
 #new-todo-form>select,
-#new-todo-form>textarea {
+#new-todo-form>textarea,
+#todo-edit-form>input,
+#todo-edit-form>select,
+#todo-edit-form>textarea {
     width: 400px;
     font-size: 18px;
     margin-bottom: 20px;

@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 6632:
+/***/ 632:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
@@ -470,7 +470,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/basil.js/build/basil.js
-var build_basil = __webpack_require__(6632);
+var build_basil = __webpack_require__(632);
 var basil_default = /*#__PURE__*/__webpack_require__.n(build_basil);
 // CONCATENATED MODULE: ./src/dataModule.js
 ;
@@ -504,12 +504,24 @@ const dataModule = (function() {
         saveToStorage();
     }
 
+    function editExistingTodo(id, title, description, due, priority, project) {
+        todos.forEach(todo => {
+            if (todo.id == id) {
+                todo.title = title;
+                todo.description = description;
+                todo.dueDate = due;
+                todo.priority = priority;
+                todo.project = project;
+            }
+        })
+        saveToStorage();
+    }
+
     function getProjects() {
         return projects;
     }
 
     function getTodos(project) {
-        console.log(todos);
         if (project) {
             return todos.filter(todo => todo.project == project);
         }
@@ -579,7 +591,8 @@ const dataModule = (function() {
         deleteTodo,
         deleteProject,
         storeNewTodo,
-        storeNewProject
+        storeNewProject,
+        editExistingTodo
     }
 
 });
@@ -705,7 +718,7 @@ const domModule = (function() {
             todoDeleteButton.textContent = 'DELETE';
 
             todoDoneButton.addEventListener('click', todo.isCompleted ? todoNotDoneCallback.bind(this, todo.id) : todoDoneCallback.bind(this, todo.id));
-            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
+            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.id));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
             todoCard.setAttribute('data-todo-id', todo.id);
@@ -730,8 +743,105 @@ const domModule = (function() {
         });
     }
 
+    function displayTodoEditForm(todo, projects) {
+
+        let todoEditFormContainer = document.createElement('div');
+        let todoEditForm = document.createElement('form');
+        let todoTitleLabel = document.createElement('label');
+        let todoTitleInput = document.createElement('input');
+        let todoDescriptionLabel = document.createElement('label');
+        let todoDescriptionInput = document.createElement('textarea');
+        let todoDueLabel = document.createElement('label');
+        let todoDueInput = document.createElement('input');
+        let todoPriorityLabel = document.createElement('label');
+        let todoPriorityInput = document.createElement('select');
+        let todoPriorityLow = document.createElement('option');
+        let todoPriorityMedium = document.createElement('option');
+        let todoPriorityHigh = document.createElement('option');
+        let todoProjectLabel = document.createElement('label');
+        let todoProjectInput = document.createElement('select');
+        let todoEditSubmit = document.createElement('input');
+
+        todoEditFormContainer.id = 'todo-edit-form-container';
+        todoEditForm.id = 'todo-edit-form';
+        todoTitleInput.name = 'title';
+        todoDescriptionInput.name = 'description';
+        todoDueInput.name = 'due';
+        todoPriorityInput.name = 'priority';
+        todoProjectInput.name = 'project';
+
+        todoTitleInput.required = true;
+        todoDescriptionInput.required = true;
+        todoDueInput.required = true;
+
+        todoEditSubmit.type = 'submit';
+        todoDueInput.type = 'date';
+
+        todoDueInput.value = todo.dueDate;
+        todoTitleInput.value = todo.title;
+        todoDescriptionInput.value = todo.description;
+        todoEditSubmit.value = 'Edit';
+
+        todoTitleInput.maxLength = 20;
+        todoDescriptionInput.maxLength = 400;
+
+        todoTitleLabel.textContent = 'Title';
+        todoDescriptionLabel.textContent = 'Description';
+        todoDueLabel.textContent = 'Due';
+        todoPriorityLabel.textContent = 'Priority';
+        todoProjectLabel.textContent = 'Project';
+
+        todoPriorityLow.textContent = 'Low';
+        todoPriorityMedium.textContent = 'Medium';
+        todoPriorityHigh.textContent = 'High';
+
+        projects.forEach(project => {
+            let projectElement = document.createElement('option');
+            projectElement.textContent = project.name;
+            if (todo.project == project.name) {
+                projectElement.selected = true;
+            }
+            todoProjectInput.appendChild(projectElement);
+        });
+
+        switch (todo.priority) {
+            case 'Low':
+                todoPriorityLow.selected = true;
+                break;
+            case 'Medium':
+                todoPriorityMedium.selected = true;
+                break;
+            case 'High':
+                todoPriorityHigh.selected = true;
+                break;
+        }
+
+        todoPriorityInput.appendChild(todoPriorityLow);
+        todoPriorityInput.appendChild(todoPriorityMedium);
+        todoPriorityInput.appendChild(todoPriorityHigh);
+
+        todoEditForm.appendChild(todoTitleLabel);
+        todoEditForm.appendChild(todoTitleInput);
+        todoEditForm.appendChild(todoDescriptionLabel);
+        todoEditForm.appendChild(todoDescriptionInput);
+        todoEditForm.appendChild(todoDueLabel);
+        todoEditForm.appendChild(todoDueInput);
+        todoEditForm.appendChild(todoPriorityLabel);
+        todoEditForm.appendChild(todoPriorityInput);
+        todoEditForm.appendChild(todoProjectLabel);
+        todoEditForm.appendChild(todoProjectInput);
+        todoEditForm.appendChild(todoEditSubmit);
+
+        todoEditFormContainer.appendChild(todoEditForm);
+
+        todoList.style.display = 'none';
+        mainSection.appendChild(todoEditFormContainer);
+
+        return todoEditForm;
+    }
+
     function displayNewTodoForm(projects) {
-        if (document.getElementById('new-todo-form')) {
+        if (document.getElementById('new-todo-form') || document.getElementById('todo-edit-form')) {
             return false;
         }
 
@@ -821,6 +931,7 @@ const domModule = (function() {
         refreshProjects,
         refreshTodos,
         displayNewTodoForm,
+        displayTodoEditForm,
         showProjectFormError
     }
 });
@@ -844,9 +955,6 @@ const controllerModule = (function() {
         invokeRefreshTodos(this);
     }
 
-    function todoEdit(todoName, todoProject) {
-        invokeRefreshTodos(this);
-    }
 
     function todoDelete(id) {
         currentDataModule.deleteTodo(id)
@@ -872,7 +980,7 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos(context, project) {
         let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete, todoNotDone);
+        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
     }
 
 
@@ -908,12 +1016,26 @@ const controllerModule = (function() {
         currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value, this.project.value);
     }
 
+    function todoEditSubmit(id) {
+        validateNewTodoForm(this);
+        currentDataModule.editExistingTodo(id, this.elements.title.value, this.elements.description.value, this.elements.due.value, this.elements.priority.value, this.elements.project.value);
+    }
+
     function newTodoForm() {
         let projects = currentDataModule.getProjects();
         let todoForm = currentDomModule.displayNewTodoForm(projects);
         if (todoForm) {
             todoForm.addEventListener('submit', newTodoSubmit);
         }
+    }
+
+
+    function todoEditForm(id) {
+        let todos = currentDataModule.getTodos();
+        let projects = currentDataModule.getProjects();
+        let todo = todos.find(element => element.id == id);
+        let todoEditForm = currentDomModule.displayTodoEditForm(todo, projects);
+        todoEditForm.addEventListener('submit', todoEditSubmit.bind(todoEditForm, id));
     }
 
     function newProjectSubmit() {

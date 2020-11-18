@@ -15,9 +15,6 @@ const controllerModule = (function() {
         invokeRefreshTodos(this);
     }
 
-    function todoEdit(todoName, todoProject) {
-        invokeRefreshTodos(this);
-    }
 
     function todoDelete(id) {
         currentDataModule.deleteTodo(id)
@@ -43,7 +40,7 @@ const controllerModule = (function() {
 
     function invokeRefreshTodos(context, project) {
         let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete, todoNotDone);
+        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
     }
 
 
@@ -79,12 +76,26 @@ const controllerModule = (function() {
         currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value, this.project.value);
     }
 
+    function todoEditSubmit(id) {
+        validateNewTodoForm(this);
+        currentDataModule.editExistingTodo(id, this.elements.title.value, this.elements.description.value, this.elements.due.value, this.elements.priority.value, this.elements.project.value);
+    }
+
     function newTodoForm() {
         let projects = currentDataModule.getProjects();
         let todoForm = currentDomModule.displayNewTodoForm(projects);
         if (todoForm) {
             todoForm.addEventListener('submit', newTodoSubmit);
         }
+    }
+
+
+    function todoEditForm(id) {
+        let todos = currentDataModule.getTodos();
+        let projects = currentDataModule.getProjects();
+        let todo = todos.find(element => element.id == id);
+        let todoEditForm = currentDomModule.displayTodoEditForm(todo, projects);
+        todoEditForm.addEventListener('submit', todoEditSubmit.bind(todoEditForm, id));
     }
 
     function newProjectSubmit() {

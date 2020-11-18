@@ -117,7 +117,7 @@ const domModule = (function() {
             todoDeleteButton.textContent = 'DELETE';
 
             todoDoneButton.addEventListener('click', todo.isCompleted ? todoNotDoneCallback.bind(this, todo.id) : todoDoneCallback.bind(this, todo.id));
-            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.title, todo.project));
+            todoEditButton.addEventListener('click', todoEditCallback.bind(this, todo.id));
             todoDeleteButton.addEventListener('click', todoDeleteCallback.bind(this, todo.id));
 
             todoCard.setAttribute('data-todo-id', todo.id);
@@ -142,8 +142,105 @@ const domModule = (function() {
         });
     }
 
+    function displayTodoEditForm(todo, projects) {
+
+        let todoEditFormContainer = document.createElement('div');
+        let todoEditForm = document.createElement('form');
+        let todoTitleLabel = document.createElement('label');
+        let todoTitleInput = document.createElement('input');
+        let todoDescriptionLabel = document.createElement('label');
+        let todoDescriptionInput = document.createElement('textarea');
+        let todoDueLabel = document.createElement('label');
+        let todoDueInput = document.createElement('input');
+        let todoPriorityLabel = document.createElement('label');
+        let todoPriorityInput = document.createElement('select');
+        let todoPriorityLow = document.createElement('option');
+        let todoPriorityMedium = document.createElement('option');
+        let todoPriorityHigh = document.createElement('option');
+        let todoProjectLabel = document.createElement('label');
+        let todoProjectInput = document.createElement('select');
+        let todoEditSubmit = document.createElement('input');
+
+        todoEditFormContainer.id = 'todo-edit-form-container';
+        todoEditForm.id = 'todo-edit-form';
+        todoTitleInput.name = 'title';
+        todoDescriptionInput.name = 'description';
+        todoDueInput.name = 'due';
+        todoPriorityInput.name = 'priority';
+        todoProjectInput.name = 'project';
+
+        todoTitleInput.required = true;
+        todoDescriptionInput.required = true;
+        todoDueInput.required = true;
+
+        todoEditSubmit.type = 'submit';
+        todoDueInput.type = 'date';
+
+        todoDueInput.value = todo.dueDate;
+        todoTitleInput.value = todo.title;
+        todoDescriptionInput.value = todo.description;
+        todoEditSubmit.value = 'Edit';
+
+        todoTitleInput.maxLength = 20;
+        todoDescriptionInput.maxLength = 400;
+
+        todoTitleLabel.textContent = 'Title';
+        todoDescriptionLabel.textContent = 'Description';
+        todoDueLabel.textContent = 'Due';
+        todoPriorityLabel.textContent = 'Priority';
+        todoProjectLabel.textContent = 'Project';
+
+        todoPriorityLow.textContent = 'Low';
+        todoPriorityMedium.textContent = 'Medium';
+        todoPriorityHigh.textContent = 'High';
+
+        projects.forEach(project => {
+            let projectElement = document.createElement('option');
+            projectElement.textContent = project.name;
+            if (todo.project == project.name) {
+                projectElement.selected = true;
+            }
+            todoProjectInput.appendChild(projectElement);
+        });
+
+        switch (todo.priority) {
+            case 'Low':
+                todoPriorityLow.selected = true;
+                break;
+            case 'Medium':
+                todoPriorityMedium.selected = true;
+                break;
+            case 'High':
+                todoPriorityHigh.selected = true;
+                break;
+        }
+
+        todoPriorityInput.appendChild(todoPriorityLow);
+        todoPriorityInput.appendChild(todoPriorityMedium);
+        todoPriorityInput.appendChild(todoPriorityHigh);
+
+        todoEditForm.appendChild(todoTitleLabel);
+        todoEditForm.appendChild(todoTitleInput);
+        todoEditForm.appendChild(todoDescriptionLabel);
+        todoEditForm.appendChild(todoDescriptionInput);
+        todoEditForm.appendChild(todoDueLabel);
+        todoEditForm.appendChild(todoDueInput);
+        todoEditForm.appendChild(todoPriorityLabel);
+        todoEditForm.appendChild(todoPriorityInput);
+        todoEditForm.appendChild(todoProjectLabel);
+        todoEditForm.appendChild(todoProjectInput);
+        todoEditForm.appendChild(todoEditSubmit);
+
+        todoEditFormContainer.appendChild(todoEditForm);
+
+        todoList.style.display = 'none';
+        mainSection.appendChild(todoEditFormContainer);
+
+        return todoEditForm;
+    }
+
     function displayNewTodoForm(projects) {
-        if (document.getElementById('new-todo-form')) {
+        if (document.getElementById('new-todo-form') || document.getElementById('todo-edit-form')) {
             return false;
         }
 
@@ -233,6 +330,7 @@ const domModule = (function() {
         refreshProjects,
         refreshTodos,
         displayNewTodoForm,
+        displayTodoEditForm,
         showProjectFormError
     }
 });
