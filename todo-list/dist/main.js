@@ -484,6 +484,17 @@ const dataModule = (function() {
     const projectFactory = function(name) {
         return { name }
     }
+    const todoFactory = function(title, description, dueDate, priority, project) {
+        return {
+            id: todoID++,
+            title,
+            description,
+            dueDate,
+            priority,
+            project,
+            isCompleted: false
+        }
+    }
 
     function saveToStorage() {
         basil.set('todos', todos);
@@ -529,7 +540,6 @@ const dataModule = (function() {
     }
 
     function storeNewProject(title) {
-
         let newProject = projectFactory(title);
         projects.push(newProject);
         saveToStorage();
@@ -564,23 +574,6 @@ const dataModule = (function() {
         todos = todos.filter(todo => !(todo.project == project));
         saveToStorage();
     }
-
-    const todoFactory = function(title, description, dueDate, priority, project) {
-
-        return {
-            id: todoID++,
-            title,
-            description,
-            dueDate,
-            priority,
-            project,
-            isCompleted: false,
-            setCompleted() {
-                this.isCompleted = true;
-            }
-        }
-    }
-
 
     return {
         getFromStorage,
@@ -707,6 +700,9 @@ const domModule = (function() {
             todoDoneButton.classList.add(todo.isCompleted ? 'todo-notdone-button' : 'todo-done-button');
             todoEditButton.classList.add('todo-edit-button');
             todoDeleteButton.classList.add('todo-delete-button');
+            todoDoneButton.classList.add('basic-button');
+            todoEditButton.classList.add('basic-button');
+            todoDeleteButton.classList.add('basic-button');
 
             todoTitle.textContent = todo.title;
             todoDue.textContent = `Due: ${todo.dueDate}`;
@@ -795,6 +791,23 @@ const domModule = (function() {
         todoPriorityMedium.textContent = 'Medium';
         todoPriorityHigh.textContent = 'High';
 
+
+        todoTitleLabel.classList.add('form-label');
+        todoDescriptionLabel.classList.add('form-label');
+        todoDueLabel.classList.add('form-label');
+        todoPriorityLabel.classList.add('form-label');
+        todoProjectLabel.classList.add('form-label');
+
+        todoTitleInput.classList.add('form-input');
+        todoDescriptionInput.classList.add('form-input');
+        todoDueInput.classList.add('form-input');
+        todoPriorityInput.classList.add('form-input');
+        todoProjectInput.classList.add('form-input');
+
+
+        todoEditForm.classList.add('form');
+        todoEditFormContainer.classList.add('form-container');
+
         projects.forEach(project => {
             let projectElement = document.createElement('option');
             projectElement.textContent = project.name;
@@ -872,7 +885,7 @@ const domModule = (function() {
 
         todoTitleInput.required = true;
         todoDescriptionInput.required = true;
-        //todoDueInput.required = true;
+        todoDueInput.required = true;
         todoDescriptionInput.required = true;
 
         newTodoSubmit.type = 'submit';
@@ -891,6 +904,22 @@ const domModule = (function() {
         todoPriorityLow.textContent = 'Low';
         todoPriorityMedium.textContent = 'Medium';
         todoPriorityHigh.textContent = 'High';
+
+        todoTitleLabel.classList.add('form-label');
+        todoDescriptionLabel.classList.add('form-label');
+        todoDueLabel.classList.add('form-label');
+        todoPriorityLabel.classList.add('form-label');
+        todoProjectLabel.classList.add('form-label');
+
+        todoTitleInput.classList.add('form-input');
+        todoDescriptionInput.classList.add('form-input');
+        todoDueInput.classList.add('form-input');
+        todoPriorityInput.classList.add('form-input');
+        todoProjectInput.classList.add('form-input');
+        newTodoSubmit.classList.add('basic-button');
+
+        newTodoForm.classList.add('form');
+        newTodoFormContainer.classList.add('form-container');
 
         projects.forEach(project => {
             let projectElement = document.createElement('option');
@@ -945,6 +974,16 @@ const controllerModule = (function() {
     const currentDomModule = src_domModule();
     const currentDataModule = src_dataModule();
 
+    function invokeRefreshTodos(context, project) {
+        let todos = currentDataModule.getTodos(project);
+        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
+    }
+
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
+    }
+
     function todoDone(id) {
         currentDataModule.markTodoDone(id)
         invokeRefreshTodos(this);
@@ -954,7 +993,6 @@ const controllerModule = (function() {
         currentDataModule.markTodoNotDone(id)
         invokeRefreshTodos(this);
     }
-
 
     function todoDelete(id) {
         currentDataModule.deleteTodo(id)
@@ -972,18 +1010,6 @@ const controllerModule = (function() {
         invokeRefreshProjects();
         invokeRefreshTodos(this);
     }
-
-    function invokeRefreshProjects() {
-        let projects = currentDataModule.getProjects();
-        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
-    }
-
-    function invokeRefreshTodos(context, project) {
-        let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
-    }
-
-
 
     function checkIfProjectExists(title) {
         let projects = currentDataModule.getProjects();
@@ -1012,7 +1038,6 @@ const controllerModule = (function() {
 
     function newTodoSubmit() {
         validateNewTodoForm(this);
-
         currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value, this.project.value);
     }
 
@@ -1029,7 +1054,6 @@ const controllerModule = (function() {
         }
     }
 
-
     function todoEditForm(id) {
         let todos = currentDataModule.getTodos();
         let projects = currentDataModule.getProjects();
@@ -1040,7 +1064,6 @@ const controllerModule = (function() {
 
     function newProjectSubmit() {
         validateNewProjectForm(this);
-
         if (checkIfProjectExists(this.title.value)) {
             currentDomModule.showProjectFormError('This project already exists!');
             event.preventDefault();
@@ -1048,7 +1071,6 @@ const controllerModule = (function() {
             currentDomModule.showProjectFormError('');
             currentDataModule.storeNewProject(this.title.value)
         }
-
         invokeRefreshProjects();
     }
 
@@ -1070,7 +1092,6 @@ const controllerModule = (function() {
 /* harmony default export */ const src_controllerModule = (controllerModule);
 // CONCATENATED MODULE: ./src/index.js
 ;
-
 
 const todoList = (function() {
     const currentControllerModule = src_controllerModule();

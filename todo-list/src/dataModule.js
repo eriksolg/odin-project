@@ -9,6 +9,17 @@ const dataModule = (function() {
     const projectFactory = function(name) {
         return { name }
     }
+    const todoFactory = function(title, description, dueDate, priority, project) {
+        return {
+            id: todoID++,
+            title,
+            description,
+            dueDate,
+            priority,
+            project,
+            isCompleted: false
+        }
+    }
 
     function saveToStorage() {
         basil.set('todos', todos);
@@ -54,7 +65,6 @@ const dataModule = (function() {
     }
 
     function storeNewProject(title) {
-
         let newProject = projectFactory(title);
         projects.push(newProject);
         saveToStorage();
@@ -89,23 +99,6 @@ const dataModule = (function() {
         todos = todos.filter(todo => !(todo.project == project));
         saveToStorage();
     }
-
-    const todoFactory = function(title, description, dueDate, priority, project) {
-
-        return {
-            id: todoID++,
-            title,
-            description,
-            dueDate,
-            priority,
-            project,
-            isCompleted: false,
-            setCompleted() {
-                this.isCompleted = true;
-            }
-        }
-    }
-
 
     return {
         getFromStorage,

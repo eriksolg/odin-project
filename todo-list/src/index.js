@@ -1,7 +1,6 @@
 import controllerModule from './controllerModule';
-import constrollerModule from './controllerModule'
 
 const todoList = (function() {
-    const currentControllerModule = constrollerModule();
+    const currentControllerModule = controllerModule();
     currentControllerModule.init();
 })();

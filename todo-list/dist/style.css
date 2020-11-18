@@ -62,24 +62,6 @@ body {
     flex-direction: column;
 }
 
-#time-select {
-    height: 200px;
-    background-color: rgb(243, 239, 235);
-    text-align: center;
-}
-
-#time-select>button {
-    width: 80%;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 0px;
-    background-color: rgb(248, 19, 19);
-    box-shadow: none;
-    border: 1px solid red;
-    color: rgb(252, 252, 252);
-    font-size: 18px;
-}
-
 #create-project-button {
     display: inline-block;
     width: 14%;
@@ -122,23 +104,6 @@ body {
     font-size: 12px;
 }
 
-#time-select>button:hover,
-#create-project-button:hover,
-.delete-project-button:hover,
-.project-select-button:hover,
-#project-select-all-button:hover {
-    border-color: white;
-    cursor: pointer;
-}
-
-#time-select>button:active,
-#create-project-button:active,
-.delete-project-button:active,
-.project-select-button:active,
-#project-select-all-button:active {
-    border-color: red;
-}
-
 #project-select {
     background-color: rgb(243, 239, 235);
     height: 100%;
@@ -164,8 +129,7 @@ body {
     min-height: 546px;
 }
 
-#new-todo-form,
-#todo-edit-form {
+.form {
     margin: auto;
     background-color: red;
     padding: 20px;
@@ -176,8 +140,7 @@ body {
     width: 250px;
 }
 
-#new-todo-form>label,
-#todo-edit-form>label {
+.form-label {
     display: block;
     font-size: 25px;
     font-weight: 500;
@@ -185,12 +148,7 @@ body {
     color: white;
 }
 
-#new-todo-form>input,
-#new-todo-form>select,
-#new-todo-form>textarea,
-#todo-edit-form>input,
-#todo-edit-form>select,
-#todo-edit-form>textarea {
+.form-input {
     width: 400px;
     font-size: 18px;
     margin-bottom: 20px;
@@ -315,18 +273,12 @@ body {
     background-color: rgb(223, 160, 160);
 }
 
-.todo-done-button:hover,
-.todo-notdone-button:hover,
-.todo-edit-button:hover,
-.todo-delete-button:hover {
+.basic-button:hover {
     border-color: white;
     cursor: pointer;
 }
 
-.todo-done-button:active,
-.todo-notdone-button:active,
-.todo-edit-button:active,
-.todo-delete-button:active {
+.basic-button:active {
     border-color: red;
 }
 

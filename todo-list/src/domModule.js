@@ -106,6 +106,9 @@ const domModule = (function() {
             todoDoneButton.classList.add(todo.isCompleted ? 'todo-notdone-button' : 'todo-done-button');
             todoEditButton.classList.add('todo-edit-button');
             todoDeleteButton.classList.add('todo-delete-button');
+            todoDoneButton.classList.add('basic-button');
+            todoEditButton.classList.add('basic-button');
+            todoDeleteButton.classList.add('basic-button');
 
             todoTitle.textContent = todo.title;
             todoDue.textContent = `Due: ${todo.dueDate}`;
@@ -194,6 +197,23 @@ const domModule = (function() {
         todoPriorityMedium.textContent = 'Medium';
         todoPriorityHigh.textContent = 'High';
 
+
+        todoTitleLabel.classList.add('form-label');
+        todoDescriptionLabel.classList.add('form-label');
+        todoDueLabel.classList.add('form-label');
+        todoPriorityLabel.classList.add('form-label');
+        todoProjectLabel.classList.add('form-label');
+
+        todoTitleInput.classList.add('form-input');
+        todoDescriptionInput.classList.add('form-input');
+        todoDueInput.classList.add('form-input');
+        todoPriorityInput.classList.add('form-input');
+        todoProjectInput.classList.add('form-input');
+
+
+        todoEditForm.classList.add('form');
+        todoEditFormContainer.classList.add('form-container');
+
         projects.forEach(project => {
             let projectElement = document.createElement('option');
             projectElement.textContent = project.name;
@@ -271,7 +291,7 @@ const domModule = (function() {
 
         todoTitleInput.required = true;
         todoDescriptionInput.required = true;
-        //todoDueInput.required = true;
+        todoDueInput.required = true;
         todoDescriptionInput.required = true;
 
         newTodoSubmit.type = 'submit';
@@ -290,6 +310,22 @@ const domModule = (function() {
         todoPriorityLow.textContent = 'Low';
         todoPriorityMedium.textContent = 'Medium';
         todoPriorityHigh.textContent = 'High';
+
+        todoTitleLabel.classList.add('form-label');
+        todoDescriptionLabel.classList.add('form-label');
+        todoDueLabel.classList.add('form-label');
+        todoPriorityLabel.classList.add('form-label');
+        todoProjectLabel.classList.add('form-label');
+
+        todoTitleInput.classList.add('form-input');
+        todoDescriptionInput.classList.add('form-input');
+        todoDueInput.classList.add('form-input');
+        todoPriorityInput.classList.add('form-input');
+        todoProjectInput.classList.add('form-input');
+        newTodoSubmit.classList.add('basic-button');
+
+        newTodoForm.classList.add('form');
+        newTodoFormContainer.classList.add('form-container');
 
         projects.forEach(project => {
             let projectElement = document.createElement('option');

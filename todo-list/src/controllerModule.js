@@ -5,6 +5,16 @@ const controllerModule = (function() {
     const currentDomModule = domModule();
     const currentDataModule = dataModule();
 
+    function invokeRefreshTodos(context, project) {
+        let todos = currentDataModule.getTodos(project);
+        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
+    }
+
+    function invokeRefreshProjects() {
+        let projects = currentDataModule.getProjects();
+        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
+    }
+
     function todoDone(id) {
         currentDataModule.markTodoDone(id)
         invokeRefreshTodos(this);
@@ -14,7 +24,6 @@ const controllerModule = (function() {
         currentDataModule.markTodoNotDone(id)
         invokeRefreshTodos(this);
     }
-
 
     function todoDelete(id) {
         currentDataModule.deleteTodo(id)
@@ -32,18 +41,6 @@ const controllerModule = (function() {
         invokeRefreshProjects();
         invokeRefreshTodos(this);
     }
-
-    function invokeRefreshProjects() {
-        let projects = currentDataModule.getProjects();
-        currentDomModule.refreshProjects(projects, selectProject, deleteProject);
-    }
-
-    function invokeRefreshTodos(context, project) {
-        let todos = currentDataModule.getTodos(project);
-        currentDomModule.refreshTodos(todos, todoDone, todoEditForm, todoDelete, todoNotDone);
-    }
-
-
 
     function checkIfProjectExists(title) {
         let projects = currentDataModule.getProjects();
@@ -72,7 +69,6 @@ const controllerModule = (function() {
 
     function newTodoSubmit() {
         validateNewTodoForm(this);
-
         currentDataModule.storeNewTodo(this.title.value, this.description.value, this.due.value, this.priority.value, this.project.value);
     }
 
@@ -89,7 +85,6 @@ const controllerModule = (function() {
         }
     }
 
-
     function todoEditForm(id) {
         let todos = currentDataModule.getTodos();
         let projects = currentDataModule.getProjects();
@@ -100,7 +95,6 @@ const controllerModule = (function() {
 
     function newProjectSubmit() {
         validateNewProjectForm(this);
-
         if (checkIfProjectExists(this.title.value)) {
             currentDomModule.showProjectFormError('This project already exists!');
             event.preventDefault();
@@ -108,7 +102,6 @@ const controllerModule = (function() {
             currentDomModule.showProjectFormError('');
             currentDataModule.storeNewProject(this.title.value)
         }
-
         invokeRefreshProjects();
     }
 
