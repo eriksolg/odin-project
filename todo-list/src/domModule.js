@@ -1,5 +1,6 @@
 const domModule = (function() {
     let newToDoButton;
+    let allProjectsButton;
     let newProjectForm;
     let projectList;
     let todoList;
@@ -8,6 +9,7 @@ const domModule = (function() {
 
     function queryDomElements() {
         newToDoButton = document.getElementById('new-todo');
+        allProjectsButton = document.getElementById('project-select-all-button');
         newProjectForm = document.getElementById('new-project-form');
         projectFormError = document.getElementById('project-form-error');
         projectList = document.getElementById('project-list');
@@ -18,6 +20,13 @@ const domModule = (function() {
     function getNewTodoButton() {
         if (newToDoButton != null) {
             return newToDoButton;
+        }
+        return false;
+    }
+
+    function getAllProjectsButton() {
+        if (allProjectsButton != null) {
+            return allProjectsButton;
         }
         return false;
     }
@@ -210,6 +219,7 @@ const domModule = (function() {
         queryDomElements,
         getNewTodoButton,
         getNewProjectForm,
+        getAllProjectsButton,
         refreshProjects,
         refreshTodos,
         displayNewTodoForm,

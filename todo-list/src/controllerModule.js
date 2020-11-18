@@ -1,6 +1,5 @@
 import dataModule from './dataModule'
 import domModule from './domModule'
-import moment from 'moment'
 
 const controllerModule = (function() {
     const currentDomModule = domModule();
@@ -8,21 +7,21 @@ const controllerModule = (function() {
 
     function todoDone(id) {
         currentDataModule.markTodoDone(id)
-        invokeRefreshTodos();
+        invokeRefreshTodos(this);
     }
 
     function todoEdit(todoName, todoProject) {
-        invokeRefreshTodos();
+        invokeRefreshTodos(this);
     }
 
     function todoDelete(id) {
         currentDataModule.deleteTodo(id)
-        invokeRefreshTodos();
+        invokeRefreshTodos(this);
     }
 
     function selectProject() {
         let project = event.target.parentElement.getAttribute('data-project-name');
-        invokeRefreshTodos(project);
+        invokeRefreshTodos(this, project);
     }
 
     function deleteProject() {
@@ -34,7 +33,7 @@ const controllerModule = (function() {
         currentDomModule.refreshProjects(projects, selectProject, deleteProject);
     }
 
-    function invokeRefreshTodos(project) {
+    function invokeRefreshTodos(context, project) {
         let todos = currentDataModule.getTodos(project);
         currentDomModule.refreshTodos(todos, todoDone, todoEdit, todoDelete);
     }
@@ -100,6 +99,7 @@ const controllerModule = (function() {
         invokeRefreshTodos();
         currentDomModule.getNewTodoButton().addEventListener('click', newTodoForm);
         currentDomModule.getNewProjectForm().addEventListener('submit', newProjectSubmit);
+        currentDomModule.getAllProjectsButton().addEventListener('click', invokeRefreshTodos);
     }
 
     return {

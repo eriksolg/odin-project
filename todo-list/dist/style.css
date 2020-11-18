@@ -109,7 +109,8 @@ body {
     flex-direction: row;
 }
 
-.project-select-button {
+.project-select-button,
+#project-select-all-button {
     display: block;
     margin: 10px auto auto auto;
     width: 150px;
@@ -124,7 +125,8 @@ body {
 #time-select>button:hover,
 #create-project-button:hover,
 .delete-project-button:hover,
-.project-select-button:hover {
+.project-select-button:hover,
+#project-select-all-button:hover {
     border-color: white;
     cursor: pointer;
 }
@@ -132,7 +134,8 @@ body {
 #time-select>button:active,
 #create-project-button:active,
 .delete-project-button:active,
-.project-select-button:active {
+.project-select-button:active,
+#project-select-all-button:active {
     border-color: red;
 }
 

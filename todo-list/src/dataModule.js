@@ -4,7 +4,6 @@ const dataModule = (function() {
     const basil = new Basil({ namespace: 'foo', storages: ['local'] });
     let todos;
     let projects;
-    let activeProject;
 
     const projectFactory = function(name) {
         return { name }
