@@ -25,6 +25,10 @@ const controllerModule = (function() {
     }
 
     function deleteProject() {
+        let project = event.target.parentElement.getAttribute('data-project-name');
+        currentDataModule.deleteProject(project);
+        invokeRefreshProjects();
+        invokeRefreshTodos(this);
 
     }
 

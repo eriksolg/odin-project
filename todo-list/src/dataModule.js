@@ -60,6 +60,13 @@ const dataModule = (function() {
         saveToStorage();
     }
 
+    function deleteProject(project) {
+        projects = projects.filter(element => !(element.name == project));
+        console.log(projects);
+        todos = todos.filter(todo => !(todo.project == project));
+        saveToStorage();
+    }
+
     const todoFactory = function(title, description, dueDate, priority, project) {
 
         return {
@@ -83,6 +90,7 @@ const dataModule = (function() {
         getTodos,
         markTodoDone,
         deleteTodo,
+        deleteProject,
         storeNewTodo,
         storeNewProject
     }
