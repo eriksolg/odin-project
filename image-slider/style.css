@@ -1,0 +1,72 @@
+#picture-frame {
+    width: 600px;
+    height: 600px;
+    border: 1px solid black;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+#picture-slider {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    transition: right 1s;
+    right: 0px;
+}
+
+button {
+    z-index: 20;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 260px;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 30px;
+    box-shadow: none;
+    border: 1px solid beige;
+    background-color: rgb(221, 223, 110);
+}
+
+button:hover {
+    background-color: beige;
+}
+
+button:active {
+    border: 2px solid black;
+}
+
+#move-left {
+    background-image: url('https://www.clipartmax.com/png/full/257-2575067_ic-ala-ios-back-comments-left-arrow-svg.png');
+}
+
+#move-right {
+    left: 520px;
+    background-image: url('https://www.clipartmax.com/png/full/282-2826625_short-arrow-right-svg-png-icon-free-download-487639-slider-arrow-icon.png');
+}
+
+#nav-bar {
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+}
+
+.nav-button {
+    width: 30px;
+    height: 30px;
+    margin: auto auto 20px auto;
+    position: static;
+    background-color: rgba(128, 128, 128, 0.753);
+}
+
+.nav-button:hover {
+    background-color: rgba(65, 55, 55, 0.829);
+}
+
+.nav-active {
+    background-color: yellow;
+}
