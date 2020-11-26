@@ -70,3 +70,7 @@ button:active {
 .nav-active {
     background-color: yellow;
 }
+
+input {
+    display: block;
+}
