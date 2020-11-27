@@ -1,0 +1,25 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "An Odin project",
+  "main": "script.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eriksolg/odin-project.git"
+  },
+  "author": "Erik Sõlg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eriksolg/odin-project/issues"
+  },
+  "homepage": "https://github.com/eriksolg/odin-project#readme",
+  "devDependencies": {
+    "webpack": "^5.8.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
