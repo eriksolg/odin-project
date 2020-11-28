@@ -193,6 +193,9 @@ const domModule = (function() {
     }
 
     function displayLoading() {
+        if (document.getElementById('loading')) {
+            return;
+        }
         infoBox.style.display = 'none';
         let loadingText = document.createElement('h1');
         loadingText.id = 'loading';
