@@ -23,6 +23,7 @@ const controllerModule = (function() {
         if (!userInput) {
             return;
         }
+        currentDomModule.displayLoading();
         let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
         let parsedWeatherData = {
             locationName: weatherData.name,

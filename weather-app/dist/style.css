@@ -91,3 +91,9 @@ header {
     display: flex;
     justify-content: space-between;
 }
+
+#loading {
+    text-align: center;
+    color: white;
+    font-size: 90px;
+}

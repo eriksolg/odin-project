@@ -129,6 +129,7 @@ var scattered = __webpack_require__(579);
 
 const domModule = (function() {
     const body = document.querySelector('body');
+    const weatherPanel = document.getElementById('weather-panel');
     const getWeatherButton = document.getElementById('get-weather-button');
     const getWeatherInput = document.getElementById('get-weather-input');
     const infoBox = document.getElementById('info-box');
@@ -181,13 +182,22 @@ const domModule = (function() {
     }
 
     function displayInfoBox(parsedWeatherData) {
+        let loadingText = document.getElementById('loading');
+        weatherPanel.removeChild(loadingText);
         infoBox.style.display = 'block';
         city.innerHTML = parsedWeatherData.locationName;
         clouds.innerHTML = parsedWeatherData.clouds;
         temperature.innerHTML = `${parsedWeatherData.temperature} °C`;
         pressure.innerHTML = `${parsedWeatherData.pressure} hPa`;
         humidity.innerHTML = `${parsedWeatherData.humidity} %`;
+    }
 
+    function displayLoading() {
+        infoBox.style.display = 'none';
+        let loadingText = document.createElement('h1');
+        loadingText.id = 'loading';
+        loadingText.innerHTML = 'Loading...';
+        weatherPanel.appendChild(loadingText);
     }
 
     return {
@@ -196,6 +206,7 @@ const domModule = (function() {
         getGetWeatherInput,
         clearInfoBox,
         displayInfoBox,
+        displayLoading,
     }
 });
 
@@ -245,6 +256,7 @@ const controllerModule = (function() {
         if (!userInput) {
             return;
         }
+        currentDomModule.displayLoading();
         let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
         let parsedWeatherData = {
             locationName: weatherData.name,
