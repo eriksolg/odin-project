@@ -182,8 +182,12 @@ const domModule = (function() {
     }
 
     function displayInfoBox(parsedWeatherData) {
-        let loadingText = document.getElementById('loading');
-        weatherPanel.removeChild(loadingText);
+        if (document.getElementById('loading')) {
+            weatherPanel.removeChild(document.getElementById('loading'));
+        }
+        if (document.getElementById('error')) {
+            weatherPanel.removeChild(document.getElementById('error'));
+        }
         infoBox.style.display = 'block';
         city.innerHTML = parsedWeatherData.locationName;
         clouds.innerHTML = parsedWeatherData.clouds;
