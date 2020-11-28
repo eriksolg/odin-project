@@ -2,6 +2,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 982:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "e41aaa50186d7fdfdecb.jpg";
+
+/***/ }),
+
 /***/ 885:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -13,6 +20,27 @@ module.exports = __webpack_require__.p + "d23dca44c04207dae5f3.jpg";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "a928263c8a16b66bcce7.jpg";
+
+/***/ }),
+
+/***/ 70:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "33b4d54d826c53158d71.jpg";
+
+/***/ }),
+
+/***/ 161:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "fe5c6aeb0f3e7847cda3.jpg";
+
+/***/ }),
+
+/***/ 579:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "cce1f47cd11a7476876c.jpg";
 
 /***/ })
 
@@ -81,7 +109,21 @@ module.exports = __webpack_require__.p + "a928263c8a16b66bcce7.jpg";
 var cloudy = __webpack_require__(440);
 // EXTERNAL MODULE: ./src/assets/clear.jpg
 var clear = __webpack_require__(885);
+// EXTERNAL MODULE: ./src/assets/broken.jpg
+var broken = __webpack_require__(982);
+// EXTERNAL MODULE: ./src/assets/overcast.jpg
+var overcast = __webpack_require__(161);
+// EXTERNAL MODULE: ./src/assets/few.jpg
+var few = __webpack_require__(70);
+// EXTERNAL MODULE: ./src/assets/scattered.jpg
+var scattered = __webpack_require__(579);
 ;// CONCATENATED MODULE: ./src/domModule.js
+
+
+
+
+
+
 
 
 
@@ -89,6 +131,15 @@ const domModule = (function() {
     const body = document.querySelector('body');
     const getWeatherButton = document.getElementById('get-weather-button');
     const getWeatherInput = document.getElementById('get-weather-input');
+    const infoBox = document.getElementById('info-box');
+    const city = document.getElementById('city');
+    const clouds = document.getElementById('clouds');
+    const temperature = document.getElementById('temperature');
+    const pressure = document.getElementById('pressure');
+    const humidity = document.getElementById('humidity');
+
+
+
 
     function getGetWeatherButton() {
         return getWeatherButton;
@@ -102,17 +153,49 @@ const domModule = (function() {
             case 'clear sky':
                 body.style.backgroundImage = `url(${clear})`;
                 break;
+            case 'broken clouds':
+                body.style.backgroundImage = `url(${broken})`;
+                break;
+            case 'overcast clouds':
+                body.style.backgroundImage = `url(${overcast})`;
+                break;
+            case 'few clouds':
+                body.style.backgroundImage = `url(${few})`;
+                break;
+            case 'scattered clouds':
+                body.style.backgroundImage = `url(${scattered})`;
+                break;
         }
     }
 
-    function getUserInput() {
-        return getWeatherInput.value;
+    function getGetWeatherInput() {
+        return getWeatherInput;
+    }
+
+    function clearInfoBox() {
+        infoBox.style.display = 'none';
+        [city, clouds, temperature, pressure, humidity].forEach(element => {
+            element.innerHTML = '';
+        });
+
+    }
+
+    function displayInfoBox(parsedWeatherData) {
+        infoBox.style.display = 'block';
+        city.innerHTML = parsedWeatherData.locationName;
+        clouds.innerHTML = parsedWeatherData.clouds;
+        temperature.innerHTML = `${parsedWeatherData.temperature} °C`;
+        pressure.innerHTML = `${parsedWeatherData.pressure} hPa`;
+        humidity.innerHTML = `${parsedWeatherData.humidity} %`;
+
     }
 
     return {
         setBackground,
         getGetWeatherButton,
-        getUserInput
+        getGetWeatherInput,
+        clearInfoBox,
+        displayInfoBox,
     }
 });
 
@@ -121,7 +204,7 @@ const domModule = (function() {
 const weatherModule = (function() {
     async function queryWeatherData(apiKey, location) {
         try {
-            const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`);
+            const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`);
             const weatherData = await response.json();
             return weatherData;
         } catch (err) {
@@ -146,27 +229,36 @@ const controllerModule = (function() {
     const weatherApiKey = 'cf793a2c77c50f7ed140b28244dbcb20';
 
     function setListeners() {
+        const getWeatherInput = currentDomModule.getGetWeatherInput();
         const getWeatherButton = currentDomModule.getGetWeatherButton();
         getWeatherButton.addEventListener('click', newWeatherQuery);
+        getWeatherInput.addEventListener('keyup', event => {
+            if (event.key === 'Enter') {
+                getWeatherButton.click();
+            }
+        });
+
     }
 
     async function newWeatherQuery() {
-        let userInput = currentDomModule.getUserInput();
+        let userInput = currentDomModule.getGetWeatherInput().value;
         if (!userInput) {
             return;
         }
         let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
-        console.log(weatherData);
-        let locationName = weatherData.name;
-        let clouds = weatherData.weather[0].description;
-        let humidity = weatherData.main.humidity;
-        let pressure = weatherData.main.pressure;
-        let temperature = weatherData.main.temp;
-        let wind = weatherData.wind.speed;
+        let parsedWeatherData = {
+            locationName: weatherData.name,
+            clouds: weatherData.weather[0].description,
+            humidity: weatherData.main.humidity,
+            pressure: weatherData.main.pressure,
+            temperature: weatherData.main.temp,
+            wind: weatherData.wind.speed,
+        };
 
 
-        currentDomModule.setBackground(clouds);
-        console.log(clouds);
+        currentDomModule.setBackground(parsedWeatherData.clouds);
+        currentDomModule.displayInfoBox(parsedWeatherData);
+
     }
 
     function init() {

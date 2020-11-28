@@ -7,27 +7,36 @@ const controllerModule = (function() {
     const weatherApiKey = 'cf793a2c77c50f7ed140b28244dbcb20';
 
     function setListeners() {
+        const getWeatherInput = currentDomModule.getGetWeatherInput();
         const getWeatherButton = currentDomModule.getGetWeatherButton();
         getWeatherButton.addEventListener('click', newWeatherQuery);
+        getWeatherInput.addEventListener('keyup', event => {
+            if (event.key === 'Enter') {
+                getWeatherButton.click();
+            }
+        });
+
     }
 
     async function newWeatherQuery() {
-        let userInput = currentDomModule.getUserInput();
+        let userInput = currentDomModule.getGetWeatherInput().value;
         if (!userInput) {
             return;
         }
         let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
-        console.log(weatherData);
-        let locationName = weatherData.name;
-        let clouds = weatherData.weather[0].description;
-        let humidity = weatherData.main.humidity;
-        let pressure = weatherData.main.pressure;
-        let temperature = weatherData.main.temp;
-        let wind = weatherData.wind.speed;
+        let parsedWeatherData = {
+            locationName: weatherData.name,
+            clouds: weatherData.weather[0].description,
+            humidity: weatherData.main.humidity,
+            pressure: weatherData.main.pressure,
+            temperature: weatherData.main.temp,
+            wind: weatherData.wind.speed,
+        };
 
 
-        currentDomModule.setBackground(clouds);
-        console.log(clouds);
+        currentDomModule.setBackground(parsedWeatherData.clouds);
+        currentDomModule.displayInfoBox(parsedWeatherData);
+
     }
 
     function init() {
