@@ -24,7 +24,10 @@ const controllerModule = (function() {
             return;
         }
         currentDomModule.displayLoading();
-        let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
+        let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput, currentDomModule.displayError);
+        if (weatherData.weather == undefined) {
+            currentDomModule.displayError('Could not fetch data for this location!');
+        }
         let parsedWeatherData = {
             locationName: weatherData.name,
             clouds: weatherData.weather[0].description,

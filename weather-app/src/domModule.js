@@ -83,6 +83,20 @@ const domModule = (function() {
         weatherPanel.appendChild(loadingText);
     }
 
+    function displayError(error) {
+        if (document.getElementById('loading')) {
+            weatherPanel.removeChild(document.getElementById('loading'));
+        }
+        if (document.getElementById('error')) {
+            weatherPanel.removeChild(document.getElementById('error'));
+        }
+        infoBox.style.display = 'none';
+        let errorText = document.createElement('h1');
+        errorText.id = 'error';
+        errorText.innerHTML = error;
+        weatherPanel.appendChild(errorText);
+    }
+
     return {
         setBackground,
         getGetWeatherButton,
@@ -90,6 +104,7 @@ const domModule = (function() {
         clearInfoBox,
         displayInfoBox,
         displayLoading,
+        displayError,
     }
 });
 

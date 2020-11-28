@@ -203,6 +203,20 @@ const domModule = (function() {
         weatherPanel.appendChild(loadingText);
     }
 
+    function displayError(error) {
+        if (document.getElementById('loading')) {
+            weatherPanel.removeChild(document.getElementById('loading'));
+        }
+        if (document.getElementById('error')) {
+            weatherPanel.removeChild(document.getElementById('error'));
+        }
+        infoBox.style.display = 'none';
+        let errorText = document.createElement('h1');
+        errorText.id = 'error';
+        errorText.innerHTML = error;
+        weatherPanel.appendChild(errorText);
+    }
+
     return {
         setBackground,
         getGetWeatherButton,
@@ -210,19 +224,20 @@ const domModule = (function() {
         clearInfoBox,
         displayInfoBox,
         displayLoading,
+        displayError,
     }
 });
 
 /* harmony default export */ const src_domModule = (domModule);
 ;// CONCATENATED MODULE: ./src/weatherModule.js
 const weatherModule = (function() {
-    async function queryWeatherData(apiKey, location) {
+    async function queryWeatherData(apiKey, location, errorCallback) {
         try {
             const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`);
             const weatherData = await response.json();
             return weatherData;
         } catch (err) {
-            console.log(err);
+            errorCallback(err);
         }
     }
 
@@ -260,7 +275,10 @@ const controllerModule = (function() {
             return;
         }
         currentDomModule.displayLoading();
-        let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput);
+        let weatherData = await currentWeatherModule.queryWeatherData(weatherApiKey, userInput, currentDomModule.displayError);
+        if (weatherData.weather == undefined) {
+            currentDomModule.displayError('Could not fetch data for this location!');
+        }
         let parsedWeatherData = {
             locationName: weatherData.name,
             clouds: weatherData.weather[0].description,

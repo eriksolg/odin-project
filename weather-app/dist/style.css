@@ -97,3 +97,9 @@ header {
     color: white;
     font-size: 90px;
 }
+
+#error {
+    text-align: center;
+    color: red;
+    font-size: 70px;
+}

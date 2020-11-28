@@ -40,3 +40,8 @@ Outcomes: Using webpack, modules, creating dynamic web page with separate ES6 mo
 https://www.theodinproject.com/courses/javascript/lessons/todo-list
 
 Outcomes: All of the prior
+
+### Weather app
+https://www.theodinproject.com/lessons/weather-app
+
+Outcomes: Asynchronous functions/promises. API fetching, JSON parsing.
