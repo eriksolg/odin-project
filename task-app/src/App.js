@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import uniqid from "uniqid";
 import Overview from './components/Overview'
 
 class App extends React.Component {
@@ -7,13 +8,19 @@ class App extends React.Component {
 
     this.state = {
       value: '',
+      editValue: '',
       tasks: [],
+      taskInEditing: null,
       lastId: 1,
     }
   }
 
   onChangeValue = event => {
     this.setState({ value: event.target.value });
+  }
+
+  onChangeEditValue = event => {
+    this.setState( {editValue: event.target.value});
   }
 
   onAddTask = event => {
@@ -39,9 +46,34 @@ class App extends React.Component {
     });
   }
 
+  editTask = (id) => {
+    this.setState({
+      taskInEditing: id,
+      editValue: this.state.tasks.find(item => item.id == id).task,
+    });
+  }
+
+  submitTask = (id) => {
+    this.setState({
+      tasks: this.state.tasks.map((item) => {
+        let currentId = item.id;
+        let currentTask = item.task;
+        if (currentId == id) {
+          currentTask = this.state.editValue
+        }
+        return {
+          id: currentId,
+          task: currentTask,
+        }
+      }),
+      taskInEditing: null,
+      editValue: '',
+    })
+  }
+
   render() {
 
-    const { value, tasks } = this.state;
+    const { value, editValue, tasks, taskInEditing } = this.state;
     return (
       <div className="col-6 mx-auto mt-5">
         <form onSubmit={this.onAddTask}>
@@ -71,7 +103,14 @@ class App extends React.Component {
             </button>
           </div>
         </form>
-        <Overview tasks={tasks} handleDelete={this.deleteTask}/>
+        <Overview
+          tasks={tasks}
+          editValue={editValue}
+          handleDelete={this.deleteTask}
+          handleEdit={this.editTask}
+          handleSubmit={this.submitTask}
+          onChangeEditValue={this.onChangeEditValue}
+          taskInEditing={taskInEditing}/>
       </div>
     )
   }
