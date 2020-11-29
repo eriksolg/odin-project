@@ -8,6 +8,7 @@ class App extends React.Component {
     this.state = {
       value: '',
       tasks: [],
+      lastId: 1,
     }
   }
 
@@ -19,13 +20,23 @@ class App extends React.Component {
     event.preventDefault();
 
     this.setState({
-      tasks: this.state.tasks.concat(this.state.value),
+      tasks: this.state.tasks.concat({
+        id: this.state.lastId,
+        task: this.state.value}
+        ),
       value: '',
+      lastId: this.state.lastId + 1,
     });
   }
 
   clearTasks = () => {
     this.setState({ tasks: []});
+  }
+
+  deleteTask = (id) => {
+    this.setState({
+      tasks: this.state.tasks.filter((task) => {return task.id !== id}),
+    });
   }
 
   render() {
@@ -60,7 +71,7 @@ class App extends React.Component {
             </button>
           </div>
         </form>
-        <Overview tasks={tasks}/>
+        <Overview tasks={tasks} handleDelete={this.deleteTask}/>
       </div>
     )
   }

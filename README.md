@@ -45,3 +45,8 @@ Outcomes: All of the prior
 https://www.theodinproject.com/lessons/weather-app
 
 Outcomes: Asynchronous functions/promises. API fetching, JSON parsing.
+
+### Task app
+https://www.theodinproject.com/courses/javascript/lessons/handle-inputs-and-render-lists
+
+Outcomes: React state and props, simple bootstrap
