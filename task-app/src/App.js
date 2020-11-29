@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import uniqid from "uniqid";
 import Overview from './components/Overview'
 
 class App extends React.Component {
@@ -53,7 +52,8 @@ class App extends React.Component {
     });
   }
 
-  submitTask = (id) => {
+  submitTask = (id, event) => {
+    event.preventDefault();
     this.setState({
       tasks: this.state.tasks.map((item) => {
         let currentId = item.id;
