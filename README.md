@@ -50,3 +50,8 @@ Outcomes: Asynchronous functions/promises. API fetching, JSON parsing.
 https://www.theodinproject.com/courses/javascript/lessons/handle-inputs-and-render-lists
 
 Outcomes: React state and props, simple bootstrap
+
+### CV application
+https://www.theodinproject.com/lessons/cv-application/
+
+Outcomes: React components, state, props.
