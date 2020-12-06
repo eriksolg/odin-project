@@ -6,6 +6,7 @@ class EducationSection extends React.Component {
         super();
 
         this.state = {
+            editing: false,
             educationData: [
                 {
                     yearStart: '2017',
@@ -22,27 +23,33 @@ class EducationSection extends React.Component {
             <div className="card">
                 <div className="card-body">
                     <h3 className="card-title">Education</h3>
-                    <ul class="list-group list-group-flush card-columns">
-                        {this.state.educationData.map(item => {
-                            const { yearStart, yearEnd, schoolName, degree } = item;
-                            return (
-                                <li class="list-group-item">
-                                    <div className="row">
-                                        <div className="col-xl-3 text-nowrap">
-                                            <strong>{yearStart}-{yearEnd}</strong>
-                                        </div>
-                                        <div className="col-xl-8 offset-xl-1">
-                                            <span>{schoolName}</span>
-                                            <span> </span>
-                                            <span className="text-muted">{degree}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            )
-                        })
-                        }
+                    {
+                        this.state.editing ?
+                            <form>
 
-                    </ul>
+                            </form>
+                            :
+                            <ul class="list-group list-group-flush card-columns">
+                                {this.state.educationData.map(item => {
+                                    const { yearStart, yearEnd, schoolName, degree } = item;
+                                    return (
+                                        <li class="list-group-item">
+                                            <div className="row">
+                                                <div className="col-xl-3 text-nowrap">
+                                                    <strong>{yearStart}-{yearEnd}</strong>
+                                                </div>
+                                                <div className="col-xl-8 offset-xl-1">
+                                                    <span>{schoolName}</span>
+                                                    <span> </span>
+                                                    <span className="text-muted">{degree}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                })
+                                }
+                            </ul>
+                    }
                 </div>
             </div >
         )

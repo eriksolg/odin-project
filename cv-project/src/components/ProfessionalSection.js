@@ -5,6 +5,7 @@ class ProfessionalSection extends React.Component {
         super();
 
         this.state = {
+            editing: false,
             professionalData: [
                 {
                     yearStart: '2017',
@@ -22,26 +23,33 @@ class ProfessionalSection extends React.Component {
             <div className="card">
                 <div className="card-body">
                     <h3 className="card-title">Professional</h3>
-                    <ul class="list-group list-group-flush card-columns">
-                        {this.state.professionalData.map(item => {
-                            const { yearStart, yearEnd, companyName, profession, description } = item;
-                            return (
-                                <li class="list-group-item">
-                                    <div className="row">
-                                        <div className="col-xl-3 text-nowrap">
-                                            <strong>{yearStart}-{yearEnd}</strong>
-                                        </div>
-                                        <div className="col-xl-8 offset-xl-1">
-                                            <span>{companyName}</span>
-                                            <span> </span>
-                                            <span className="text-muted">{profession}</span>
-                                            <p className="text-justify">{description}</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    {
+                        this.state.editing ?
+                            <form>
+
+                            </form>
+                            :
+                            <ul class="list-group list-group-flush card-columns">
+                                {this.state.professionalData.map(item => {
+                                    const { yearStart, yearEnd, companyName, profession, description } = item;
+                                    return (
+                                        <li class="list-group-item">
+                                            <div className="row">
+                                                <div className="col-xl-3 text-nowrap">
+                                                    <strong>{yearStart}-{yearEnd}</strong>
+                                                </div>
+                                                <div className="col-xl-8 offset-xl-1">
+                                                    <span>{companyName}</span>
+                                                    <span> </span>
+                                                    <span className="text-muted">{profession}</span>
+                                                    <p className="text-justify">{description}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                    }
                 </div>
             </div >
         )
