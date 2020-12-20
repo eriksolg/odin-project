@@ -1,123 +1,69 @@
-import React, { component } from 'react'
+import React, { useEffect, useState } from 'react'
 import EditButton from './EditButton'
+import FormGroup from './FormGroup'
 
 
+const HeaderSection = () => {
 
-class HeaderSection extends React.Component {
-    constructor() {
-        super();
+    const [editing, setEditing] = useState(false);
+    const [hover, setHover] = useState(false);
+    const [firstName, setFirstName] = useState('Michelangelo');
+    const [lastName, setLastName] = useState('Crisostomus');
+    const [profession, setProfession] = useState('IT-specialist');
+    const [firstNameEdit, setFirstNameEdit] = useState(firstName);
+    const [lastNameEdit, setLastNameEdit] = useState(lastName);
+    const [professionEdit, setProfessionEdit] = useState(profession);
 
-        this.state = {
-            editing: false,
-            hover: false,
-            firstName: 'Michelangelo',
-            lastName: 'Crisostomus',
-            profession: 'IT-specialist',
-            firstNameEdit: '',
-            lastNameEdit: '',
-            professionEdit: ''
-        }
+
+    const edit = () => {
+        setEditing(true);
     }
 
-    toggleHover() {
-        this.setState({
-            hover: !this.state.hover,
-        });
+    const submit = () => {
+        setEditing(false);
+        setFirstName(firstNameEdit);
+        setLastName(lastNameEdit);
+        setProfession(professionEdit);
     }
 
-    edit() {
-        this.setState({
-            editing: true,
-            firstNameEdit: this.state.firstName,
-            lastNameEdit: this.state.lastName,
-            professionEdit: this.state.profession
-        });
-    }
+    return (
+        editing ?
+            <form onSubmit={submit.bind(this)}>
+                <FormGroup
+                    name="firstName"
+                    label="First name"
+                    origin={firstNameEdit}
+                    type="text"
+                    changeValue={setFirstNameEdit.bind(this)} />
 
-    submit() {
-        this.setState({
-            editing: false,
-            firstName: this.state.firstNameEdit,
-            lastName: this.state.lastNameEdit,
-            profession: this.state.professionEdit,
-            firstNameEdit: '',
-            lastNameEdit: '',
-            professionEdit: ''
-        })
-    }
+                <FormGroup
+                    name="lastName"
+                    label="Last name"
+                    origin={lastNameEdit}
+                    type="text"
+                    changeValue={setLastNameEdit.bind(this)} />
 
-    render() {
-        const { firstName, lastName, profession, firstNameEdit, lastNameEdit, professionEdit } = this.state;
 
-        return (
-            this.state.editing ?
-                <form onSubmit={this.submit.bind(this)}>
-                    <div className="form-group">
-                        <div className="row">
-                            <div className="col-sm-2">
-                                <label htmlFor="firstNameInput">First name</label>
-                            </div>
-                            <div className="col-sm-5">
-                                <input id="firstNameInput"
-                                    type="text"
-                                    className="form-control"
-                                    value={firstNameEdit}
-                                    onChange={(event) => {
-                                        this.setState({ firstNameEdit: event.target.value });
-                                    }}></input>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="row">
-                            <div className="col-sm-2">
-                                <label htmlFor="firstNameInput">Surname</label>
-                            </div>
-                            <div className="col-sm-5">
-                                <input id="lastNameInput"
-                                    type="text"
-                                    className="form-control"
-                                    value={lastNameEdit}
-                                    onChange={(event) => {
-                                        this.setState({ lastNameEdit: event.target.value });
-                                    }}></input>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="row">
-                            <div className="col-sm-2">
-                                <label htmlFor="occupationInput">Occupation</label>
-                            </div>
-                            <div className="col-sm-5">
-                                <input
-                                    id="occupationInput"
-                                    type="text"
-                                    className="form-control"
-                                    value={professionEdit}
-                                    onChange={(event) => {
-                                        this.setState({ professionEdit: event.target.value });
-                                    }}></input>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-success">Submit</button>
-                </form>
-                :
-                <header className="hover-shade"
-                    onMouseEnter={() => this.setState({
-                        hover: true,
-                    })}
-                    onMouseLeave={() => this.setState({
-                        hover: false
-                    })}
-                >
-                    <h1 className="d-inline-block">{firstName} {lastName}</h1>
-                    {this.state.hover && !this.state.editing && <EditButton edit={this.edit.bind(this)} />}
-                    <h3 className="text-muted">{profession}</h3>
-                </header>
-        )
-    }
+                <FormGroup
+                    name="occupation"
+                    label="Occuptation"
+                    origin={professionEdit}
+                    type="text"
+                    changeValue={setProfessionEdit.bind(this)} />
+
+                <button type="submit" className="btn btn-success">Submit</button>
+            </form>
+            :
+            <header className="hover-shade"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+            >
+                <h1 className="d-inline-block">{firstName} {lastName}</h1>
+                {hover ? <EditButton edit={edit} /> : null}
+                <h3 className="text-muted">{profession}</h3>
+            </header >
+    )
+
 }
 
 export default HeaderSection
