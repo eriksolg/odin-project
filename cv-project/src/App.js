@@ -15,9 +15,9 @@ class App extends React.Component {
 
       <div id="app-container" className="container-fluid">
         <div className="row">
-          <div className="col-3">
+          <div className="col-xl-2">
           </div>
-          <div id="main-content" className="col-6">
+          <div id="main-content" className="col-xl-8 col-12">
             <div className="m-2">
               <HeaderSection />
             </div>
@@ -28,7 +28,7 @@ class App extends React.Component {
             </div>
 
           </div>
-          <div className="col-3">
+          <div className="col-xl-2">
           </div>
         </div>
 

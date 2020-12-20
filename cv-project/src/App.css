@@ -1,5 +1,5 @@
-.card:hover {
-    background-color: rgba(236, 236, 236, 0.329);
+.hover-shade:hover {
+    background-color: rgba(236, 236, 236, 0.329) !important;
 }
 
 #cards-section {
@@ -11,4 +11,8 @@
 ul,
 li {
     background-color: transparent !important;
+}
+
+.list-group-item {
+    min-height: 120px;
 }
