@@ -2,18 +2,14 @@ import { useState } from 'react'
 import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
-const GeneralSection = () => {
+const GeneralSection = (props) => {
 
     const [editing, setEditing] = useState(false);
     const [hover, setHover] = useState(false);
-    const [address, setAddress] = useState('My Address 25, Jõhvi, Estonia');
-    const [phone, setPhone] = useState('+372 12345678');
-    const [birth, setBirth] = useState('1991-11-11');
-    const [email, setEmail] = useState('my.email@gmail.com');
-    const [addressEdit, setAddressEdit] = useState(address);
-    const [phoneEdit, setPhoneEdit] = useState(phone);
-    const [birthEdit, setBirthEdit] = useState(birth);
-    const [emailEdit, setEmailEdit] = useState(email);
+    const [addressEdit, setAddressEdit] = useState(props.address);
+    const [phoneEdit, setPhoneEdit] = useState(props.phone);
+    const [birthEdit, setBirthEdit] = useState(props.birth);
+    const [emailEdit, setEmailEdit] = useState(props.email);
 
     const edit = () => {
         setEditing(true);
@@ -21,10 +17,14 @@ const GeneralSection = () => {
 
     const submit = () => {
         setEditing(false);
-        setAddress(addressEdit);
-        setPhone(phoneEdit);
-        setBirth(birthEdit);
-        setEmail(emailEdit);
+        props.setState(
+            {
+                address: addressEdit,
+                phone: phoneEdit,
+                birth: birthEdit,
+                email: emailEdit,
+            }
+        )
     }
 
     return (
@@ -74,11 +74,11 @@ const GeneralSection = () => {
                                 <div className="row">
                                     <div className="col-xl-6">
                                         <dt className="col-xl-3 text-nowrap d-inline-block">Address: </dt>
-                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{address}</dd>
+                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{props.address}</dd>
                                     </div>
                                     <div className="col-xl-6">
                                         <dt className="col-xl-3 text-nowrap d-inline-block">Phone: </dt>
-                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{phone}</dd>
+                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{props.phone}</dd>
                                     </div>
                                 </div>
                             </li>
@@ -86,11 +86,11 @@ const GeneralSection = () => {
                                 <div className="row">
                                     <div className="col-xl-6">
                                         <dt className="col-xl-3 text-nowrap d-inline-block">Birth: </dt>
-                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{birth}</dd>
+                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{props.birth}</dd>
                                     </div>
                                     <div className="col-xl-6">
                                         <dt className="col-xl-3 text-nowrap d-inline-block">E-mail: </dt>
-                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{email}</dd>
+                                        <dd className="col-xl-8 offset-xl-1 float-right text-xl-right">{props.email}</dd>
                                     </div>
                                 </div>
                             </li>

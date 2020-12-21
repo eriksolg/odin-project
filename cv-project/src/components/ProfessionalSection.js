@@ -2,20 +2,15 @@ import { useState } from 'react'
 import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
-const ProfessionalRow = () => {
+const ProfessionalRow = (props) => {
 
     const [hover, setHover] = useState(false);
     const [editing, setEditing] = useState(false);
-    const [start, setStart] = useState('2017-01-01');
-    const [end, setEnd] = useState('2019-01-01');
-    const [companyName, setCompanyName] = useState('AS Pets ja Pojad');
-    const [profession, setProfession] = useState('AD haldur');
-    const [description, setDescription] = useState('Tegin seda ja toda');
-    const [startEdit, setStartEdit] = useState(start);
-    const [endEdit, setEndEdit] = useState(end);
-    const [companyNameEdit, setCompanyNameEdit] = useState(companyName);
-    const [professionEdit, setProfessionEdit] = useState(profession);
-    const [descriptionEdit, setDescriptionEdit] = useState(description);
+    const [startEdit, setStartEdit] = useState(props.professionalData.start);
+    const [endEdit, setEndEdit] = useState(props.professionalData.end);
+    const [companyNameEdit, setCompanyNameEdit] = useState(props.professionalData.companyName);
+    const [professionEdit, setProfessionEdit] = useState(props.professionalData.profession);
+    const [descriptionEdit, setDescriptionEdit] = useState(props.professionalData.description);
 
 
     const edit = () => {
@@ -24,11 +19,13 @@ const ProfessionalRow = () => {
 
     const submit = () => {
         setEditing(false);
-        setStart(startEdit);
-        setEnd(endEdit);
-        setCompanyName(companyNameEdit);
-        setProfession(professionEdit);
-        setDescription(descriptionEdit)
+        props.updateProfessionalData({
+            start: startEdit,
+            end: endEdit,
+            companyName: companyNameEdit,
+            profession: professionEdit,
+            description: descriptionEdit
+        }, props.index)
     }
 
     const getFullYear = (date) => {
@@ -36,7 +33,7 @@ const ProfessionalRow = () => {
     }
 
     return (
-        <li className="list-group-item hover-shade" key={companyName}
+        <li className="list-group-item hover-shade" key={props.professionalData.companyName}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
@@ -85,14 +82,14 @@ const ProfessionalRow = () => {
                     <div className="row">
 
                         <div className="col-xl-3 text-nowrap">
-                            <strong>{getFullYear(start)}-{getFullYear(end)}</strong>
+                            <strong>{getFullYear(props.professionalData.start)}-{getFullYear(props.professionalData.end)}</strong>
                         </div>
 
                         <div className="col-xl-7 offset-xl-1">
-                            <span>{companyName}</span>
+                            <span>{props.professionalData.companyName}</span>
                             <span> </span>
-                            <span className="text-muted">{profession}</span>
-                            <p className="text-justify">{description}</p>
+                            <span className="text-muted">{props.professionalData.profession}</span>
+                            <p className="text-justify">{props.professionalData.description}</p>
                         </div>
 
                         <div className="cosl-xl-1">
@@ -105,15 +102,33 @@ const ProfessionalRow = () => {
 
 }
 
-const ProfessionalSection = () => {
+const ProfessionalSection = (props) => {
+
+    const updateProfessionalData = (singleProfessionalData, singleProfessionalDataIndex) => {
+        props.setState(
+            {
+                professionalData: props.professionalData.map((educationItem, index) => {
+                    if (index == singleProfessionalDataIndex) {
+                        return singleProfessionalData;
+                    }
+                }),
+            }
+        )
+    }
+
+    const professionalRows = props.professionalData.map((singleProfessionalData, index) =>
+        <ProfessionalRow
+            professionalData={singleProfessionalData}
+            index={index}
+            updateProfessionalData={updateProfessionalData.bind(this)} />
+    );
+
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Professional</h3>
                 <ul className="list-group list-group-flush card-columns">
-                    <ProfessionalRow />
-                    <ProfessionalRow />
-                    <ProfessionalRow />
+                    {professionalRows}
                 </ul>
 
             </div>

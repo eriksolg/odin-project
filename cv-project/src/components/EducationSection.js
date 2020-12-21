@@ -2,18 +2,14 @@ import React, { useState } from 'react'
 import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
-const EducationRow = () => {
+const EducationRow = (props) => {
 
     const [hover, setHover] = useState(false);
     const [editing, setEditing] = useState(false);
-    const [start, setStart] = useState('2016-01-01');
-    const [end, setEnd] = useState('2019-01-01');
-    const [schoolName, setSchoolName] = useState('Miina Härma Gümnaasium');
-    const [degree, setDegree] = useState('Keskharidus');
-    const [startEdit, setStartEdit] = useState(start);
-    const [endEdit, setEndEdit] = useState(end);
-    const [schoolNameEdit, setSchoolNameEdit] = useState(schoolName);
-    const [degreeEdit, setDegreeEdit] = useState(degree);
+    const [startEdit, setStartEdit] = useState(props.educationData.start);
+    const [endEdit, setEndEdit] = useState(props.educationData.end);
+    const [schoolNameEdit, setSchoolNameEdit] = useState(props.educationData.schoolName);
+    const [degreeEdit, setDegreeEdit] = useState(props.educationData.degree);
 
     const edit = () => {
         setEditing(true);
@@ -21,10 +17,12 @@ const EducationRow = () => {
 
     const submit = () => {
         setEditing(false);
-        setStart(startEdit);
-        setEnd(endEdit);
-        setSchoolName(schoolNameEdit);
-        setDegree(degreeEdit);
+        props.updateEducationData({
+            start: startEdit,
+            end: endEdit,
+            schoolName: schoolNameEdit,
+            degree: degreeEdit,
+        }, props.index)
     }
 
     const getFullYear = (date) => {
@@ -32,7 +30,7 @@ const EducationRow = () => {
     }
 
     return (
-        <li className="list-group-item hover-shade" key={schoolName}
+        <li className="list-group-item hover-shade" key={props.educationData.schoolName}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
@@ -74,13 +72,13 @@ const EducationRow = () => {
                     <div className="row">
 
                         <div className="col-xl-3 text-nowrap">
-                            <strong>{getFullYear(start)}-{getFullYear(end)}</strong>
+                            <strong>{getFullYear(props.educationData.start)}-{getFullYear(props.educationData.end)}</strong>
                         </div>
 
                         <div className="col-xl-7 offset-xl-1">
-                            <span>{schoolName}</span>
+                            <span>{props.educationData.schoolName}</span>
                             <span> </span>
-                            <span className="text-muted">{degree}</span>
+                            <span className="text-muted">{props.educationData.degree}</span>
                         </div>
 
                         <div className="cosl-xl-1">
@@ -95,19 +93,33 @@ const EducationRow = () => {
 }
 
 
-const EducationSection = () => {
+const EducationSection = (props) => {
 
+    const updateEducationData = (singleEducationData, singleEducationDataIndex) => {
+        props.setState(
+            {
+                educationData: props.educationData.map((educationItem, index) => {
+                    if (index == singleEducationDataIndex) {
+                        return singleEducationData;
+                    }
+                }),
+            }
+        )
+    }
+
+    const educationRows = props.educationData.map((singleEducationData, index) =>
+        <EducationRow
+            educationData={singleEducationData}
+            index={index}
+            updateEducationData={updateEducationData.bind(this)} />
+    );
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Education</h3>
 
                 <ul className="list-group list-group-flush card-columns">
-
-                    <EducationRow />
-                    <EducationRow />
-                    <EducationRow />
-
+                    {educationRows}
                 </ul>
 
             </div>

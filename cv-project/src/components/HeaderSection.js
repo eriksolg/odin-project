@@ -3,17 +3,13 @@ import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
 
-const HeaderSection = () => {
+const HeaderSection = (props) => {
 
     const [editing, setEditing] = useState(false);
     const [hover, setHover] = useState(false);
-    const [firstName, setFirstName] = useState('Michelangelo');
-    const [lastName, setLastName] = useState('Crisostomus');
-    const [profession, setProfession] = useState('IT-specialist');
-    const [firstNameEdit, setFirstNameEdit] = useState(firstName);
-    const [lastNameEdit, setLastNameEdit] = useState(lastName);
-    const [professionEdit, setProfessionEdit] = useState(profession);
-
+    const [firstNameEdit, setFirstNameEdit] = useState(props.firstName);
+    const [lastNameEdit, setLastNameEdit] = useState(props.lastName);
+    const [professionEdit, setProfessionEdit] = useState(props.profession);
 
     const edit = () => {
         setEditing(true);
@@ -21,9 +17,13 @@ const HeaderSection = () => {
 
     const submit = () => {
         setEditing(false);
-        setFirstName(firstNameEdit);
-        setLastName(lastNameEdit);
-        setProfession(professionEdit);
+        props.setState(
+            {
+                firstName: firstNameEdit,
+                lastName: lastNameEdit,
+                profession: professionEdit
+            }
+        )
     }
 
     return (
@@ -58,12 +58,11 @@ const HeaderSection = () => {
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
             >
-                <h1 className="d-inline-block">{firstName} {lastName}</h1>
+                <h1 className="d-inline-block">{props.firstName} {props.lastName}</h1>
                 {hover ? <EditButton edit={edit} /> : null}
-                <h3 className="text-muted">{profession}</h3>
+                <h3 className="text-muted">{props.profession}</h3>
             </header >
     )
-
 }
 
 export default HeaderSection

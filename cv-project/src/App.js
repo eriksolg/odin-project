@@ -8,6 +8,33 @@ import ProfessionalSection from './components/ProfessionalSection'
 class App extends React.Component {
   constructor() {
     super()
+
+    this.state = {
+      firstName: 'Michelangelo',
+      lastName: 'Crisostomus',
+      profession: 'IT-specialist',
+      address: 'My Address 25, Jõhvi, Estonia',
+      phone: '+372 12345678',
+      birth: '1991-11-11',
+      email: 'my.email@gmail.com',
+      educationData: [
+        {
+          start: '2016-01-01',
+          end: '2019-01-01',
+          schoolName: 'Miina Härma Gümnaasium',
+          degree: 'Keskharidus',
+        }
+      ],
+      professionalData: [
+        {
+          start: '2017-01-01',
+          end: '2019-01-01',
+          companyName: 'AS Pets ja Pojad',
+          profession: 'AD haldur',
+          description: 'Tegin seda ja toda',
+        }
+      ],
+    }
   }
 
   render() {
@@ -19,12 +46,25 @@ class App extends React.Component {
           </div>
           <div id="main-content" className="col-xl-8 col-12">
             <div className="m-2">
-              <HeaderSection />
+              <HeaderSection
+                firstName={this.state.firstName}
+                lastName={this.state.lastName}
+                profession={this.state.profession}
+                setState={this.setState.bind(this)} />
             </div>
             <div id="cards-section">
-              <GeneralSection />
-              <EducationSection />
-              <ProfessionalSection />
+              <GeneralSection
+                address={this.state.address}
+                phone={this.state.phone}
+                birth={this.state.birth}
+                email={this.state.email}
+                setState={this.setState.bind(this)} />
+              <EducationSection
+                educationData={this.state.educationData}
+                setState={this.setState.bind(this)} />
+              <ProfessionalSection
+                professionalData={this.state.professionalData}
+                setState={this.setState.bind(this)} />
             </div>
 
           </div>
