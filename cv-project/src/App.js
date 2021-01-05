@@ -34,6 +34,8 @@ class App extends React.Component {
           description: 'Tegin seda ja toda',
         }
       ],
+      educationFormOpen: false,
+      professionalFormOpen: false
     }
   }
 
@@ -61,9 +63,11 @@ class App extends React.Component {
                 setState={this.setState.bind(this)} />
               <EducationSection
                 educationData={this.state.educationData}
+                educationFormOpen={this.state.educationFormOpen}
                 setState={this.setState.bind(this)} />
               <ProfessionalSection
                 professionalData={this.state.professionalData}
+                professionalFormOpen={this.state.professionalFormOpen}
                 setState={this.setState.bind(this)} />
             </div>
 

@@ -2,6 +2,52 @@ import { useState } from 'react'
 import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
+const ProfessionalForm = (props) => {
+    return (
+        <form onSubmit={props.submit.bind(this)}>
+
+            <FormGroup
+                name="start"
+                label="Start"
+                origin={props.startEdit}
+                type="date"
+                required="true"
+                changeValue={props.setStartEdit.bind(this)} />
+
+            <FormGroup
+                name="end"
+                label="End"
+                origin={props.endEdit}
+                type="date"
+                required="true"
+                changeValue={props.setEndEdit.bind(this)} />
+
+            <FormGroup
+                name="companyName"
+                label="Company name"
+                origin={props.companyNameEdit}
+                type="text"
+                changeValue={props.setCompanyNameEdit.bind(this)} />
+
+            <FormGroup
+                name="profession"
+                label="Profession"
+                origin={props.professionEdit}
+                type="text"
+                changeValue={props.setProfessionEdit.bind(this)} />
+
+            <FormGroup
+                name="description"
+                label="Description"
+                origin={props.descriptionEdit}
+                type="text"
+                changeValue={props.setDescriptionEdit.bind(this)} />
+
+            <button type="submit" className="btn btn-success">Submit</button>
+        </form>
+    )
+}
+
 const ProfessionalRow = (props) => {
 
     const [hover, setHover] = useState(false);
@@ -39,45 +85,20 @@ const ProfessionalRow = (props) => {
         >
             {
                 editing ?
-                    <form onSubmit={submit.bind(this)}>
+                    <ProfessionalForm 
+                        startEdit={startEdit}
+                        endEdit={endEdit}
+                        companyNameEdit={companyNameEdit}
+                        professionEdit={professionEdit}
+                        descriptionEdit={descriptionEdit}
+                        setStartEdit={setStartEdit}
+                        setEndEdit={setEndEdit}
+                        setCompanyNameEdit={setCompanyNameEdit}
+                        setProfessionEdit={setProfessionEdit}
+                        setDescriptionEdit={setDescriptionEdit}
+                        submit={submit}
+                    />
 
-                        <FormGroup
-                            name="start"
-                            label="Start"
-                            origin={startEdit}
-                            type="date"
-                            changeValue={setStartEdit.bind(this)} />
-
-                        <FormGroup
-                            name="end"
-                            label="End"
-                            origin={endEdit}
-                            type="date"
-                            changeValue={setEndEdit.bind(this)} />
-
-                        <FormGroup
-                            name="companyName"
-                            label="Company name"
-                            origin={companyNameEdit}
-                            type="text"
-                            changeValue={setCompanyNameEdit.bind(this)} />
-
-                        <FormGroup
-                            name="profession"
-                            label="Profession"
-                            origin={professionEdit}
-                            type="text"
-                            changeValue={setProfessionEdit.bind(this)} />
-
-                        <FormGroup
-                            name="description"
-                            label="Description"
-                            origin={descriptionEdit}
-                            type="text"
-                            changeValue={setDescriptionEdit.bind(this)} />
-
-                        <button type="submit" className="btn btn-success">Submit</button>
-                    </form>
                     :
                     <div className="row">
 
@@ -99,22 +120,29 @@ const ProfessionalRow = (props) => {
             }
         </li>
     )
-
 }
 
 const ProfessionalSection = (props) => {
 
+    const [startEdit, setStartEdit] = useState('');
+    const [endEdit, setEndEdit] = useState('');
+    const [companyNameEdit, setCompanyNameEdit] = useState('');
+    const [professionEdit, setProfessionEdit] = useState('');
+    const [descriptionEdit, setDescriptionEdit] = useState('');
+
     const updateProfessionalData = (singleProfessionalData, singleProfessionalDataIndex) => {
         props.setState(
             {
-                professionalData: props.professionalData.map((educationItem, index) => {
-                    if (index == singleProfessionalDataIndex) {
+                professionalData: props.professionalData.map((professionalItem, index) => {
+                    if (index === singleProfessionalDataIndex) {
                         return singleProfessionalData;
                     }
+                    return professionalItem;
                 }),
             }
         )
     }
+
 
     const professionalRows = props.professionalData.map((singleProfessionalData, index) =>
         <ProfessionalRow
@@ -123,14 +151,60 @@ const ProfessionalSection = (props) => {
             updateProfessionalData={updateProfessionalData.bind(this)} />
     );
 
+    const openProfessionalForm = () => {
+        props.setState({
+            professionalFormOpen: true
+        })
+    }
+
+
+    const submit = () => {
+        props.setState(prevState => ({
+            professionalFormOpen: false,
+            professionalData: [...prevState.professionalData,
+                {
+                    start: startEdit,
+                    end: endEdit,
+                    companyName: companyNameEdit,
+                    profession: professionEdit,
+                    description: descriptionEdit,
+                }]
+        }));
+
+    }
+
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Professional</h3>
                 <ul className="list-group list-group-flush card-columns">
                     {professionalRows}
-                </ul>
+                    {
+                        props.professionalFormOpen ?
 
+                        <ProfessionalForm 
+                            startEdit={startEdit}
+                            endEdit={endEdit}
+                            companyNameEdit={companyNameEdit}
+                            professionEdit={professionEdit}
+                            descriptionEdit={descriptionEdit}
+                            setStartEdit={setStartEdit}
+                            setEndEdit={setEndEdit}
+                            setCompanyNameEdit={setCompanyNameEdit}
+                            setProfessionEdit={setProfessionEdit}
+                            setDescriptionEdit={setDescriptionEdit}
+                            submit={submit}
+                        />
+                        :
+                        null
+                    }
+                </ul>
+                {
+                    props.professionalFormOpen ?
+                    null
+                    :
+                    <button className="btn btn-success" onClick={openProfessionalForm.bind(this)}>Add New</button>
+                }
             </div>
         </div >
     )

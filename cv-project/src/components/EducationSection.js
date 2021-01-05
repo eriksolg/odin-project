@@ -2,6 +2,43 @@ import React, { useState } from 'react'
 import EditButton from './EditButton'
 import FormGroup from './FormGroup'
 
+const EducationForm = (props) => {
+    return (
+        <form onSubmit={props.submit.bind(this)}>
+
+            <FormGroup
+                name="start"
+                label="Start"
+                origin={props.startEdit}
+                type="date"
+                changeValue={props.setStartEdit.bind(this)} />
+
+            <FormGroup
+                name="end"
+                label="End"
+                origin={props.endEdit}
+                type="date"
+                changeValue={props.setEndEdit.bind(this)} />
+
+            <FormGroup
+                name="schoolName"
+                label="School name"
+                origin={props.schoolNameEdit}
+                type="text"
+                changeValue={props.setSchoolNameEdit.bind(this)} />
+
+            <FormGroup
+                name="degree"
+                label="Degree"
+                origin={props.degreeEdit}
+                type="text"
+                changeValue={props.setDegreeEdit.bind(this)} />
+
+        <button type="submit" className="btn btn-success">Submit</button>
+    </form>
+    )
+}
+
 const EducationRow = (props) => {
 
     const [hover, setHover] = useState(false);
@@ -36,38 +73,17 @@ const EducationRow = (props) => {
         >
             {
                 editing ?
-                    <form onSubmit={submit.bind(this)}>
-
-                        <FormGroup
-                            name="start"
-                            label="Start"
-                            origin={startEdit}
-                            type="date"
-                            changeValue={setStartEdit.bind(this)} />
-
-                        <FormGroup
-                            name="end"
-                            label="End"
-                            origin={endEdit}
-                            type="date"
-                            changeValue={setEndEdit.bind(this)} />
-
-                        <FormGroup
-                            name="schoolName"
-                            label="School name"
-                            origin={schoolNameEdit}
-                            type="text"
-                            changeValue={setSchoolNameEdit.bind(this)} />
-
-                        <FormGroup
-                            name="degree"
-                            label="Degree"
-                            origin={degreeEdit}
-                            type="text"
-                            changeValue={setDegreeEdit.bind(this)} />
-
-                        <button type="submit" className="btn btn-success">Submit</button>
-                    </form>
+                    <EducationForm 
+                        startEdit={startEdit}
+                        endEdit={endEdit}
+                        schoolNameEdit={schoolNameEdit}
+                        degreeEdit={degreeEdit}
+                        setStartEdit={setStartEdit}
+                        setEndEdit={setEndEdit}
+                        setSchoolNameEdit={setSchoolNameEdit}
+                        setDegreeEdit={setDegreeEdit}
+                        submit={submit}
+                    />
                     :
                     <div className="row">
 
@@ -95,13 +111,19 @@ const EducationRow = (props) => {
 
 const EducationSection = (props) => {
 
+    const [startEdit, setStartEdit] = useState('');
+    const [endEdit, setEndEdit] = useState('');
+    const [schoolNameEdit, setSchoolNameEdit] = useState('');
+    const [degreeEdit, setDegreeEdit] = useState('');
+
     const updateEducationData = (singleEducationData, singleEducationDataIndex) => {
         props.setState(
             {
                 educationData: props.educationData.map((educationItem, index) => {
-                    if (index == singleEducationDataIndex) {
+                    if (index === singleEducationDataIndex) {
                         return singleEducationData;
                     }
+                    return educationItem;
                 }),
             }
         )
@@ -113,15 +135,57 @@ const EducationSection = (props) => {
             index={index}
             updateEducationData={updateEducationData.bind(this)} />
     );
+
+    const openEducationForm = () => {
+        props.setState({
+            educationFormOpen: true
+        })
+    }
+
+    const submit = () => {
+        props.setState(prevState => ({
+            educationFormOpen: false,
+            educationData: [...prevState.educationData,
+                {
+                    start: startEdit,
+                    end: endEdit,
+                    schoolName: schoolNameEdit,
+                    degree: degreeEdit
+                }]
+        }));
+
+    }
+
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Education</h3>
-
                 <ul className="list-group list-group-flush card-columns">
                     {educationRows}
-                </ul>
+                    {
+                        props.educationFormOpen ?
 
+                        <EducationForm 
+                            startEdit={startEdit}
+                            endEdit={endEdit}
+                            schoolNameEdit={schoolNameEdit}
+                            degreeEdit={degreeEdit}
+                            setStartEdit={setStartEdit}
+                            setEndEdit={setEndEdit}
+                            setSchoolNameEdit={setSchoolNameEdit}
+                            setDegreeEdit={setDegreeEdit}
+                            submit={submit}
+                        />
+                        :
+                        null
+                    }
+                </ul>
+                {
+                    props.educationFormOpen ?
+                    null
+                    :
+                    <button className="btn btn-success" onClick={openEducationForm.bind(this)}>Add New</button>
+                }
             </div>
         </div >
     )
