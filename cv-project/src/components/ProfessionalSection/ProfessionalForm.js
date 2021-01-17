@@ -1,6 +1,20 @@
+import { useEffect } from 'react'
 import FormGroup from '../FormGroup/FormGroup'
 
 const ProfessionalForm = (props) => {
+
+    useEffect(() => {
+        return () => {
+            if (props.cleanOnUnmount) {
+                props.setStartEdit('');
+                props.setEndEdit('');
+                props.setCompanyNameEdit('');
+                props.setProfessionEdit('');
+                props.setDescriptionEdit('');
+            }
+        }
+    }, [])
+
     return (
         <form onSubmit={props.submit.bind(this)}>
 

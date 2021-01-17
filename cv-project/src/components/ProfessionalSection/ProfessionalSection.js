@@ -79,6 +79,7 @@ const ProfessionalSection = (props) => {
                 setProfessionEdit={setProfessionEdit}
                 setDescriptionEdit={setDescriptionEdit}
                 submit={submit}
+                cleanOnUnmount='true'
             />
         )
         addNewProfessionalFormButtonContent = null;

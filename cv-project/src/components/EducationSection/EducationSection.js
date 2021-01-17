@@ -73,6 +73,7 @@ const EducationSection = (props) => {
                 setSchoolNameEdit={setSchoolNameEdit}
                 setDegreeEdit={setDegreeEdit}
                 submit={submit}
+                cleanOnUnmount='true'
             />
         )
         addNewEducationFormButtonContent = null;

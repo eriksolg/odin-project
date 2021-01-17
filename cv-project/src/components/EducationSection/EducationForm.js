@@ -1,6 +1,19 @@
+import { useEffect } from 'react'
 import FormGroup from '../FormGroup/FormGroup'
 
 const EducationForm = (props) => {
+
+    useEffect(() => {
+        return () => {
+            if (props.cleanOnUnmount) {
+                props.setStartEdit('');
+                props.setEndEdit('');
+                props.setSchoolNameEdit('');
+                props.setDegreeEdit('');
+            }
+        }
+    }, [])
+
     return (
         <form onSubmit={props.submit.bind(this)}>
 
