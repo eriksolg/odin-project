@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import EditButton from './EditButton'
+import DeleteButton from './DeleteButton'
 import FormGroup from './FormGroup'
+
 
 const EducationForm = (props) => {
     return (
@@ -93,6 +95,7 @@ const EducationRow = (props) => {
                     <span className="text-muted">{props.educationData.degree}</span>
                 </div>
                 <div className="cosl-xl-1">
+                    {hover && <DeleteButton delete={props.deleteRow.bind(this, props.index)} />}
                     {hover && <EditButton edit={edit} />}
                 </div>
             </div>
@@ -133,11 +136,20 @@ const EducationSection = (props) => {
         )
     }
 
+    const deleteRow = (educationDataIndex)  => {
+        props.setState(
+            {
+                educationData: props.educationData.filter((item, index) => educationDataIndex != index)
+            }
+        )
+    }
+
     const educationRows = props.educationData.map((singleEducationData, index) =>
         <EducationRow
             educationData={singleEducationData}
             index={index}
-            updateEducationData={updateEducationData.bind(this)} />
+            updateEducationData={updateEducationData.bind(this)}
+            deleteRow={deleteRow.bind(this)} />
     );
 
     const openEducationForm = () => {

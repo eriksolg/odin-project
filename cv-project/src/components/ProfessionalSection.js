@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import EditButton from './EditButton'
+import DeleteButton from './DeleteButton'
 import FormGroup from './FormGroup'
 
 const ProfessionalForm = (props) => {
@@ -110,6 +111,7 @@ const ProfessionalRow = (props) => {
                 </div>
 
                 <div className="cosl-xl-1">
+                    {hover && <DeleteButton delete={props.deleteRow.bind(this, props.index)} />}
                     {hover && <EditButton edit={edit} />}
                 </div>
             </div>
@@ -149,12 +151,21 @@ const ProfessionalSection = (props) => {
         )
     }
 
+    const deleteRow = (professionalDataIndex)  => {
+        props.setState(
+            {
+                professionalData: props.professionalData.filter((item, index) => professionalDataIndex != index)
+            }
+        )
+    }
+
 
     const professionalRows = props.professionalData.map((singleProfessionalData, index) =>
         <ProfessionalRow
             professionalData={singleProfessionalData}
             index={index}
-            updateProfessionalData={updateProfessionalData.bind(this)} />
+            updateProfessionalData={updateProfessionalData.bind(this)}
+            deleteRow={deleteRow.bind(this)} />
     );
 
     const openProfessionalForm = () => {
