@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import EditButton from './EditButton'
-import FormGroup from './FormGroup'
+import EditButton from '../Buttons/EditButton'
+import FormGroup from '../FormGroup/FormGroup'
 
 const GeneralSection = (props) => {
 

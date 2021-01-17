@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import EditButton from './EditButton'
-import FormGroup from './FormGroup'
+import React, { useState } from 'react'
+import EditButton from '../Buttons/EditButton'
+import FormGroup from '../FormGroup/FormGroup'
 
 
 const HeaderSection = (props) => {
@@ -68,7 +68,6 @@ const HeaderSection = (props) => {
             </header >
         )
     }
-
 
     return headerContent
 }

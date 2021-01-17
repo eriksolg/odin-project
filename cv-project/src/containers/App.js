@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css';
-import EducationSection from './components/EducationSection';
-import GeneralSection from './components/GeneralSection'
-import HeaderSection from './components/HeaderSection';
-import ProfessionalSection from './components/ProfessionalSection'
+import EducationSection from '../components/EducationSection/EducationSection';
+import GeneralSection from '../components/GeneralSection/GeneralSection'
+import HeaderSection from '../components/HeaderSection/HeaderSection';
+import ProfessionalSection from '../components/ProfessionalSection/ProfessionalSection'
 
 class App extends React.Component {
   constructor() {
