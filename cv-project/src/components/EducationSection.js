@@ -47,6 +47,7 @@ const EducationRow = (props) => {
     const [endEdit, setEndEdit] = useState(props.educationData.end);
     const [schoolNameEdit, setSchoolNameEdit] = useState(props.educationData.schoolName);
     const [degreeEdit, setDegreeEdit] = useState(props.educationData.degree);
+    let educationRowContent;
 
     const edit = () => {
         setEditing(true);
@@ -66,14 +67,9 @@ const EducationRow = (props) => {
         return new Date(date).getFullYear();
     }
 
-    return (
-        <li className="list-group-item hover-shade" key={props.educationData.schoolName}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-        >
-            {
-                editing ?
-                    <EducationForm 
+    if (editing) {
+        educationRowContent = (
+                <EducationForm 
                         startEdit={startEdit}
                         endEdit={endEdit}
                         schoolNameEdit={schoolNameEdit}
@@ -84,25 +80,31 @@ const EducationRow = (props) => {
                         setDegreeEdit={setDegreeEdit}
                         submit={submit}
                     />
-                    :
-                    <div className="row">
+        )
+    } else {
+        educationRowContent = (
+            <div className="row">
+                <div className="col-xl-3 text-nowrap">
+                    <strong>{getFullYear(props.educationData.start)}-{getFullYear(props.educationData.end)}</strong>
+                </div>
+                <div className="col-xl-7 offset-xl-1">
+                    <span>{props.educationData.schoolName}</span>
+                    <span> </span>
+                    <span className="text-muted">{props.educationData.degree}</span>
+                </div>
+                <div className="cosl-xl-1">
+                    {hover && <EditButton edit={edit} />}
+                </div>
+            </div>
+        )
+    }
 
-                        <div className="col-xl-3 text-nowrap">
-                            <strong>{getFullYear(props.educationData.start)}-{getFullYear(props.educationData.end)}</strong>
-                        </div>
-
-                        <div className="col-xl-7 offset-xl-1">
-                            <span>{props.educationData.schoolName}</span>
-                            <span> </span>
-                            <span className="text-muted">{props.educationData.degree}</span>
-                        </div>
-
-                        <div className="cosl-xl-1">
-                            {hover && <EditButton edit={edit} />}
-                        </div>
-
-                    </div>
-            }
+    return (
+        <li className="list-group-item hover-shade" key={props.educationData.schoolName}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+        >
+            {educationRowContent}
         </li>
     )
 
@@ -115,6 +117,8 @@ const EducationSection = (props) => {
     const [endEdit, setEndEdit] = useState('');
     const [schoolNameEdit, setSchoolNameEdit] = useState('');
     const [degreeEdit, setDegreeEdit] = useState('');
+    let educationFormContent;
+    let addNewEducationFormButtonContent;
 
     const updateEducationData = (singleEducationData, singleEducationDataIndex) => {
         props.setState(
@@ -156,36 +160,38 @@ const EducationSection = (props) => {
 
     }
 
+    if (props.educationFormOpen) {
+        educationFormContent = (
+            <EducationForm 
+                startEdit={startEdit}
+                endEdit={endEdit}
+                schoolNameEdit={schoolNameEdit}
+                degreeEdit={degreeEdit}
+                setStartEdit={setStartEdit}
+                setEndEdit={setEndEdit}
+                setSchoolNameEdit={setSchoolNameEdit}
+                setDegreeEdit={setDegreeEdit}
+                submit={submit}
+            />
+        )
+        addNewEducationFormButtonContent = null;
+    } else {
+        educationFormContent = null;
+        addNewEducationFormButtonContent = (
+            <button className="btn btn-success" onClick={openEducationForm.bind(this)}>Add New</button>
+        )
+    }
+
+
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Education</h3>
                 <ul className="list-group list-group-flush card-columns">
                     {educationRows}
-                    {
-                        props.educationFormOpen ?
-
-                        <EducationForm 
-                            startEdit={startEdit}
-                            endEdit={endEdit}
-                            schoolNameEdit={schoolNameEdit}
-                            degreeEdit={degreeEdit}
-                            setStartEdit={setStartEdit}
-                            setEndEdit={setEndEdit}
-                            setSchoolNameEdit={setSchoolNameEdit}
-                            setDegreeEdit={setDegreeEdit}
-                            submit={submit}
-                        />
-                        :
-                        null
-                    }
+                    {educationFormContent}
                 </ul>
-                {
-                    props.educationFormOpen ?
-                    null
-                    :
-                    <button className="btn btn-success" onClick={openEducationForm.bind(this)}>Add New</button>
-                }
+                {addNewEducationFormButtonContent}
             </div>
         </div >
     )

@@ -57,7 +57,7 @@ const ProfessionalRow = (props) => {
     const [companyNameEdit, setCompanyNameEdit] = useState(props.professionalData.companyName);
     const [professionEdit, setProfessionEdit] = useState(props.professionalData.profession);
     const [descriptionEdit, setDescriptionEdit] = useState(props.professionalData.description);
-
+    let professionalRowContent;
 
     const edit = () => {
         setEditing(true);
@@ -78,46 +78,50 @@ const ProfessionalRow = (props) => {
         return new Date(date).getFullYear();
     }
 
+
+    if (editing) {
+        professionalRowContent = (
+            <ProfessionalForm 
+                startEdit={startEdit}
+                endEdit={endEdit}
+                companyNameEdit={companyNameEdit}
+                professionEdit={professionEdit}
+                descriptionEdit={descriptionEdit}
+                setStartEdit={setStartEdit}
+                setEndEdit={setEndEdit}
+                setCompanyNameEdit={setCompanyNameEdit}
+                setProfessionEdit={setProfessionEdit}
+                setDescriptionEdit={setDescriptionEdit}
+                submit={submit}
+            />
+        )
+    } else {
+        professionalRowContent = (
+            <div className="row">
+                <div className="col-xl-3 text-nowrap">
+                    <strong>{getFullYear(props.professionalData.start)}-{getFullYear(props.professionalData.end)}</strong>
+                </div>
+
+                <div className="col-xl-7 offset-xl-1">
+                    <span>{props.professionalData.companyName}</span>
+                    <span> </span>
+                    <span className="text-muted">{props.professionalData.profession}</span>
+                    <p className="text-justify">{props.professionalData.description}</p>
+                </div>
+
+                <div className="cosl-xl-1">
+                    {hover && <EditButton edit={edit} />}
+                </div>
+            </div>
+        )
+    }
+
     return (
         <li className="list-group-item hover-shade" key={props.professionalData.companyName}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            {
-                editing ?
-                    <ProfessionalForm 
-                        startEdit={startEdit}
-                        endEdit={endEdit}
-                        companyNameEdit={companyNameEdit}
-                        professionEdit={professionEdit}
-                        descriptionEdit={descriptionEdit}
-                        setStartEdit={setStartEdit}
-                        setEndEdit={setEndEdit}
-                        setCompanyNameEdit={setCompanyNameEdit}
-                        setProfessionEdit={setProfessionEdit}
-                        setDescriptionEdit={setDescriptionEdit}
-                        submit={submit}
-                    />
-
-                    :
-                    <div className="row">
-
-                        <div className="col-xl-3 text-nowrap">
-                            <strong>{getFullYear(props.professionalData.start)}-{getFullYear(props.professionalData.end)}</strong>
-                        </div>
-
-                        <div className="col-xl-7 offset-xl-1">
-                            <span>{props.professionalData.companyName}</span>
-                            <span> </span>
-                            <span className="text-muted">{props.professionalData.profession}</span>
-                            <p className="text-justify">{props.professionalData.description}</p>
-                        </div>
-
-                        <div className="cosl-xl-1">
-                            {hover && <EditButton edit={edit} />}
-                        </div>
-                    </div>
-            }
+            {professionalRowContent}
         </li>
     )
 }
@@ -129,6 +133,8 @@ const ProfessionalSection = (props) => {
     const [companyNameEdit, setCompanyNameEdit] = useState('');
     const [professionEdit, setProfessionEdit] = useState('');
     const [descriptionEdit, setDescriptionEdit] = useState('');
+    let professionalFormContent;
+    let addNewProfessionalFormButtonContent;
 
     const updateProfessionalData = (singleProfessionalData, singleProfessionalDataIndex) => {
         props.setState(
@@ -173,38 +179,39 @@ const ProfessionalSection = (props) => {
 
     }
 
+    if (props.professionalFormOpen) {
+        professionalFormContent = (
+            <ProfessionalForm 
+                startEdit={startEdit}
+                endEdit={endEdit}
+                companyNameEdit={companyNameEdit}
+                professionEdit={professionEdit}
+                descriptionEdit={descriptionEdit}
+                setStartEdit={setStartEdit}
+                setEndEdit={setEndEdit}
+                setCompanyNameEdit={setCompanyNameEdit}
+                setProfessionEdit={setProfessionEdit}
+                setDescriptionEdit={setDescriptionEdit}
+                submit={submit}
+            />
+        )
+        addNewProfessionalFormButtonContent = null;
+    } else {
+        professionalFormContent = null;
+        addNewProfessionalFormButtonContent = (
+            <button className="btn btn-success" onClick={openProfessionalForm.bind(this)}>Add New</button>
+        )
+    }
+
     return (
         <div className="card">
             <div className="card-body">
                 <h3 className="card-title d-inline-block">Professional</h3>
                 <ul className="list-group list-group-flush card-columns">
                     {professionalRows}
-                    {
-                        props.professionalFormOpen ?
-
-                        <ProfessionalForm 
-                            startEdit={startEdit}
-                            endEdit={endEdit}
-                            companyNameEdit={companyNameEdit}
-                            professionEdit={professionEdit}
-                            descriptionEdit={descriptionEdit}
-                            setStartEdit={setStartEdit}
-                            setEndEdit={setEndEdit}
-                            setCompanyNameEdit={setCompanyNameEdit}
-                            setProfessionEdit={setProfessionEdit}
-                            setDescriptionEdit={setDescriptionEdit}
-                            submit={submit}
-                        />
-                        :
-                        null
-                    }
+                    {professionalFormContent}
                 </ul>
-                {
-                    props.professionalFormOpen ?
-                    null
-                    :
-                    <button className="btn btn-success" onClick={openProfessionalForm.bind(this)}>Add New</button>
-                }
+                {addNewProfessionalFormButtonContent}
             </div>
         </div >
     )

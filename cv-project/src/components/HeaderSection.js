@@ -10,6 +10,7 @@ const HeaderSection = (props) => {
     const [firstNameEdit, setFirstNameEdit] = useState(props.firstName);
     const [lastNameEdit, setLastNameEdit] = useState(props.lastName);
     const [professionEdit, setProfessionEdit] = useState(props.profession);
+    let headerContent;
 
     const edit = () => {
         setEditing(true);
@@ -26,8 +27,9 @@ const HeaderSection = (props) => {
         )
     }
 
-    return (
-        editing ?
+
+    if (editing) {
+        headerContent = (
             <form onSubmit={submit.bind(this)}>
                 <FormGroup
                     name="firstName"
@@ -53,7 +55,9 @@ const HeaderSection = (props) => {
 
                 <button type="submit" className="btn btn-success">Submit</button>
             </form>
-            :
+        )
+    } else {
+        headerContent = (
             <header className="hover-shade"
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
@@ -62,7 +66,11 @@ const HeaderSection = (props) => {
                 {hover ? <EditButton edit={edit} /> : null}
                 <h3 className="text-muted">{props.profession}</h3>
             </header >
-    )
+        )
+    }
+
+
+    return headerContent
 }
 
 export default HeaderSection
